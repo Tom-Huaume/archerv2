@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Evenement | {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 ">
+
+            {{ form_start(evenementForm) }}
+            <div class="mt-3"></div>
+                <div class="input-wrapper">
+                    <div class="form-group">
+                        <p id="labelLieu" class="mb-3 font-question">{{ form_label(evenementForm.lieuDestination) }}</p>
+                        <p id="listLieu">{{ form_widget(evenementForm.lieuDestination) }}</p>
+                        <small id="emailHelp" class="form-text text-muted">{{ form_errors(evenementForm.lieuDestination) }}</small>
+                        <div class="btn btn-success mt-2 pastel" onClick="showHideLieu();">Autre lieu</div>
+                    </div>
+                </div>
+
+                <div class="input-wrapper" id="formLieu">
+                    <div class="card border-success mb-3">
+                        <div class="card-body">
+
+                            <p class="mb-1 mt-2 font-question">{{ form_label(evenementForm.nomlieu) }}</p>
+                            {{ form_widget(evenementForm.nomlieu) }}
+                            <p class="mb-1 mt-2 font-question">{{ form_label(evenementForm.rue) }}</p>
+                            {{ form_widget(evenementForm.rue) }}
+                            <p class="mb-1 mt-2 font-question">{{ form_label(evenementForm.rue2) }}</p>
+                            {{ form_widget(evenementForm.rue2) }}
+                            <p class="mb-1 mt-2 font-question">{{ form_label(evenementForm.codePostal) }}</p>
+                            {{ form_widget(evenementForm.codePostal) }}
+                            <p class="mb-1 mt-2 font-question">{{ form_label(evenementForm.ville) }}</p>
+                            {{ form_widget(evenementForm.ville) }}
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="input-wrapper">
+                    <div class="form-group">
+                        <p class="mb-2 font-question"> {{ form_label(evenementForm.nom) }}</p>
+                        <p>{{ form_widget(evenementForm.nom) }}</p>
+                        <small id="emailHelp" class="form-text text-muted">{{ form_errors(evenementForm.nom) }}</small>
+                    </div>
+                </div>
+                <div class="input-wrapper">
+                    <div class="form-group">
+                        <p class="mb-2 font-question">{{ form_label(evenementForm.description) }}</p>
+                        <p>{{ form_widget(evenementForm.description) }}</p>
+                        <small id="emailHelp" class="form-text text-muted">{{ form_errors(evenementForm.description) }}</small>
+                    </div>
+                </div>
+                <div class="input-wrapper">
+                    <div class="form-group">
+                        <p class="mb-2 font-question">{{ form_label(evenementForm.dateHeureDebut) }}</p>
+                        <p>{{ form_widget(evenementForm.dateHeureDebut) }}</p>
+                        <small id="emailHelp" class="form-text text-muted">{{ form_errors(evenementForm.dateHeureDebut) }}</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="input-wrapper">
+                            <div class="form-group">
+                                <p class="mb-2 font-question">{{ form_label(evenementForm.dateHeureLimiteInscription) }}</p>
+                                <p>{{ form_widget(evenementForm.dateHeureLimiteInscription) }}</p>
+                                <small id="emailHelp" class="form-text text-muted">{{ form_errors(evenementForm.dateHeureLimiteInscription) }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="input-wrapper">
+                            <div class="form-group">
+                                <p class="mb-2 font-question">{{ form_label(evenementForm.nbInscriptionsMax) }}</p>
+                                <p>{{ form_widget(evenementForm.nbInscriptionsMax) }}</p>
+                                <small id="emailHelp" class="form-text text-muted">{{ form_errors(evenementForm.nbInscriptionsMax) }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-wrapper">
+                    <div class="form-group">
+                        <p class="mb-2 font-question">{{ form_label(evenementForm.tarif) }}</p>
+                        <p>{{ form_widget(evenementForm.tarif) }}</p>
+                        <small id="emailHelp" class="form-text text-muted">{{ form_errors(evenementForm.tarif) }}</small>
+                    </div>
+                </div>
+                <div class="input-wrapper">
+                        <div class="form-group">
+                            <p class="mb-2 font-question">{{ form_label(evenementForm.photo) }}</p>
+                            <p>{{ form_widget(evenementForm.photo) }}</p>
+                            <small id="emailHelp" class="form-text text-muted">{{ form_errors(evenementForm.photo) }}</small>
+                        </div>
+                </div>
+
+                    <div class="d-flex align-items-center justify-content-center">
+                        <a href="{{ path('evenement_list') }}" class="btn btn-secondary btn-lg m-5">Annuler</a>
+                        <button class="btn btn-primary btn-lg m-5">Créer l'évènement</button>
+                    </div>
+
+            {{ form_end(evenementForm) }}
+
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Evenement | {{ parent() }}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+
+    <h2>Liste des évènements</h2>
+
+    <a href="{{ path('evenement_create') }}">
+        <button type="button" class="btn btn-success btn-lg btn-event pastel">Créer un évènement</button>
+    </a>
+
+    {% for e in evenements %}
+        <a href="{{ path('evenement_detail', {'id' : e.id}) }}" style="text-decoration: none;">
+            <div class="card text-white bg-primary mb-3 item-event">
+                <div class="card-header">{{ e.lieuDestination.nom }}</div>
+                <div class="card-body">
+                    <h4 class="card-title">{{ e.nom }}</h4>
+                    <p class="card-text">{{ e.description | nl2br }}</p>
+                </div>
+            </div>
+        </a>
+    {% endfor %}
+
+</div>
+{% endblock %}
+
+
+

@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Accueil
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h2>Evènements à venir</h2>
+
+
+        {# ----Tableau des évènements----  #}
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Lundi</th>
+                <th scope="col">Mardi</th>
+                <th scope="col">Mercredi</th>
+                <th scope="col">Jeudi</th>
+                <th scope="col">Vendredi</th>
+                <th scope="col">Samedi</th>
+                <th scope="col">Dimanche</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% set nbDay = 0 %}
+            {% for i in 0..5 %}
+                <tr>
+                    {% for i in 0..6 %}
+                        {% set nbDay = nbDay + 1 %}
+                        <td>
+                            {{ nbDay }}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <br><br>
+
+        {% for e in evenements %}
+            <a href="#" style="text-decoration: none;">
+                <div class="card text-white bg-primary mb-3" style="max-width: 90rem;">
+                    <div class="card-header">{{ e.lieuDestination.nom }}</div>
+                    <div class="card-body">
+                        <h4 class="card-title">{{ e.nom }}</h4>
+                        <p class="card-text">{{ e.description | nl2br }}</p>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+
+        {% for e in evenements %}
+            <a href="#" style="text-decoration: none;">
+                <div class="card text-white bg-success mb-3" style="max-width: 90rem;">
+                    <div class="card-header">{{ e.lieuDestination.nom }}</div>
+                    <div class="card-body">
+                        <h4 class="card-title">{{ e.nom }}</h4>
+                        <p class="card-text">{{ e.description | nl2br }}</p>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+
+        {% for e in evenements %}
+            <a href="#" style="text-decoration: none;">
+                <div class="card border-success mb-3" style="max-width: 90rem;">
+                    <div class="card-header">{{ e.lieuDestination.nom }}</div>
+                    <div class="card-body">
+                        <h4 class="card-title">{{ e.nom }}</h4>
+                        <p class="card-text">{{ e.description | nl2br }}</p>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+
+        {% for e in evenements %}
+            <a href="#" style="text-decoration: none;">
+                <div class="card text-white bg-secondary mb-3" style="max-width: 90rem;">
+                    <div class="card-header">{{ e.lieuDestination.nom }}</div>
+                    <div class="card-body">
+                        <h4 class="card-title">{{ e.nom }}</h4>
+                        <p class="card-text">{{ e.description | nl2br }}</p>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+
+
+{% endblock %}
+

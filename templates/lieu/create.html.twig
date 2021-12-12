@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Lieux | {{ parent() }}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    {{ form_start(lieuForm) }}
+
+    <h3 class="m-3">Lieux sauvegardés</h3>
+    <div  class="table-wrapper-scroll-y-lieu my-custom-scrollbar-lieu">
+        <table class="table table-bordered table-striped mb-0">
+            <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Rue</th>
+                <th scope="col">Complément d'adresse</th>
+                <th scope="col">CP</th>
+                <th scope="col">Ville</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <div>
+                <tbody>
+                {% for l in listLieux %}
+                    <tr>
+                        <td>{{ l.nom }}</td>
+                        <td>{{ l.rue }}</td>
+                        <td>{{ l.rue2 }}</td>
+                        <td>{{ l.codePostal }}</td>
+                        <td>{{ l.ville }}</td>
+                        <td>
+                            <a class="btn btn-sm btn-danger" href="{{ path('lieu_delete', {'id' : l.id}) }}">Supprimer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            {{ form_widget(lieuForm.nom) }}
+                            <small class="form-text text-muted">{{ form_errors(lieuForm.nom) }}</small>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            {{ form_widget(lieuForm.rue) }}
+                            <small class="form-text text-muted">{{ form_errors(lieuForm.rue) }}</small>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            {{ form_widget(lieuForm.rue2) }}
+                            <small class="form-text text-muted">{{ form_errors(lieuForm.rue2) }}</small>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            {{ form_widget(lieuForm.codePostal) }}
+                            <small class="form-text text-muted">{{ form_errors(lieuForm.codePostal) }}</small>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            {{ form_widget(lieuForm.ville) }}
+                            <small class="form-text text-muted">{{ form_errors(lieuForm.ville) }}</small>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn  btn-sm btn-secondary">Créer</button>
+                    </td>
+                </tr>
+                </tbody>
+            </div>
+        </table>
+    </div>
+
+    {{ form_end(lieuForm) }}
+
+</div>
+{% endblock %}
+

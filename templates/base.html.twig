@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %} Les archers de Liffré {% endblock %}</title>
+
+    {# Google font : police karla #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap" rel="stylesheet">
+    {# Bootstrap de base #}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    {# Icones Bootstrap#}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    {# Thème Bootswatch #}
+    <link rel="stylesheet" href="https://bootswatch.com/5/flatly/bootstrap.min.css">
+    {#    https://bootswatch.com/5/minty/bootstrap.min.css#}
+    {#    https://bootswatch.com/5/vapor/bootstrap.min.css#}
+    {#    https://bootswatch.com/5/flatly/bootstrap.min.css#}
+    {#    https://bootswatch.com/5/lux/bootstrap.min.css#}
+    {#    https://bootswatch.com/5/darkly/bootstrap.min.css#}
+
+    {# Normalize : à activer si bootstrap n'est plus utilisé #}
+    {#<link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css">#}
+    {# CSS custom #}
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    {# Logo #}
+    {# <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> #}
+    <link rel="icon" href="{{ asset('img/icon/dart-board.png') }}">
+</head>
+
+<body>
+
+<header>
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">
+                <a href="https://lesarchersdeliffre.jimdofree.com/">
+                    <img src="{{ asset('img/logo/logo.png') }}"
+                         alt="logo du club" class="logo-titre">
+                </a>
+            </div>
+            <div class="col-md-8">
+                <h1>Les archers de Liffré</h1>
+                <h2 class="text-success letter-space letter-glowy">Espace membre</h2>
+            </div>
+            <div class="col-md-2">
+                {# Message flash #}
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="flash flash-{{ label }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <br>
+
+    {% include('inc/nav.html.twig') %}
+
+</header>
+
+
+<main>
+    {% block body %}{% endblock %}
+</main>
+
+
+
+
+<footer class="text-white bg-primary">
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-2 col-xl-3">
+                <div class="infos">
+                    <a href="https://lesarchersdeliffre.jimdofree.com/" target="_blank"><img loading="lazy" src="{{ asset('img/logo/logo.png') }}" alt="" class="logo-small"></a>
+
+                </div>
+            </div>
+
+            <div class="col-lg-9 col-xl-8">
+                <div class="row">
+
+                    <div class="col-sm-6 col-md-3"><p class="h5">Découvrez le club</p>
+                        <ul class="footer-links list-unstyled">
+                            <li><a href="https://lesarchersdeliffre.jimdofree.com/infrastructures-et-horaires/" target="_blank">Infrastructures et horaires</a></li>
+                            <li><a href="https://lesarchersdeliffre.jimdofree.com/bilans-sportifs/" class="">Bilans sportifs</a></li>
+                            <li><a href="https://lesarchersdeliffre.jimdofree.com/records-du-club/" class="">Records du club</a></li>
+                            <li><a href="https://lesarchersdeliffre.jimdofree.com/tenue-et-accessoires/" class="">Boutique</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-sm-6 col-md-3">
+                        <p class="h5">Aide</p>
+                        <ul class="footer-links list-unstyled">
+                            <li><a href="https://lesarchersdeliffre.forumsactifs.com/" class="">Forum du club</a></li>
+                            <li><a href="https://lesarchersdeliffre.jimdofree.com/contact/" class="">Contactez-nous</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-sm-6 col-md-3"><p class="h5">Informations légales</p>
+                        <ul class="footer-links list-unstyled">
+                            <li><a href="#" class="">CGU Utilisateur</a></li>
+                            <li><a href="https://lesarchersdeliffre.jimdofree.com/le-club-et-son-fonctionnement/" class="">Fonctionnement du club</a></li>
+                            <li><a href="https://lesarchersdeliffre.jimdofree.com/app/download/18163277125/REGLEMENT+INTERIEUR+LES+ARCHERS+DE+LIFFRE+%28version+juin+2019%29.pdf?t=1567097363" class="">Règlement intérieur</a></li>
+                            <li><a href="https://lesarchersdeliffre.jimdofree.com/app/download/18163277325/STATUTS+LES+ARCHERS+DE+LIFFRE+%28version+juin+2019%29.pdf?t=1567097368" class="">Statut du club</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-sm-6 col-md-3"><p class="h5">Suivez-nous</p>
+                        <ul class="footer-links list-unstyled">
+                            <li><a href="https://www.facebook.com/LesArchersDeLiffre/" title="Presse" target="_blank" data-ux="Showcase_Footer_Link_Press">Facebook</a></li>
+                            <li><a href="https://twitter.com/archersliffr1" target="_blank" data-ux="Showcase_Footer_Link_Newsletter">Twitter</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+
+    <div class="footer-mentions"><p class="copyright">
+            © {{ "now"|date("Y") }}
+            <a href="#" title="Retourner à l'accueil du site">Les archers de Liffré</a>
+            . Tous droits réservés.
+        </p>
+        LES ARCHERS DE LIFFRE, association déclarée est en activité depuis le 18 Février 2013. Installée à LIFFRE (35340), <br>
+        elle est spécialisée dans le secteur des activités de clubs de sports.
+    </div>
+
+</footer>
+
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
+{% endblock %}
+</body>
+</html>

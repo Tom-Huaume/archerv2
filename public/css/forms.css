@@ -1,0 +1,164 @@
+/*____Formulaire général____*/
+.input-wrapper{
+    padding-top: 1rem;
+}
+
+.fix-btn{
+    position: fixed;
+}
+
+.font-question{
+    font-size: 1.3rem;
+    color: rgb(38, 38, 39);
+    /*opacity: 0.25;*/
+}
+
+.btn-contrast-primary{
+    background-color: #828D9D;
+    border-color: #828D9D;
+}
+.btn-contrast-primary:hover{
+    background-color: #657283;
+    border-color: #49586A;
+}
+
+/*.font-input{*/
+/*    font-size: 1.4rem;*/
+/*    color: rgb(38, 38, 39);*/
+/*    !*opacity: 0.25;*!*/
+/*}*/
+
+/*.font-input:valid{*/
+/*    font-size: 1.4rem;*/
+/*    color: #262627;*/
+/*    !*opacity: 1;*!*/
+/*}*/
+
+.font-input:invalid{
+    color: #262627;
+    opacity: 0.45;
+}
+
+.font-input-little{
+    font-size: 1rem;
+    color: rgb(38, 38, 39);
+    /*opacity: 0.25;*/
+    height: 10rem;
+}
+
+.font-input-little:valid{
+    color: #262627;
+    /*opacity: 1;*/
+}
+
+.font-input-little::placeholder{
+    color: rgb(38, 38, 39);
+    opacity: 0.35;
+}
+
+.font-input::placeholder{
+    color: rgb(38, 38, 39);
+    opacity: 0.35;
+}
+
+.input-wrapper:hover .form-group > p > * {
+    color: #262627;
+    /*opacity: 1;*/
+}
+
+/*.input-wrapper:hover .form-group > p > .font-input {*/
+/*    opacity: 1;*/
+/*}*/
+
+/*.input-wrapper:hover .form-group > p {*/
+/*    color: #262627;*/
+/*    !*opacity: 1;*!*/
+/*}*/
+
+.input-wrapper > .form-group > a {
+    opacity: 0.65;
+}
+
+/*.input-wrapper:hover .form-group > a {*/
+/*    background-color: #6ad4bf;*/
+/*    border-color: #6ad4bf;*/
+/*}*/
+
+#formLieu{
+    display: none;
+}
+
+/*____Formulaire lieux____*/
+.input-nom-lieu {
+    max-width: 25rem;
+}
+
+.input-rue-lieu {
+    max-width: 30rem;
+}
+
+.input-cp-lieu {
+    max-width: 5rem;
+}
+
+.input-ville-lieu {
+    max-width: 25rem;
+}
+
+.input-choice-address{
+    max-width: 35rem;
+}
+
+/*____Formulaire Evenements____*/
+.input-inscr-event {
+    max-width: 5rem;
+}
+
+.input-etat-event {
+    max-width: 10rem;
+}
+
+.input-prix-event {
+    max-width: 30rem;
+}
+
+.input-lieu-event {
+    max-width: 30rem;
+}
+
+/*____Formulaire Membre____*/
+.input-numlic-membre{
+    max-width:6rem;
+}
+
+.input-date-membre{
+    max-width:9rem;
+}
+
+.input-tel-membre{
+    max-width:8rem;
+}
+
+.input-mail-membre{
+    max-width:15rem;
+}
+
+.input-nom-membre{
+    max-width:12rem;
+}
+
+.input-cat-membre{
+    max-width:7rem;
+}
+
+.input-type-membre{
+    max-width:16rem;
+}
+
+.input-lat-membre{
+    max-width:3rem;
+}
+
+.input-sexe-membre{
+    max-width:6rem;
+}

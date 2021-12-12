@@ -1,0 +1,268 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Evenement | {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+        <h2 class="event-title">{{ evenement.nom }}</h2>
+
+        <div class="card border-primary mb-3 event-card" style="max-width: 90rem;">
+
+            <div class="card-header">Début le {{ evenement.dateHeureDebut | date('d/m/Y', 'Europe/Paris') }} à {{ evenement.dateHeureDebut | date('H:i', 'Europe/Paris') }}</div>
+
+            <div class="row m-2">
+                <div class="col-md-4 img-event-wrapper">
+                    <img class="img-fluid"
+                         src="{{ asset('img/photo/evenement/img_test.jpg') }}"
+                         alt="Image de l'évènement">
+                </div>
+                <div class="col-md-4">
+                    <div class="card-body">
+                        <p>{{ evenement.nbInscriptionsMax }} places disponibles</p>
+                        <p class="text-danger">Date limite d'inscription le {{ evenement.dateHeureLimiteInscription | date('d/m/Y', 'Europe/Paris') }}
+                            à {{ evenement.dateHeureLimiteInscription | date('H:i', 'Europe/Paris') }}</p>
+                        <p>Tarif : {{ evenement.tarif }}</p>
+                        <br>
+                        <h5>{{ evenement.lieuDestination.nom }}</h5>
+                        <p>{{ evenement.lieuDestination.rue }}</p>
+                        <p>{{ evenement.lieuDestination.rue2 }}</p>
+                        <p>{{ evenement.lieuDestination.codePostal~" "~}}{{ evenement.lieuDestination.ville }}</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div>
+                        <a href="{{ path('etapes_validation', {'id' : evenement.id}) }}"><button type="button" class="btn btn-dark m-1 btn-admin">Gérer les inscriptions</button></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row m-2">
+                <hr>
+                <p class="card-text">{{ evenement.description }}</p>
+            </div>
+
+            {% for e in etapes %}
+            <div class="card text-white bg-primary m-3" style="max-width: 70rem;">
+                <div class="card-header">{{ e.nom }}{{" - le "~ e.dateHeureDebut | date('d/m/Y', 'Europe/Paris') }}
+                    à {{ e.dateHeureDebut | date('H:i', 'Europe/Paris') }}
+                </div>
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">{{ e.tarif }}</h5>
+                            <p class="card-text">{{ e.description }}</p>
+                        </div>
+                        <div class="col">
+                            <div class="col d-md-flex justify-content-md-end">
+                                <p>{{ e.arme ? e.arme.designation }}</p>
+                            </div>
+
+                        </div>
+                        <div class="col d-md-flex justify-content-md-end">
+                            <div>
+                                <a href="{{ path('etape_inscription', {'id' : e.id}) }}"><button type="button" class="btn btn-dark m-1 btn-contrast-primary">S'inscrire</button></a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+
+
+            <div id="etapeToHide" class="card border-primary m-3" style="max-width: 70rem; display: none;">
+                <h4 class="card-header">Nouvelle étape
+                </h4>
+                <div class="card-body">
+                    {{ form_start(etapeForm) }}
+
+                    {{ form_label(etapeForm.nom) }}
+                    {{ form_widget(etapeForm.nom) }}
+                    {{ form_label(etapeForm.description) }}
+                    {{ form_widget(etapeForm.description) }}
+                    <div class="row">
+                        <div class="col">
+                        {{ form_label(etapeForm.arme) }}
+                        {{ form_widget(etapeForm.arme) }}
+                        </div>
+                        <div class="col">
+                        {{ form_label(etapeForm.tarif) }}
+                        {{ form_widget(etapeForm.tarif) }}
+                        </div>
+                        <div class="col">
+                        {{ form_label(etapeForm.nbInscriptionsMax) }}
+                        {{ form_widget(etapeForm.nbInscriptionsMax) }}
+                        </div>
+                        <div class="col">
+                        {{ form_label(etapeForm.dateHeureDebut) }}
+                        {{ form_widget(etapeForm.dateHeureDebut) }}
+                        </div>
+                    </div>
+
+                    <div class="d-md-flex justify-content-md-end">
+                            <div type="button" class="btn btn-secondary m-1" onClick="showHideEtape();">Annuler</div>
+                            <button class="btn btn-primary m-1">Créer</button>
+                    </div>
+
+                    {{ form_end(etapeForm) }}
+                </div>
+            </div>
+
+
+            <div class="d-flex align-items-center justify-content-center">
+                <button id="btnEtapeToHide" type="button" value="" class="btn btn-primary m-3" onClick="showHideEtape();">Ajouter une étape</button>
+            </div>
+
+        </div>
+
+        {% for t in trajets %}
+
+            <div class="card border-success mb-3 bg-green-pastel" style="max-width: 90rem;">
+                <div class="card-header d-inline">
+                    {% if t.titre is null %}
+                        <p>Trajet {{ t.lieuDepart.ville }} -> {{ t.evenement.lieuDestination.ville }} le {{ t.dateHeureDepart | date('d/m/Y', 'Europe/Paris') }}</p>
+                    {% else %}
+                        <p>{{ t.titre }} : départ le {{ t.dateHeureDepart | date('d/m/Y', 'Europe/Paris') }} à {{ t.dateHeureDepart | date('H:i', 'Europe/Paris') }}</p>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col" style="border-right:1px solid">
+                            <p>Conducteur : {{ t.organisateur.prenom }}{{" "~ t.organisateur.nom }}</p>
+                            <p class="card-text">{{ t.typeVoiture }} {{ t.couleurVoiture }}</p>
+                            <p class="card-text">départ à {{ t.dateHeureDepart | date('H:i', 'Europe/Paris') }}</p>
+                            <p class="card-text">{{ t.nbPlaces }} places disponibles</p>
+
+                        </div>
+                        <div class="col" style="border-right:1px solid">
+                            <p>Départ</p>
+                            <p class="card-text">{{ t.lieuDepart.rue }}</p>
+                            {% if t.lieuDepart.rue2 is not null %}
+                                <p class="card-text">{{ t.lieuDepart.rue2 }}</p>
+                            {% endif %}
+                            <p class="card-text">{{ t.lieuDepart.codePostal }}{{" "~ t.lieuDepart.ville }}</p>
+                        </div>
+                        <div class="col">
+                            <p>Arrivée</p>
+                            <p class="card-text">{{ t.evenement.lieuDestination.rue }}</p>
+                            {% if t.evenement.lieuDestination.rue2 is not null %}
+                                <p class="card-text">{{ t.evenement.lieuDestination.rue2 }}</p>
+                            {% endif %}
+                            <p class="card-text">{{ t.evenement.lieuDestination.codePostal }}{{" "~ t.evenement.lieuDestination.ville }}</p>
+                        </div>
+                        <div class="col d-md-flex justify-content-md-end">
+                            <div>
+                                <a href="{{ path('trajet_reservation', {'id' : t.id}) }}"><button type="button" class="btn btn-secondary m-1">Réserver</button></a>
+                            </div>
+                        </div>
+                    </div>
+                    {% if t.description is not null %}
+                        <hr>
+                        <p class="card-text">{{ t.description }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+        {% endfor %}
+
+        <div id="trajetToHide"  style="display: none;">
+        <div class="card border-success mb-3" style="max-width: 90rem;">
+            <div class="card-header d-inline">
+                    <h4>Nouveau trajet</h4>
+            </div>
+            <div class="card-body row">
+
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    {{ form_start(trajetForm) }}
+                    <div class="form-group mb-1">
+                        <label for="exampleSelect1" class="form-label mt-1">Adresse de départ</label>
+                        {{ form_widget(trajetForm.clubDefaut) }}
+                    </div>
+                    <div id="lieuToHide" class="card bg-light pastel mb-3 input-choice-address" style="display: none">
+                        <div class="card-body">
+                            {{ form_label(trajetForm.nomLieuDepart) }}
+                            {{ form_widget(trajetForm.nomLieuDepart) }}
+                            {{ form_label(trajetForm.rueLieuDepart) }}
+                            {{ form_widget(trajetForm.rueLieuDepart) }}
+                            {{ form_label(trajetForm.rue2LieuDepart) }}
+                            {{ form_widget(trajetForm.rue2LieuDepart) }}
+                            {{ form_label(trajetForm.codePostalLieuDepart) }}
+                            {{ form_widget(trajetForm.codePostalLieuDepart) }}
+                            {{ form_label(trajetForm.villeLieuDepart) }}
+                            {{ form_widget(trajetForm.villeLieuDepart) }}
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col">
+                            {{ form_label(trajetForm.dateHeureDepart) }}
+                            <p>{{ form_widget(trajetForm.dateHeureDepart) }}</p>
+                        </div>
+                        <div class="col">
+                            {{ form_label(trajetForm.nbPlaces) }}
+                            {{ form_widget(trajetForm.nbPlaces) }}
+                        </div>
+                    </div>
+                    <div>
+                        {{ form_label(trajetForm.titre) }}
+                        {{ form_widget(trajetForm.titre) }}
+                    </div>
+                    <div class="mt-2">
+                        {{ form_label(trajetForm.description) }}
+                        {{ form_widget(trajetForm.description) }}
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col">
+                            {{ form_label(trajetForm.typeVoiture) }}
+                            {{ form_widget(trajetForm.typeVoiture) }}
+                        </div>
+                        <div class="col">
+                            {{ form_label(trajetForm.couleurVoiture) }}
+                            {{ form_widget(trajetForm.couleurVoiture) }}
+                        </div>
+                    </div>
+
+
+
+                    <div class="d-md-flex justify-content-md-end">
+                        <div class="btn btn-secondary m-1" onClick="showHideTrajet();">Annuler</div>
+                        <button class="btn btn-success m-1 pastel">Créer</button>
+                    </div>
+
+                    {{ form_end(trajetForm) }}
+                </div>
+                <div class="col-md-2"></div>
+
+            </div>
+        </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-center">
+            <button id="btnTrajetToHide" type="button" class="btn btn-success pastel" onClick="showHideTrajet();">Proposer un covoiturage</button>
+        </div>
+
+
+
+            {#Mention si utilisation de l'icone voiture#}
+{#        <div style="margin-top: 5rem;">Icônes conçues par#}
+{#            <a  href="https://www.freepik.com"#}
+{#                title="Freepik"#}
+{#                style="text-decoration: none";>Freepik#}
+{#            </a>#}
+{#            from#}
+{#            <a href="https://www.flaticon.com/fr/"#}
+{#               title="Flaticon"#}
+{#               style="text-decoration: none;">www.flaticon.com#}
+{#            </a>#}
+{#        </div>#}
+
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

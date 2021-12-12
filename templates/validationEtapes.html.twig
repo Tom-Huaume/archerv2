@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Etapes | {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+        <h2 class="event-title">{{ evenement.nom }}</h2>
+
+        {% for e in etapes %}
+            <table>
+                <tr>
+                    <td>{{ e.nom }}</td>
+                    <td>Début le {{ e.dateHeureDebut | date('d/m/Y', 'Europe/Paris') }}</td>
+                    <td>{{ e.arme.designation }}</td>
+                </tr>
+                {% for i in e.inscriptionEtapes %}
+                <tr>
+                    <td>{{ i.membre.nom }}</td>
+                    <td>{{ i.membre.prenom }}</td>
+                    <td>{{ i.membre.email }}</td>
+                </tr>
+
+                {% endfor %}
+
+
+            </table>
+        {% endfor %}
+
+        <a href="{{ path('evenement_detail', {'id' : evenement.id}) }}">
+            <button>Retour</button>
+        </a>
+
+    </div>
+{% endblock %}
+

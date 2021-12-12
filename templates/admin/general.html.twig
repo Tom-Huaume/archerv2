@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Admin | {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+<h2>Général</h2>
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col">
+
+
+
+            <h4>Adresse du club</h4>
+            <p>{{ adresseClub.nom }}</p>
+            <p>{{ adresseClub.rue }}</p>
+            <p>{{ adresseClub.rue2 }}</p>
+            <p>{{ adresseClub.codePostal }} {{ adresseClub.ville | upper }}</p>
+            <br>
+
+            <h4>Liste types d'arme </h4>
+            <div  class="table-wrapper-scroll-y-arme my-custom-scrollbar-arme">
+                <table class="table table-bordered table-striped mb-0">
+                    <thead>
+                    <tr>
+                        <th scope="col">Sigle</th>
+                        <th scope="col">Désignation</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <div>
+                        <tbody>
+                        {% for a in armes %}
+                            <tr>
+                                <td>{{ a.sigle }}</td>
+                                <td>{{ a.designation}}</td>
+                                <td>
+                                    <a class="btn btn-sm btn-danger" href="{{ path('arme_delete', {'id': a.id}) }}">Supprimer</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                            <tr>
+                                {{ form_start(armeForm) }}
+                                    <td>
+                                        {{ form_widget(armeForm.sigle) }}
+                                    </td>
+                                    <td>
+                                        {{ form_widget(armeForm.designation) }}
+                                    </td>
+                                    <td>
+                                        <button class="btn  btn-sm btn-secondary">Créer</button>
+                                    </td>
+                                {{ form_end(armeForm) }}
+                            </tr>
+                        </tbody>
+                    </div>
+                </table>
+            </div>
+            <button class="btn btn-primary">Retour</button>
+        </div>
+
+        <div class="col">
+
+            <h4>Choix du thème</h4>
+            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked="">
+                <label class="btn btn-outline-primary" for="btnradio1">Thème dark</label>
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" checked="">
+                <label class="btn btn-outline-primary" for="btnradio2">Thème bleu</label>
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" checked="">
+                <label class="btn btn-outline-primary" for="btnradio3">Thème light</label>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+{% endblock %}

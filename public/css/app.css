@@ -1,0 +1,222 @@
+@import url("forms.css");
+
+/*_________BALISES_________*/
+h1, h2 {
+    margin: 1rem;
+    text-align: center;
+}
+
+h3, h4, h5, h6 {
+
+}
+
+body{
+
+}
+
+p {
+    /*font-family: 'Karla', sans-serif;*/
+    margin: 0px;
+    padding: 0px;
+}
+
+legend {
+    margin-top: 2rem;
+}
+
+footer{
+    margin-top: 10rem;
+    padding-top: 8rem;
+    padding-bottom: 5rem;
+}
+
+a{
+    text-decoration: none;
+}
+
+/*_________CLASSES_________*/
+/*____Tailles polices____*/
+.small-font{
+    font-size: 0.8em;
+}
+
+.medium-font{
+    font-size: 0.95em;
+}
+
+.small-btn{
+    font-size: 0.9em;
+}
+
+.font-admin{
+    color: #CF5B38;
+}
+
+/*____Bouton admin____*/
+.btn-admin-wrapper{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.btn-admin{
+    color: #DCF1ED;
+    background-color: #CF5B38;
+    border-color: #ab4b2e;
+}
+
+.btn-admin:hover{
+    color: #DCF1ED;
+    background-color: #ab4b2e;
+    border-color: #ab4b2e;
+}
+
+
+/*____effets spéciaux____*/
+.pastel{
+    opacity: 0.9;
+}
+
+.pastel2{
+    opacity: 0.8;
+}
+
+.bg-green-pastel{
+    background-color: #DCF1ED;
+}
+
+.letter-space{
+    letter-spacing: 15px;
+}
+
+.letter-glowy{
+    line-height: 0.70em;
+    outline: none;
+    text-transform: uppercase;
+    -webkit-box-reflect: below 1px linear-gradient(transparent, #0004);
+}
+
+.letter-glowy:hover{
+    line-height: 0.70em;
+    outline: none;
+    text-shadow: 0 0 10px springgreen;
+    text-transform: uppercase;
+    -webkit-box-reflect: below 1px linear-gradient(transparent, #0004);
+}
+
+.letter-glowy-anim{
+    -webkit-box-reflect: below 1px linear-gradient(transparent, #0004);
+    line-height: 0.70em;
+    outline: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    animation: animate 5s linear infinite;
+}
+@keyframes animate
+{
+    0%,18%,20%,50.1%,60%,65.1%,80%,90.1%,92%
+    {
+        color: #18BC9C;
+        text-shadow: none;
+    }
+    18.1%,20.1%,30%,50%,60.1%,65%,80.1%,90%,92.1%,100%
+    {
+        color: #C0EDE4;
+        text-shadow: 0 0 10px springgreen,
+        0 0 20px springgreen,
+        0 0 40px springgreen,
+        0 0 80px springgreen,
+        0 0 160px springgreen;
+
+    }
+}
+
+/*____liens____*/
+.disable-link{
+    text-decoration: none;
+}
+
+/*____navigation____*/
+.offset-left{
+    padding-left: 5rem;
+}
+
+/*____footer____*/
+.footer-mentions{
+    text-align: center;
+}
+
+/*____images____*/
+.logo-titre{
+    height: 150px;
+}
+
+.logo-small{
+    height: 120px;
+}
+
+/*____Tableau listing armes____*/
+.my-custom-scrollbar-arme {
+    position:relative;
+    width: 300px;
+    height: 200px;
+    overflow: auto;
+}
+.table-wrapper-scroll-y-arme {
+    display: block;
+}
+
+/*____Tableau listing lieux____*/
+.my-custom-scrollbar-lieu {
+    position:relative;
+    width: 1000px;
+    height: 400px;
+    overflow: auto;
+}
+.table-wrapper-scroll-y-lieu {
+    display: block;
+}
+
+/*____Evenements____*/
+.item-event{
+    max-width: 90rem;
+}
+
+.btn-event{
+    margin-bottom: 2rem;
+}
+
+.event-title{
+    margin-top: 2rem;
+}
+
+.event-card{
+    margin-top: 2rem;
+}
+
+/*____Messages flash____*/
+
+.flash{
+    padding: 20px;
+    font-weight: bold;
+    font-size: 1.4rem;
+    margin: 1rem 0;
+    text-align: right;
+}
+
+.flash-success{
+    color: green;
+}
+
+.flash-danger{
+    color: red;
+}
+
+.flash-warning{
+    color: orange;
+}
+
+.flash-info{
+    color: royalblue;
+}

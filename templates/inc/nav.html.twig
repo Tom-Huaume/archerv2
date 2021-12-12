@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ path('main_home')}}">Accueil
+                        <span class="visually-hidden">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Mes covoiturages</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Mes inscriptions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Mon profil</a>
+                </li>
+                <li class="nav-item offset-left">
+                    <a class="nav-link" href="{{ path('membre_list') }}">Membres</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('evenement_list') }}">Evènements</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Articles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{path('lieu_create')}}">Lieux</a>
+                </li>
+
+            </ul>
+            <ul class="navbar-nav d-flex">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Espace admin</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{{path('admin_general')}}">Général</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Affectation des droits</a>
+                </div>
+            </li>
+            </ul>
+            <form class="d-flex">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+{#TODO: Menu burger en mode responsive#}
+{#<div class="collapse" id="navbarToggleExternalContent">#}
+{#    <div class="bg-dark p-4">#}
+{#        <h5 class="text-white h4">Collapsed content</h5>#}
+{#        <span class="text-muted">Toggleable via the navbar brand.</span>#}
+{#    </div>#}
+{#</div>#}
+{#<nav class="navbar navbar-dark bg-dark">#}
+{#    <div class="container-fluid">#}
+{#        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">#}
+{#            <span class="navbar-toggler-icon"></span>#}
+{#        </button>#}
+{#    </div>#}
+{#</nav>#}
