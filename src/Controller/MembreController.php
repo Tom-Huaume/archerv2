@@ -9,6 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MembreController extends AbstractController
@@ -17,7 +19,8 @@ class MembreController extends AbstractController
     public function list(
         Request $request,
         EntityManagerInterface $entityManager,
-        MembreRepository $membreRepository
+        MembreRepository $membreRepository,
+        UserPasswordHasherInterface $passwordHasher
     ): Response
     {
         //liste des lieux
@@ -31,7 +34,7 @@ class MembreController extends AbstractController
         //traitement du formulaire
         if($membreForm->isSubmitted() && $membreForm->isValid()){
 
-            $membre->setPassword('Pa$$w0rd');
+            $membre->setPassword($passwordHasher->hashPassword($membre, 'aaaaaa'));
             $membre->setStatutLicence(1);
             $entityManager->persist($membre);
             $entityManager->flush();
@@ -49,7 +52,7 @@ class MembreController extends AbstractController
     #[Route('/admin/membre/delete/{id}', name:'membre_delete')]
     public function delete(
         Membre $membre,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ): Response
     {
         $entityManager->remove($membre);

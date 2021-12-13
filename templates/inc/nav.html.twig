@@ -16,6 +16,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Mon profil</a>
                 </li>
+
                 <li class="nav-item offset-left">
                     <a class="nav-link" href="{{ path('membre_list') }}">Membres</a>
                 </li>
@@ -29,6 +30,7 @@
                     <a class="nav-link" href="{{path('lieu_create')}}">Lieux</a>
                 </li>
 
+
             </ul>
             <ul class="navbar-nav d-flex">
             <li class="nav-item dropdown">
@@ -40,9 +42,9 @@
                 </div>
             </li>
             </ul>
-            <form class="d-flex">
-                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Login</button>
-            </form>
+
+                <a href="{{ path('app_login') }}"><button class="btn btn-secondary my-2 my-sm-0">Login</button></a>
+
         </div>
     </div>
 </nav>

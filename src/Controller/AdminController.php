@@ -13,9 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractController
 {
-    /**
-     * @Route("/admin/general", name="admin_general")
-     */
+
+    #[Route('/admin/general', name:'admin_general')]
     public function general(
         ArmeRepository $armeRepository,
         LieuRepository $lieuRepository,
