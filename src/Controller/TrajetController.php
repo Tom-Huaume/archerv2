@@ -21,14 +21,14 @@ class TrajetController extends AbstractController
     ): Response
     {
         //Récupérer user, trajet et évènement
-        //todo : Modifier user par défaut
-        $user = $membreRepository->findOneBy(array('id' => 1));
+        $userId = $this->getUser()->getId();
+        $membre = $membreRepository->findOneBy(array('id' => $userId));
         $trajet = $trajetRepository->findOneBy(array('id'=> $id));
         $evenementId = $trajet->getEvenement()->getId();
 
         //
         $reservationTrajet = new ReservationTrajet();
-        $reservationTrajet->setMembre($user);
+        $reservationTrajet->setMembre($membre);
         $reservationTrajet->setTrajet($trajet);
         $reservationTrajet->setValidation(0);
         $reservationTrajet->setDateHeureReservation(new \DateTime('now'));
@@ -39,5 +39,27 @@ class TrajetController extends AbstractController
 
         $this->addFlash('success', 'Demande de réservation envoyée' );
         return $this->redirectToRoute('evenement_detail', ['id' => $evenementId]);
+    }
+
+    #[Route('/user/trajet/demandes/{id}', name: 'trajet_demandes')]
+    public function validation(
+        int $id,
+        MembreRepository $membreRepository,
+        TrajetRepository $trajetRepository,
+        EntityManagerInterface $entityManager,
+    ): Response
+    {
+        $userId = $this->getUser()->getId();
+        $trajet = $trajetRepository->findOneBy(array('id'=> $id));
+        $evenementId = $trajet->getEvenement()->getId();
+
+        if($trajet->getOrganisateur()->getId() != $userId){
+            $this->addFlash('danger', 'Impossible ! vous n\'êtes pas l\'organisateur' );
+            return $this->redirectToRoute('evenement_detail', ['id' => $evenementId]);
+        }
+
+        return $this->render('etape/demandesTrajet.html.twig', [
+            'id' => $trajet->getId(),
+        ]);
     }
 }

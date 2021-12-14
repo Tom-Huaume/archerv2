@@ -156,7 +156,11 @@
                         </div>
                         <div class="col d-md-flex justify-content-md-end">
                             <div>
+                                {% if app.user.id == t.organisateur.id %}
+                                <a href="{{ path('trajet_demandes', {'id' : t.id}) }}"><button type="button" class="btn btn-secondary m-1">Valider les réservations</button></a>
+                                {% else %}
                                 <a href="{{ path('trajet_reservation', {'id' : t.id}) }}"><button type="button" class="btn btn-secondary m-1">Réserver</button></a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

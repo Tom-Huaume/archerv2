@@ -26,7 +26,8 @@ class EtapeController extends AbstractController
     {
         //todo : modifier le user par défaut
         //Récupérer user, étape et évenement concernés
-        $user = $membreRepository->findOneBy(array('id' => 1));
+        $userId = $this->getUser()->getId();
+        $membre = $membreRepository->findOneBy(array('id' => $userId));
         $etape = $etapeRepository->findOneBy(array('id' => $id));
         $evenementId = $etape->getEvenement()->getId();
 
@@ -43,7 +44,7 @@ class EtapeController extends AbstractController
             $inscription = new InscriptionEtape();
             $inscription->setCommentaire($commentaire);
             $inscription->setEtape($etape);
-            $inscription->setMembre($user);
+            $inscription->setMembre($membre);
             $inscription->setValidation(0);
             $inscription->setDateHeureInscription(new \DateTime('now'));
 

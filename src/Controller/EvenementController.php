@@ -178,9 +178,9 @@ class EvenementController extends AbstractController
             //Ajouter champs manquants
             $trajet->setDateHeureCreation(new \DateTime());
             $trajet->setEvenement($evenement);
-            // todo: modifier l'organisateur par défaut
-            $organisateurProvisoire = $membreRepository->findOneBy(array('id' => 1));
-            $trajet->setOrganisateur($organisateurProvisoire);
+            $userId = $this->getUser()->getId();
+            $membre = $membreRepository->findOneBy(array('id' => $userId));
+            $trajet->setOrganisateur($membre);
 
             //Récupérer adresse du club
             $adresseClub = $lieuRepository->findOneBy(array('club' => 1));

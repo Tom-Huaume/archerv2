@@ -14,7 +14,8 @@
                 <tr>
                     <td>{{ e.nom }}</td>
                     <td>Début le {{ e.dateHeureDebut | date('d/m/Y', 'Europe/Paris') }}</td>
-                    <td>{{ e.arme.designation }}</td>
+
+                    <td>{{ e.arme ? e.arme.designation }}</td>
                 </tr>
                 {% for i in e.inscriptionEtapes %}
                 <tr>
