@@ -50,12 +50,17 @@ class MembreController extends AbstractController
         ]);
     }
 
-    #[Route('/gestion/membre/delete/{id}', name:'membre_delete')]
+    #[Route('/gestion/membre/supprimer/{id}', name:'membre_delete')]
     public function delete(
         Membre $membre,
         EntityManagerInterface $entityManager
     ): Response
     {
+        if($membre->getRoles() == array("ROLE_ADMIN") || $membre->getRoles() == array("ROLE_SECRETAIRE")){
+            $this->addFlash('danger', 'Impossible de supprimer un membre secrétaire ou admin');
+            return $this->redirectToRoute('membre_list');
+        }
+
         if(!$membre->getTrajets()->isEmpty()){
             $this->addFlash('danger', 'Impossible ! Ce membre a créé des trajets');
             return $this->redirectToRoute('membre_list');
@@ -116,6 +121,12 @@ class MembreController extends AbstractController
 
         if($membreForm->isSubmitted() && $membreForm->isValid()){
 
+            //redirection si le membre est admin ou secrétaire
+            if($membre->getRoles() == array("ROLE_ADMIN") || $membre->getRoles() == array("ROLE_SECRETAIRE")){
+                $this->addFlash('danger', 'Impossible de modifier un membre secrétaire ou admin');
+                return $this->redirectToRoute('membre_list');
+            }
+
             //MAJ BDD
             $entityManager->persist($membre);
             $entityManager->flush();
@@ -126,6 +137,7 @@ class MembreController extends AbstractController
 
 
         return $this->render('/admin/membre/profil.html.twig', [
+            'membre' => $membre,
             'membreForm' => $membreForm->createView()
         ]);
     }

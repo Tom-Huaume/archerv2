@@ -9,21 +9,36 @@
 
     <h2>Liste des évènements</h2>
 
-    <a href="{{ path('evenement_create') }}">
-        <button type="button" class="btn btn-success btn-lg btn-event pastel">Créer un évènement</button>
-    </a>
 
-    {% for e in evenements %}
-        <a href="{{ path('evenement_detail', {'id' : e.id}) }}" style="text-decoration: none;">
-            <div class="card text-white bg-primary mb-3 item-event">
-                <div class="card-header">{{ e.lieuDestination.nom }}</div>
-                <div class="card-body">
-                    <h4 class="card-title">{{ e.nom }}</h4>
-                    <p class="card-text">{{ e.description | nl2br }}</p>
-                </div>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                {% if is_granted("ROLE_SECRETAIRE") %}
+                    <a href="{{ path('evenement_create') }}">
+                        <button type="button" class="btn btn-success btn-lg my-3 btn-event pastel">Créer un évènement</button>
+                    </a>
+                {% endif %}
+                {% for e in evenements %}
+                    <a href="{{ path('evenement_detail', {'id' : e.id}) }}">
+                        <div class="card text-white bg-primary mb-3">
+                            <div class="card-header" style="color: white;">{{ e.lieuDestination.nom }}</div>
+                            <div class="card-body">
+                                <h4 class="card-title" style="color: white;">{{ e.nom }}</h4>
+                                <p class="card-text" style="color: white;">{{ e.description | nl2br }}</p>
+                                <div class="col d-md-flex justify-content-md-end">
+                                    {% if is_granted("ROLE_SECRETAIRE") %}
+                                        <a href="{{ path('etapes_validation', {'id' : e.id}) }} "><button type="button" class="btn btn-dark m-1 btn-admin">Gérer les inscriptions</button></a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
             </div>
-        </a>
-    {% endfor %}
+            <div class="col-md-2"></div>
+
+        </div>
+
 
 </div>
 {% endblock %}

@@ -38,7 +38,7 @@ class EvenementController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/evenement/create', name: 'evenement_create')]
+    #[Route('/gestion/evenement/create', name: 'evenement_create')]
     public function create(
         Request $request,
         EntityManagerInterface $entityManager

@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TrajetController extends AbstractController
 {
-    #[Route('/trajet/reservation/{id}', name: 'trajet_reservation')]
+    #[Route('/user/trajet/reservation/{id}', name: 'trajet_reservation')]
     public function reservation(
         int $id,
         MembreRepository $membreRepository,

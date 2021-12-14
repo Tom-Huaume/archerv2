@@ -13,11 +13,17 @@
             {{ form_start(membreForm) }}
             {{ form_widget(membreForm) }}
             <br>
+            {% if membre.roles != ["ROLE_USER"] %}
+                <a href="{{ path('membre_list') }}">
+                    <span class="btn btn-primary">Retour</span>
+                </a>
+            {% else %}
             <a href="{{ path('membre_list') }}">
                 <span class="btn btn-primary">Annuler</span>
             </a>
             <button class="btn btn-success">Modifier</button>
             {{ form_end(membreForm) }}
+            {% endif %}
 
         </div>
     </div>

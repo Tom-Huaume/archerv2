@@ -41,13 +41,15 @@
                         <td>{{ m.categorieAge }} </td>
                         <td>{{ m.typeLicence }} </td>
                         <td>
-                            <a class="btn btn-sm btn-danger small-btn trash-icon" href="{{ path('membre_delete', {'id' : m.id}) }}">
-                                <i class="bi bi-trash"></i>
-                            </a>
                             {% if m.statutLicence == 1 %}
                                 <a class="btn btn-sm btn-success small-btn" href="{{ path('membre_activate', {'id' : m.id}) }}">Actif</a>
                             {% else %}
                                 <a class="btn btn-sm btn-warning small-btn" href="{{ path('membre_activate', {'id' : m.id}) }}">Inactif</a>
+                            {% endif %}
+                            {% if m.roles == ["ROLE_USER"] %}
+                                <a class="btn btn-sm btn-danger small-btn trash-icon" href="{{ path('membre_delete', {'id' : m.id}) }}">
+                                    <i class="bi bi-trash"></i>
+                                </a>
                             {% endif %}
                         </td>
                     </tr>

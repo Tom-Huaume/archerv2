@@ -2,31 +2,31 @@
     <div class="container-fluid">
         <div class="collapse navbar-collapse" id="navbarColor01">
 
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ path('main_home')}}">Accueil
-                            <span class="visually-hidden">(current)</span>
-                        </a>
-                    </li>
-                    {% if app.user %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Mes covoiturages</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Mes inscriptions</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Mon profil</a>
-                    </li>
-                    {% endif %}
-                </ul>
-
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ path('main_home')}}">Accueil
+                        <span class="visually-hidden">(current)</span>
+                    </a>
+                </li>
+                {% if app.user %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('evenement_list') }}">Evènements</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Covoiturage</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Inscriptions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Profil</a>
+                </li>
+                {% endif %}
+            </ul>
+            {% if is_granted("ROLE_SECRETAIRE") %}
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('membre_list') }}">Membres</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('evenement_list') }}">Evènements</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Articles</a>
@@ -35,7 +35,8 @@
                         <a class="nav-link" href="{{path('lieu_create')}}">Lieux</a>
                     </li>
                 </ul>
-
+            {% endif %}
+            {% if is_granted("ROLE_ADMIN") %}
                 <ul class="navbar-nav d-flex">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Espace admin</a>
@@ -46,15 +47,16 @@
                         </div>
                     </li>
                 </ul>
-                {% if app.user %}
-                    <a class="right-btn" href="{{ path('app_logout') }}">
-                        <button class="btn btn-secondary my-2 my-sm-0 btn-contrast-primary">Déconnexion ({{ app.user.prenom }})</button>
-                    </a>
-                {% else %}
-                    <a class="right-btn" href="{{ path('app_login') }}">
-                        <button class="btn btn-secondary my-2 my-sm-0 btn-contrast-primary">Connexion</button>
-                    </a>
-                {% endif %}
+            {% endif %}
+            {% if app.user %}
+                <a class="right-btn" href="{{ path('app_logout') }}">
+                    <button class="btn btn-secondary my-2 my-sm-0 btn-contrast-primary">Déconnexion ({{ app.user.prenom }})</button>
+                </a>
+            {% else %}
+                <a class="right-btn" href="{{ path('app_login') }}">
+                    <button class="btn btn-secondary my-2 my-sm-0 btn-contrast-primary">Connexion</button>
+                </a>
+            {% endif %}
 
         </div>
     </div>

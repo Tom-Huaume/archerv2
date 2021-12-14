@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class LieuController extends AbstractController
 {
-    #[Route('/admin/lieux', name: 'lieu_create')]
+    #[Route('/gestion/lieux', name: 'lieu_create')]
     public function create(
         Request $request,
         LieuRepository $lieuRepository,
@@ -47,7 +47,7 @@ class LieuController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/lieu/delete/{id}', name: 'lieu_delete')]
+    #[Route('/gestion/lieu/delete/{id}', name: 'lieu_delete')]
     public function delete(
         Lieu $lieu,
         EntityManagerInterface $entityManager
