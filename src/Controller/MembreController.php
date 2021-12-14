@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MembreController extends AbstractController
 {
-    #[Route('/admin/membre', name: 'membre_list')]
+    #[Route('/gestion/membre', name: 'membre_list')]
     public function list(
         Request $request,
         EntityManagerInterface $entityManager,
@@ -36,6 +36,7 @@ class MembreController extends AbstractController
 
             $membre->setPassword($passwordHasher->hashPassword($membre, 'aaaaaa'));
             $membre->setStatutLicence(1);
+            $membre->setRoles(array('ROLE_USER'));
             $entityManager->persist($membre);
             $entityManager->flush();
 
@@ -49,12 +50,27 @@ class MembreController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/membre/delete/{id}', name:'membre_delete')]
+    #[Route('/gestion/membre/delete/{id}', name:'membre_delete')]
     public function delete(
         Membre $membre,
-        EntityManagerInterface $entityManager,
+        EntityManagerInterface $entityManager
     ): Response
     {
+        if(!$membre->getTrajets()->isEmpty()){
+            $this->addFlash('danger', 'Impossible ! Ce membre a créé des trajets');
+            return $this->redirectToRoute('membre_list');
+        }
+
+        if(!$membre->getReservationTrajets()->isEmpty()){
+            $this->addFlash('danger', 'Impossible ! Ce membre a réservé des trajets');
+            return $this->redirectToRoute('membre_list');
+        }
+
+        if(!$membre->getInscriptionEtapes()->isEmpty()){
+            $this->addFlash('danger', 'Impossible ! Ce membre est inscrit a une étape');
+            return $this->redirectToRoute('membre_list');
+        }
+
         $entityManager->remove($membre);
         $entityManager->flush();
 
@@ -62,7 +78,7 @@ class MembreController extends AbstractController
         return $this->redirectToRoute('membre_list');
     }
 
-    #[Route('/admin/membre/activer/{id}', name:'membre_activate')]
+    #[Route('/gestion/membre/activer/{id}', name:'membre_activate')]
     public function activer(
         int $id,
         MembreRepository $membreRepository,
@@ -84,7 +100,7 @@ class MembreController extends AbstractController
         return $this->redirectToRoute('membre_list');
     }
 
-    #[Route('/admin/membre/modifier/{id}', name:'membre_update')]
+    #[Route('/gestion/membre/modifier/{id}', name:'membre_update')]
     public function modifier(
         int $id,
         MembreRepository $membreRepository,

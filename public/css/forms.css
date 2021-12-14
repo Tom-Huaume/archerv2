@@ -13,15 +13,6 @@
     /*opacity: 0.25;*/
 }
 
-.btn-contrast-primary{
-    background-color: #828D9D;
-    border-color: #828D9D;
-}
-.btn-contrast-primary:hover{
-    background-color: #657283;
-    border-color: #49586A;
-}
-
 /*.font-input{*/
 /*    font-size: 1.4rem;*/
 /*    color: rgb(38, 38, 39);*/

@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EtapeController extends AbstractController
 {
-    #[Route('/etape/inscription/{id}', name: 'etape_inscription')]
+    #[Route('/user/etape/inscription/{id}', name: 'etape_inscription')]
     public function inscription(
         int $id,
         Request $request,
@@ -56,13 +56,13 @@ class EtapeController extends AbstractController
 
         }
 
-        return $this->render('inscriptionEtape.html.twig', [
+        return $this->render('etape/inscriptionEtape.html.twig', [
             'evenementId' => $evenementId,
             'inscriptionEtapeForm'=>$inscriptionEtapeForm->createView()
         ]);
     }
 
-    #[Route('etapes/validation/{id}', name:'etapes_validation')]
+    #[Route('/gestion/etapes/validation/{id}', name:'etapes_validation')]
     public function validation(
         int $id,
         EvenementRepository $evenementRepository
@@ -71,7 +71,7 @@ class EtapeController extends AbstractController
         $evenement = $evenementRepository->findOneBy(array('id' => $id));
         $etapes = $evenement->getEtapes();
 
-        return $this->render('validationEtapes.html.twig', [
+        return $this->render('etape/validationEtapes.html.twig', [
             'evenement' => $evenement,
             'etapes' => $etapes,
 

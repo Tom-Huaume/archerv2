@@ -52,7 +52,7 @@ a{
     color: #CF5B38;
 }
 
-/*____Bouton admin____*/
+/*____Boutons____*/
 .btn-admin-wrapper{
     position: fixed;
     top: 50%;
@@ -61,15 +61,33 @@ a{
 }
 
 .btn-admin{
-    color: #DCF1ED;
     background-color: #CF5B38;
     border-color: #ab4b2e;
 }
 
 .btn-admin:hover{
-    color: #DCF1ED;
     background-color: #ab4b2e;
     border-color: #ab4b2e;
+}
+
+.btn-contrast-primary{
+    background-color: #828D9D;
+    border-color: #828D9D;
+}
+
+.btn-contrast-success{
+    background-color: #828D9D;
+    border-color: #828D9D;
+}
+
+.btn-contrast-success:hover{
+    background-color: #657283;
+    border-color: #49586A;
+}
+
+.btn-contrast-primary:hover{
+    background-color: #657283;
+    border-color: #49586A;
 }
 
 
@@ -135,11 +153,6 @@ a{
 /*____liens____*/
 .disable-link{
     text-decoration: none;
-}
-
-/*____navigation____*/
-.offset-left{
-    padding-left: 5rem;
 }
 
 /*____footer____*/
@@ -220,3 +233,4 @@ a{
 .flash-info{
     color: royalblue;
 }
+

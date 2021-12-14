@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArmeController extends AbstractController
 {
 
-    #[Route('/arme/admin/delete/{id}', name: 'arme_delete')]
+    #[Route('/admin/arme/delete/{id}', name: 'arme_delete')]
     public function delete(Arme $arme, EntityManagerInterface $entityManager): Response
     {
         //Supprime l'arme

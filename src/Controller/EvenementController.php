@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EvenementController extends AbstractController
 {
-    #[Route('/evenement/liste', name: 'evenement_list')]
+    #[Route('/user/evenement/liste', name: 'evenement_list')]
     public function list(
         EvenementRepository $evenementRepository
     ): Response
@@ -133,7 +133,7 @@ class EvenementController extends AbstractController
     }
 
 
-    #[Route('/evenement/{id}', name: 'evenement_detail')]
+    #[Route('/user/evenement/{id}', name: 'evenement_detail')]
     public function detail(
         int $id,
         EvenementRepository $evenementRepository,
