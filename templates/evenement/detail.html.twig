@@ -35,7 +35,7 @@
                 <div class="col-md-4 d-md-flex justify-content-md-end">
                     <div>
                         {% if is_granted("ROLE_SECRETAIRE") %}
-                        <a href="{{ path('etapes_validation', {'id' : evenement.id}) }}"><button type="button" class="btn btn-dark m-1 btn-admin">Gérer les inscriptions</button></a>
+                        <a href="{{ path('etapes_liste_inscrits', {'id' : evenement.id}) }}"><button type="button" class="btn btn-dark m-1 btn-admin">Gérer les inscriptions</button></a>
                         {% endif %}
                     </div>
                 </div>
@@ -64,7 +64,18 @@
                         </div>
                         <div class="col d-md-flex justify-content-md-end">
                             <div>
-                                <a href="{{ path('etape_inscription', {'id' : e.id}) }}"><button type="button" class="btn btn-dark m-1 btn-contrast-primary">S'inscrire</button></a>
+                                {# Constituer la liste des membres inscrits à cette étape #}
+                                {% set membresEtape = [] %}
+                                {% for i in e.inscriptionEtapes %}
+                                    {% set membresEtape = membresEtape|merge([i.membre]) %}
+                                {% endfor %}
+
+                                {# Vérifier que le user fait partie de la liste des inscrits #}
+                                {% if app.user in membresEtape %}
+                                    <a href="{{ path('etape_desistement', {'id' : e.id}) }}"><button type="button" class="btn m-1 btn-success">Se désister</button></a>
+                                {% else %}
+                                    <a href="{{ path('etape_inscription', {'id' : e.id}) }}"><button type="button" class="btn btn-dark m-1 btn-contrast-primary">S'inscrire</button></a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

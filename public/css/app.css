@@ -204,6 +204,12 @@ a{
     margin-top: 2rem;
 }
 
+/*____supprimer marges tableaux____*/
+.delete-m-p {
+    margin: 0;
+    padding: 0;
+}
+
 /*____Messages flash____*/
 
 .flash{

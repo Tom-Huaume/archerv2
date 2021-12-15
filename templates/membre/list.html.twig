@@ -28,6 +28,7 @@
             </thead>
             <div>
                 <tbody>
+                {# todo: réduire la taille de la police pour pouvoir tout afficher #}
                 {% for m in membres %}
                     <tr data-href="{{ path('membre_update', {'id' : m.id}) }}">
                         <td>{{ m.nom }}</td>

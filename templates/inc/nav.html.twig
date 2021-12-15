@@ -50,7 +50,7 @@
             {% endif %}
             {% if app.user %}
                 <a class="right-btn" href="{{ path('app_logout') }}">
-                    <button class="btn btn-secondary my-2 my-sm-0 btn-contrast-primary">Déconnexion ({{ app.user.prenom }})</button>
+                    <button class="btn btn-success my-2 my-sm-0">Déconnexion ({{ app.user.prenom }})</button>
                 </a>
             {% else %}
                 <a class="right-btn" href="{{ path('app_login') }}">

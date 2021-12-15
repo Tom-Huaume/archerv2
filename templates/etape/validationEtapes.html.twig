@@ -7,33 +7,97 @@
 {% block body %}
     <div class="container">
 
-        <h2 class="event-title">{{ evenement.nom }}</h2>
+        <h2 class="event-title text-primary">{{ evenement.nom }}</h2>
+        <h4 class="d-flex justify-content-center">Validation des demandes d'inscriptions</h4>
 
         {% for e in etapes %}
-            <table>
+            <table class="table my-5">
+                <thead>
+                    <tr class="delete-m-p">
+                        <th class="delete-m-p" colspan="4">
+                            <h4>{{ e.nom }} le {{ e.dateHeureDebut | date('d/m/Y', 'Europe/Paris') }} à {{ e.dateHeureDebut | date('H:i', 'Europe/Paris') }} {{ e.arme ? "("~e.arme.designation~")" }}</h4>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
                 <tr>
-                    <td>{{ e.nom }}</td>
-                    <td>Début le {{ e.dateHeureDebut | date('d/m/Y', 'Europe/Paris') }}</td>
-
-                    <td>{{ e.arme ? e.arme.designation }}</td>
+                    <th></th>
+                    <th></th>
+                    <th>Date demande</th>
+                    <th>E-mail</th>
+                    <th>Tél</th>
+                    <th>Lat</th>
+                    <th>Catégorie</th>
+                    <th>Type licence</th>
+                    <th>
+                        {% if e.nbInscriptionsMax is not null %}
+                            {{ e.nbInscriptionsMax ? e.nbInscriptionsMax~" places" : "0 place" }}
+                        {% endif %}
+                    </th>
                 </tr>
-                {% for i in e.inscriptionEtapes %}
-                <tr>
-                    <td>{{ i.membre.nom }}</td>
-                    <td>{{ i.membre.prenom }}</td>
-                    <td>{{ i.membre.email }}</td>
-                </tr>
+                    {% for i in e.inscriptionEtapes %}
+                        <tr>
+                            <td class="delete-m-p" style="max-width: 30rem;">
+                                {% if i.commentaire %}
 
-                {% endfor %}
+                                    <div class="accordion accordion-flush" id="commentaire-{{ i.membre.id }}">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header btn btn-lg" id="flush-headingOne" style="margin: 0; padding: 0;">
+                                                <a href="#"
+                                                   class="collapsed"
+                                                   type="button"
+                                                   data-bs-toggle="collapse"
+                                                   data-bs-target="#flush-collapseOne-{{ i.membre.id }}"
+                                                   aria-expanded="false"
+                                                   aria-controls="flush-collapseOne-{{ i.membre.id }}"
+                                                   style="margin: 0; padding: 0;">
+                                                    <small><i class="bi bi-chat-dots-fill"></i></small>
+                                                </a>
+                                            </h2>
+                                            <div id="flush-collapseOne-{{ i.membre.id }}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                                <div class="accordion-body">{{ i.commentaire }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                {% endif %}
+                            </td>
+                            <th scope="row">{{ i.membre.prenom }} {{ i.membre.nom | upper }} </th>
+                            <td>{{ i.dateHeureInscription | date('d/m/Y', 'Europe/Paris') }} à {{ i.dateHeureInscription | date('H:i', 'Europe/Paris') }}</td>
+                            <td>{{ i.membre.email }}</td>
+                            <td>{{ i.membre.telMobile }}</td>
+                            <td>{{ i.membre.lateralite }}</td>
+                            <td>{{ i.membre.categorieAge }}</td>
+                            <td>{{ i.membre.typeLicence }}</td>
+                            <td>
+                                {% if i.validation == 0 %}
+                                    <a href="{{ path('etapes_validation', {'id': i.id}) }}">
+                                        <button class="btn btn-secondary">
+                                            Valider
+                                        </button>
 
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('etapes_validation', {'id': i.id}) }}" style="text-decoration: none;">
+                                        <button class="btn btn-success">
+                                            Annuler
+                                        </button>
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         {% endfor %}
 
         <a href="{{ path('evenement_detail', {'id' : evenement.id}) }}">
-            <button>Retour</button>
+            <button class="btn btn-lg btn-primary mt-4">Retour</button>
         </a>
 
     </div>
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

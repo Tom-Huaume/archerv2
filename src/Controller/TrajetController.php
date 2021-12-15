@@ -58,6 +58,9 @@ class TrajetController extends AbstractController
             return $this->redirectToRoute('evenement_detail', ['id' => $evenementId]);
         }
 
+        //todo: consommer les places disponibles
+        //todo: afficher les passagers validés
+
         return $this->render('etape/demandesTrajet.html.twig', [
             'id' => $trajet->getId(),
         ]);
