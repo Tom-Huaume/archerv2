@@ -105,6 +105,28 @@ class MembreController extends AbstractController
         return $this->redirectToRoute('membre_list');
     }
 
+    #[Route('/gestion/membre/activer2/{id}', name:'membre_activate2', methods: ["PUT"])]
+    public function activer2(
+        int $id,
+        MembreRepository $membreRepository,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        $membre = $membreRepository->findOneBy(array('id' => $id));
+
+        if($membre->getStatutLicence() == false){
+            $membre->setStatutLicence(true);
+        } else {
+            $membre->setStatutLicence(false);
+        }
+
+        $entityManager->persist($membre);
+        $entityManager->flush();
+
+        $this->addFlash('info', 'Statut modifié');
+        return $this->redirectToRoute('membre_list');
+    }
+
     #[Route('/gestion/membre/modifier/{id}', name:'membre_update')]
     public function modifier(
         int $id,

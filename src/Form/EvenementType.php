@@ -59,6 +59,16 @@ class EvenementType extends AbstractType
                 ]
             ])
 
+            ->add('dateHeureFin', DateTimeType::class, [
+                'mapped' => false,
+                'label' => 'Date et heure de fin de l\'évènement',
+                'html5' => true,
+                'widget' => 'single_text',
+                'attr'=>[
+                    'class'=>'font-input',
+                ]
+            ])
+
             ->add('dateHeureLimiteInscription', DateTimeType::class, [
                 'mapped' => false,
                 'html5' => true,

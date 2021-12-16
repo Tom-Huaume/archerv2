@@ -58,6 +58,7 @@ class EvenementController extends AbstractController
             $nom = $evenementForm["nom"]->getData();
             $description = $evenementForm["description"]->getData();
             $dateHeureDebut = $evenementForm["dateHeureDebut"]->getData();
+            $dateHeureFin = $evenementForm["dateHeureFin"]->getData();
             $dateHeureLimiteInscription = $evenementForm["dateHeureLimiteInscription"]->getData();
             $nbInscriptionsMax = $evenementForm["nbInscriptionsMax"]->getData();
             $tarif = $evenementForm["tarif"]->getData();
@@ -108,6 +109,7 @@ class EvenementController extends AbstractController
             $evenement->setNom($nom);
             $evenement->setDescription($description);
             $evenement->setDateHeureDebut($dateHeureDebut);
+            $evenement->setDateHeureFin($dateHeureFin);
             $evenement->setDateHeureLimiteInscription($dateHeureLimiteInscription);
             $evenement->setNbInscriptionsMax($nbInscriptionsMax);
             $evenement->setTarif($tarif);

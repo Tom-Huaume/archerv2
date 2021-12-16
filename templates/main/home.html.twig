@@ -4,76 +4,26 @@
     {{ parent() }} | Accueil
 {% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" integrity="sha256-16PDMvytZTH9heHu9KBPjzrFTaoner60bnABykjNiM0=" crossorigin="anonymous">
+{% endblock %}
+
 {% block body %}
+
     <div class="container">
         <h2>Evènements à venir</h2>
 
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div id="calendrier"></div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
 
-        {# ----Tableau des évènements----  #}
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th scope="col">Lundi</th>
-                <th scope="col">Mardi</th>
-                <th scope="col">Mercredi</th>
-                <th scope="col">Jeudi</th>
-                <th scope="col">Vendredi</th>
-                <th scope="col">Samedi</th>
-                <th scope="col">Dimanche</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% set nbDay = 0 %}
-            {% for i in 0..5 %}
-                <tr>
-                    {% for i in 0..6 %}
-                        {% set nbDay = nbDay + 1 %}
-                        <td>
-                            {{ nbDay }}
-                        </td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
 
         <br><br>
 
-        {% for e in evenements %}
-            <a href="#" style="text-decoration: none;">
-                <div class="card text-white bg-primary mb-3" style="max-width: 90rem;">
-                    <div class="card-header">{{ e.lieuDestination.nom }}</div>
-                    <div class="card-body">
-                        <h4 class="card-title">{{ e.nom }}</h4>
-                        <p class="card-text">{{ e.description | nl2br }}</p>
-                    </div>
-                </div>
-            </a>
-        {% endfor %}
-
-        {% for e in evenements %}
-            <a href="#" style="text-decoration: none;">
-                <div class="card text-white bg-success mb-3" style="max-width: 90rem;">
-                    <div class="card-header">{{ e.lieuDestination.nom }}</div>
-                    <div class="card-body">
-                        <h4 class="card-title">{{ e.nom }}</h4>
-                        <p class="card-text">{{ e.description | nl2br }}</p>
-                    </div>
-                </div>
-            </a>
-        {% endfor %}
-
-        {% for e in evenements %}
-            <a href="#" style="text-decoration: none;">
-                <div class="card border-success mb-3" style="max-width: 90rem;">
-                    <div class="card-header">{{ e.lieuDestination.nom }}</div>
-                    <div class="card-body">
-                        <h4 class="card-title">{{ e.nom }}</h4>
-                        <p class="card-text">{{ e.description | nl2br }}</p>
-                    </div>
-                </div>
-            </a>
-        {% endfor %}
 
         {% for e in evenements %}
             <a href="#" style="text-decoration: none;">
@@ -91,3 +41,29 @@
 
 {% endblock %}
 
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js" integrity="sha256-XOMgUu4lWKSn8CFoJoBoGd9Q/OET+xrfGYSo+AKpFhE=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.10.1/locales-all.min.js" integrity="sha256-GcByKJnun2NoPMzoBsuCb4O2MKiqJZLlHTw3PJeqSkI=" crossorigin="anonymous"></script>
+    <script>
+        window.onload = () => {
+            let calendarElt = document.querySelector("#calendrier")
+            let calendar = new FullCalendar.Calendar(calendarElt, {
+                initialView: 'dayGridMonth',
+                locale: 'fr',
+                timeZone: 'Europe/Paris',
+                headerToolbar: {
+                    start: 'prev,next today',
+                    center: 'title',
+                    end: 'dayGridMonth,timeGridWeek'
+                },
+                events: {{ dataEvents|raw }},
+                editable : false, //pouvoir bouger les évènements sur le planning
+                eventResizableFromStart: false, //pouvoir étendre les évènements sur le planning
+
+            })
+            calendar.render()
+        }
+    </script>
+
+    {{ parent() }}
+{% endblock %}

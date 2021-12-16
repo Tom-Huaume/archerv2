@@ -14,8 +14,30 @@ class MainController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstract
     {
         $evenements = $evenementRepository->findAll();
 
+        $concours = [];
+
+        foreach ($evenements as $e)
+        {
+            $concours[] = [
+                'id' => $e->getId(),
+                'start' => $e->getDateHeureDebut()->format('Y-m-d H:i:s'),
+                'end' => $e->getDateHeureFin()->format('Y-m-d H:i:s'),
+                'title' => $e->getNom(),
+                'description' => $e->getDescription(),
+                'backgroundColor' => '#2C3E50',
+                'borderColor' => '#2B3C4D',
+                'textColor' => '#FFFFFF',
+                //'allDay' => false,
+
+            ];
+        }
+
+        $dataEvents = json_encode($concours);
+
         return $this->render('main/home.html.twig', [
-            "evenements" => $evenements
+            "evenements" => $evenements,
+            "concours" => $concours,
+            "dataEvents" => $dataEvents,
         ]);
     }
 

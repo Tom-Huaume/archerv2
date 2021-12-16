@@ -63,6 +63,13 @@
                         <small id="emailHelp" class="form-text text-muted">{{ form_errors(evenementForm.dateHeureDebut) }}</small>
                     </div>
                 </div>
+                <div class="input-wrapper">
+                    <div class="form-group">
+                        <p class="mb-2 font-question">{{ form_label(evenementForm.dateHeureFin) }}</p>
+                        <p>{{ form_widget(evenementForm.dateHeureFin) }}</p>
+                        <small id="emailHelp" class="form-text text-muted">{{ form_errors(evenementForm.dateHeureFin) }}</small>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col">
                         <div class="input-wrapper">

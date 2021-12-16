@@ -80,6 +80,11 @@ class Evenement
      */
     private $etapes;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $dateHeureFin;
+
     public function __construct()
     {
         $this->trajets = new ArrayCollection();
@@ -267,6 +272,18 @@ class Evenement
                 $etape->setEvenement(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDateHeureFin(): ?\DateTimeInterface
+    {
+        return $this->dateHeureFin;
+    }
+
+    public function setDateHeureFin(\DateTimeInterface $dateHeureFin): self
+    {
+        $this->dateHeureFin = $dateHeureFin;
 
         return $this;
     }
