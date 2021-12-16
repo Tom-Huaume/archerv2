@@ -70,20 +70,24 @@
                             <td>{{ i.membre.categorieAge }}</td>
                             <td>{{ i.membre.typeLicence }}</td>
                             <td>
-                                {% if i.validation == 0 %}
-                                    <a href="{{ path('etapes_validation', {'id': i.id}) }}">
-                                        <button class="btn btn-secondary">
-                                            Valider
-                                        </button>
+{#                                {% if i.validation == 0 %}#}
+{#                                    <a href="{{ path('etapes_validation', {'id': i.id}) }}">#}
+{#                                        <button class="btn btn-secondary">#}
+{#                                            Valider#}
+{#                                        </button>#}
+{#                                    </a>#}
+{#                                {% else %}#}
+{#                                    <a href="{{ path('etapes_validation', {'id': i.id}) }}" style="text-decoration: none;">#}
+{#                                        <button class="btn btn-success">#}
+{#                                            Annuler#}
+{#                                        </button>#}
+{#                                    </a>#}
+{#                                {% endif %}#}
 
-                                    </a>
-                                {% else %}
-                                    <a href="{{ path('etapes_validation', {'id': i.id}) }}" style="text-decoration: none;">
-                                        <button class="btn btn-success">
-                                            Annuler
-                                        </button>
-                                    </a>
-                                {% endif %}
+                                <button data-id="{{ i.id }}" class="btn btnAction {{ i.validation ? "btn-success" : "btn-secondary"}}">
+                                    {{ i.validation ? "Annuler" : "Valider" }}
+                                </button>
+
                             </td>
                         </tr>
                     {% endfor %}
@@ -99,5 +103,20 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script>
+
+        let btns = document.querySelectorAll(".btnAction")
+        btns.forEach(btn => {
+            btn.addEventListener("click", function(){
+                let inscriptionId = this.dataset.id;
+                let url = '{{ path('etapes_confirmation', {'id' : 'inscriptionId'}) }}';
+                url = url.replace("inscriptionId", inscriptionId);
+                fetch(
+                    url
+                )
+            })
+        })
+
+    </script>
     {{ parent() }}
 {% endblock %}

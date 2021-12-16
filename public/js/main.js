@@ -65,3 +65,7 @@ selectElem.addEventListener('change', function() {
     }
 })
 
+//MAJ AJAX statut inscription
+// function switchStatus(id){
+//     alert("message 5");
+// }

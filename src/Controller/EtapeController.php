@@ -9,6 +9,7 @@ use App\Repository\EvenementRepository;
 use App\Repository\InscriptionEtapeRepository;
 use App\Repository\MembreRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\Void_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -128,6 +129,15 @@ class EtapeController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('etapes_liste_inscrits', ['id' => $evenementId]);
+    }
+
+    #[Route('/gestion/etapes/confirmation/{id}', name:'etapes_confirmation', methods: ["GET", "POST", "PUT"])]
+    public function confirmation(
+        int $id
+    ) : Response
+    {
+        file_put_contents('test.txt', $id);
+        return new Response();
     }
 
     #[Route('/gestion/inscription/desistement/{id}', name:'etape_desistement')]
