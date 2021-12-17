@@ -210,6 +210,13 @@ a{
     padding: 0;
 }
 
+/*____Home____*/
+.title-past{
+    margin-bottom: 3rem;
+    border-bottom: 0.1rem solid #a2a2ab;
+}
+
+
 /*____Messages flash____*/
 
 .flash{

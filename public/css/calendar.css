@@ -16,6 +16,27 @@
     display : none;
 }
 
+.fc-daygrid-day-frame{
+    -webkit-box-shadow:inset 0px 0px 0px 1px #ebebf1;
+    -moz-box-shadow:inset 0px 0px 0px 1px #ebebf1;
+}
+
+.fc-daygrid-dot-event{
+    background-color: #2C3E50;
+    border-color: #2B3C4D;
+    color: #FFFFFF;
+}
+
+.fc-event-title{
+    color: #FFFFFF;
+    font-size: 0.9em;
+    margin-left: 0.2rem;
+}
+
+.fc-daygrid-event-dot{
+    display: none;
+}
+
 @media screen and (max-width:767px) {
     .fc-header-toolbar {font-size: 60%;}
 
