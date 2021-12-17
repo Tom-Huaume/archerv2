@@ -1,0 +1,12 @@
+.fc-event{
+    cursor: pointer;
+}
+
+#calendrier{
+    margin: auto;
+}
+
+.fc td, .fc th {
+    border-style: none;
+}
+
