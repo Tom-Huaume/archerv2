@@ -86,12 +86,13 @@ class EtapeController extends AbstractController
         ]);
     }
 
-    #[Route('/gestion/etapes/validation/{id}', name:'etapes_validation')]
-    public function validation(
+    //todo: envoyer les confirmations par mail
+    #[Route('/gestion/etapes/confirmation/{id}', name:'etapes_confirmation', methods: ["GET", "PUT", "POST"])]
+    public function confirmation(
         int $id,
         InscriptionEtapeRepository $inscriptionEtapeRepository,
         EntityManagerInterface $entityManager
-    ): Response
+    ) : Response
     {
         //récupérer inscription, étape et évènement associé
         $inscription = $inscriptionEtapeRepository->findOneBy(array('id' => $id));
@@ -104,9 +105,8 @@ class EtapeController extends AbstractController
         {
             //redirection si nbPlace = 0
             if($nbPlaces <= 0 && !is_null($nbPlaces)){
-                $this->addFlash('danger', 'Pas de place disponible !' );
-                return $this->redirectToRoute('etapes_liste_inscrits', ['id' => $evenementId]);
-            }
+                return new Response("Not enough places", 304);
+                }
             //inscrire et décrémenter nb places si non null
             $inscription->setValidation(1);
             if(!is_null($nbPlaces)){
@@ -128,16 +128,7 @@ class EtapeController extends AbstractController
         $entityManager->persist($inscription);
         $entityManager->flush();
 
-        return $this->redirectToRoute('etapes_liste_inscrits', ['id' => $evenementId]);
-    }
-
-    #[Route('/gestion/etapes/confirmation/{id}', name:'etapes_confirmation', methods: ["GET", "POST", "PUT"])]
-    public function confirmation(
-        int $id
-    ) : Response
-    {
-        file_put_contents('test.txt', $id);
-        return new Response();
+        return new Response("success", 200);
     }
 
     #[Route('/gestion/inscription/desistement/{id}', name:'etape_desistement')]
@@ -175,16 +166,49 @@ class EtapeController extends AbstractController
         return $this->redirectToRoute('evenement_detail', ['id' => $evenementId]);
     }
 
-
-//    #[Route('/gestion/etapes/confirmation/{id}', name:'etapes_confirmation')]
-//    public function confirm(
+//    #[Route('/gestion/etapes/validation/{id}', name:'etapes_validation')]
+//    public function validation(
 //        int $id,
 //        InscriptionEtapeRepository $inscriptionEtapeRepository,
 //        EntityManagerInterface $entityManager
 //    ): Response
 //    {
-//        //todo: demander si il faut envoyer les confirmations par mail
+//        //récupérer inscription, étape et évènement associé
+//        $inscription = $inscriptionEtapeRepository->findOneBy(array('id' => $id));
+//        $evenementId = $inscription->getEtape()->getEvenement()->getId();
+//        $etape = $inscription->getEtape();
+//        $nbPlaces = $etape->getNbInscriptionsMax();
+//
+//        //switch valeur validation (booléen)
+//        if($inscription->getValidation() == 0)
+//        {
+//            //redirection si nbPlace = 0
+//            if($nbPlaces <= 0 && !is_null($nbPlaces)){
+//                $this->addFlash('danger', 'Pas de place disponible !' );
+//                return $this->redirectToRoute('etapes_liste_inscrits', ['id' => $evenementId]);
+//            }
+//            //inscrire et décrémenter nb places si non null
+//            $inscription->setValidation(1);
+//            if(!is_null($nbPlaces)){
+//                $nbPlaces--;
+//                $etape->setNbInscriptionsMax($nbPlaces);
+//            }
+//
+//        } elseif ($inscription->getValidation() == 1)
+//        {
+//            //désinscrire et incrémenter nb places si non null
+//            $inscription->setValidation(0);
+//            if(!is_null($nbPlaces)) {
+//                $nbPlaces = $nbPlaces + 1;
+//                $etape->setNbInscriptionsMax($nbPlaces);
+//            }
+//        }
+//
+//        //Persister les données
+//        $entityManager->persist($inscription);
+//        $entityManager->flush();
 //
 //        return $this->redirectToRoute('etapes_liste_inscrits', ['id' => $evenementId]);
 //    }
+
 }

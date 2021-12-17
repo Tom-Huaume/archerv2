@@ -14,8 +14,11 @@
             <table class="table my-5">
                 <thead>
                     <tr class="delete-m-p">
-                        <th class="delete-m-p" colspan="4">
+                        <th class="delete-m-p" colspan="7">
                             <h4>{{ e.nom }} le {{ e.dateHeureDebut | date('d/m/Y', 'Europe/Paris') }} à {{ e.dateHeureDebut | date('H:i', 'Europe/Paris') }} {{ e.arme ? "("~e.arme.designation~")" }}</h4>
+                        </th>
+                        <th>
+                            <span id="msg-error-{{ e.id }}" style="color: #B0413E;"></span>
                         </th>
                     </tr>
                 </thead>
@@ -29,9 +32,12 @@
                     <th>Lat</th>
                     <th>Catégorie</th>
                     <th>Type licence</th>
-                    <th>
+                    <th id="placeCounter-{{ e.id }}" data-places="{{ e.nbInscriptionsMax|number_format }}">
                         {% if e.nbInscriptionsMax is not null %}
-                            {{ e.nbInscriptionsMax ? e.nbInscriptionsMax~" places" : "0 place" }}
+                            <div  style="text-align: center;">
+                                <div style="display: inline;">Places :</div> <div style="display: inline" id="counter-{{ e.id }}">{{e.nbInscriptionsMax }}</div>
+                            </div>
+
                         {% endif %}
                     </th>
                 </tr>
@@ -70,23 +76,8 @@
                             <td>{{ i.membre.categorieAge }}</td>
                             <td>{{ i.membre.typeLicence }}</td>
                             <td>
-{#                                {% if i.validation == 0 %}#}
-{#                                    <a href="{{ path('etapes_validation', {'id': i.id}) }}">#}
-{#                                        <button class="btn btn-secondary">#}
-{#                                            Valider#}
-{#                                        </button>#}
-{#                                    </a>#}
-{#                                {% else %}#}
-{#                                    <a href="{{ path('etapes_validation', {'id': i.id}) }}" style="text-decoration: none;">#}
-{#                                        <button class="btn btn-success">#}
-{#                                            Annuler#}
-{#                                        </button>#}
-{#                                    </a>#}
-{#                                {% endif %}#}
 
-                                <button data-id="{{ i.id }}" class="btn btnAction {{ i.validation ? "btn-success" : "btn-secondary"}}">
-                                    {{ i.validation ? "Annuler" : "Valider" }}
-                                </button>
+                                <button id="btn-activate-{{ i.id }}" data-id="{{ i.id }}" data-etape="{{ i.etape.id }}" class="btn btnAction {{ i.validation ? "btn-success" : "btn-secondary"}}">{{ i.validation ? "Annuler" : "Valider" }}</button>
 
                             </td>
                         </tr>
@@ -104,19 +95,70 @@
 
 {% block javascripts %}
     <script>
-
+        //déclaration des boutons
         let btns = document.querySelectorAll(".btnAction")
+        //let nbPlaces = parseInt(placeCounter.dataset.places);
+
         btns.forEach(btn => {
             btn.addEventListener("click", function(){
+
+                //déclaration des variables inscription et étape associée
                 let inscriptionId = this.dataset.id;
+                let etapeId = this.dataset.etape;
+                let errorMsg = document.getElementById('msg-error-'+etapeId);
                 let url = '{{ path('etapes_confirmation', {'id' : 'inscriptionId'}) }}';
                 url = url.replace("inscriptionId", inscriptionId);
-                fetch(
-                    url
-                )
+
+                //Reset du message d'erreur précédent si besoin
+                errorMsg.innerHTML = "";
+
+                fetch(url).then(function(response) {
+                    if(!response.ok){
+                        if(response.status === 304){
+                            errorMsg.innerHTML = "Pas de place disponible !";
+                            console.log("Pas de place disponible")
+                        }
+                        throw Error(response.statusText);
+                    }
+                    return response;
+                }).then(response => {
+                    let btnActivate = document.getElementById('btn-activate-'+inscriptionId);
+
+                    if(btnActivate.innerHTML === "Valider"){
+                        //renomme le bouton et modifie la mise en forme
+                        btnActivate.innerHTML = "Annuler";
+                        btnActivate.classList.remove('btn-secondary');
+                        btnActivate.classList.add('btn-success');
+                        //décrémente le nombre de places dans la div
+                        let nbPlaces = parseInt(document.getElementById("counter-"+etapeId).innerHTML);
+                        nbPlaces-=1;
+                        document.getElementById("counter-"+etapeId).innerHTML = nbPlaces.toString();
+                        console.log("Il reste "+nbPlaces+" places");
+
+
+                    }else{
+                        //renomme le bouton et modifie la mise en forme
+                        btnActivate.innerHTML = "Valider";
+                        btnActivate.classList.remove('btn-success');
+                        btnActivate.classList.add('btn-secondary');
+                        //incrémente le nombre de places dans la div
+                        let nbPlaces = parseInt(document.getElementById("counter-"+etapeId).innerHTML);
+                        nbPlaces+=1;
+                        document.getElementById("counter-"+etapeId).innerHTML = nbPlaces.toString();
+                        console.log("Il reste "+nbPlaces+" places");
+                    }
+
+                    //console.log(response.statusText);
+                    console.log("Mise à jour statut et nombre de place effectuée");
+                }).catch(function (error){
+                    console.log(response);
+                    console.log("la route est valide mais renvoie une erreur :");
+                    console.log(error);
+                })
             })
         })
 
     </script>
+
     {{ parent() }}
 {% endblock %}
