@@ -4,9 +4,25 @@
 
 #calendrier{
     margin: auto;
+    height: 50vh;
 }
 
+/* Enlève la bordure droite */
 .fc td, .fc th {
     border-style: none;
 }
 
+.fc-event-time{
+    display : none;
+}
+
+@media screen and (max-width:767px) {
+    .fc-header-toolbar {font-size: 60%;}
+
+    .fc-next-button {font-size: 60%;}
+    .fc-prev-button {font-size: 60%;}
+    .fc-today-button{display: none;}
+
+    .fc-dayGridMonth-button{display: none;}
+    .fc-timeGridWeek-button{display: none;}
+}

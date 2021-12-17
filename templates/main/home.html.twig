@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" integrity="sha256-16PDMvytZTH9heHu9KBPjzrFTaoner60bnABykjNiM0=" crossorigin="anonymous">
     <link href='https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ asset('css/calendar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/carousel.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -17,24 +18,71 @@
 
         <div id="calendrier" class="my-5"></div>
 
+        <div class="d-flex justify-content-center mt-5">
+            <h2 class="mt-5">Derniers évènements</h2>
+        </div>
 
+        {% for i in 0..10 %}
+        <div  class="mt-3 mb-5">
+            <div class="mb-3"
+                    style="border-bottom: 0.1rem solid #a2a2ab;">
 
-        {% for e in evenements %}
-            <a href="#" style="text-decoration: none;">
-                <div class="card text-white bg-secondary mb-3" style="max-width: 90rem;">
-                    <div class="card-header">{{ e.lieuDestination.nom }}</div>
-                    <div class="card-body">
-                        <h4 class="card-title">{{ e.nom }}</h4>
-                        <p class="card-text">{{ e.description | nl2br }}</p>
+                <h4>Menhir cup 2019</h4>
+            </div>
+            <div style="color: #424246">
+                <div class="row">
+                    <div class="leftdiv col-md-8">
+                        <p>Fugit ultrices quis? Mollit? Aute voluptates eos,
+                            sagittis habitasse. Nascetur minus cumque pharetra
+                            aliquet, arcu venenatis fugit fringilla, dictum, quasi
+                            commodi, eaque nihil. Quos, dictumst morbi harum culpa
+                            molestias rutrum eos culpa autem aliquip tristique quaerat,
+                            repellendus viverra! Consequuntur! Per occaecat diamlorem,
+                            et maxime! Class, potenti sit officia, sociosqu magni.
+                            Varius vero doloribus mattis, occaecati fugit mauris magnis
+                            magna donec, eum rutrum aliqua, earum netus nisl, ex, iure
+                            molestie placeat. Aliquet ducimus! Egestas laboris quibusdam
+                            explicabo adipiscing, reprehenderit! Nostra taciti semper quam
+                            ultricies, voluptas? Dolor! Dolorem! Totam vivamus porttitor
+                            hic, mi proin eveniet nascetur potenti, donec. Laboriosam atque,
+                            eaque duis.</p>
+                    </div>
+
+                    <div id="carouselExampleControls" class="col-md-4 carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="https://images.unsplash.com/photo-1538432091670-e6b79bd9bffa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://images.unsplash.com/photo-1613777372464-34e3f1b415bc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://images.unsplash.com/photo-1513907450027-b9926e160c2a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1469&q=80" class="d-block w-100" alt="...">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
                 </div>
-            </a>
+
+            </div>
+        </div>
         {% endfor %}
+
     </div>
 
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
+
+    //Injection et mise en forme du calendrier
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js" integrity="sha256-XOMgUu4lWKSn8CFoJoBoGd9Q/OET+xrfGYSo+AKpFhE=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.10.1/locales-all.min.js" integrity="sha256-GcByKJnun2NoPMzoBsuCb4O2MKiqJZLlHTw3PJeqSkI=" crossorigin="anonymous"></script>
     <script>
@@ -65,7 +113,8 @@
             })
             calendar.render()
         }
+
     </script>
 
-    {{ parent() }}
 {% endblock %}
+

@@ -1,0 +1,6 @@
+.carousel-inner{
+    height: 18rem;
+    overflow: hidden;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
