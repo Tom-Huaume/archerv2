@@ -12,7 +12,9 @@ class MainController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstract
      */
     public function home(EvenementRepository $evenementRepository): \Symfony\Component\HttpFoundation\Response
     {
-        $evenements = $evenementRepository->findAll();
+        //$evenements = $evenementRepository->findAll();
+        $dateDuJour = new \DateTime('now');
+        $evenements = $evenementRepository->findFutureEvents($dateDuJour);
 
         $concours = [];
 
@@ -28,7 +30,6 @@ class MainController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstract
                 'borderColor' => '#2B3C4D',
                 'textColor' => '#FFFFFF',
                 //'allDay' => false,
-
             ];
         }
 

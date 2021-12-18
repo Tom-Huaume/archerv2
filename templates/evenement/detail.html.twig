@@ -40,8 +40,9 @@
                     </div>
                 </div>
             </div>
+            <hr>
             <div class="row m-2">
-                <hr>
+
                 <p class="card-text">{{ evenement.description }}</p>
             </div>
 
@@ -157,7 +158,7 @@
                             {% endif %}
                             <p class="card-text">{{ t.lieuDepart.codePostal }}{{" "~ t.lieuDepart.ville }}</p>
                         </div>
-                        <div class="col">
+                        <div class="col" style="border-right:1px solid">
                             <p>Arrivée</p>
                             <p class="card-text">{{ t.evenement.lieuDestination.rue }}</p>
                             {% if t.evenement.lieuDestination.rue2 is not null %}
@@ -165,12 +166,31 @@
                             {% endif %}
                             <p class="card-text">{{ t.evenement.lieuDestination.codePostal }}{{" "~ t.evenement.lieuDestination.ville }}</p>
                         </div>
+                        <div class="col">
+                            <p>Passagers</p>
+                            {% if t.reservations is not null %}
+                                {% for r in t.reservations %}
+                            <p class="card-text">{{ r.membre.prenom ? r.membre.prenom~" " }}{{ r.membre.nom ? r.membre.nom }}</p>
+                                {% endfor %}
+                           {% endif %}
+                        </div>
                         <div class="col d-md-flex justify-content-md-end">
                             <div>
                                 {% if app.user.id == t.organisateur.id %}
                                 <a href="{{ path('trajet_demandes', {'id' : t.id}) }}"><button type="button" class="btn btn-secondary m-1">Valider les réservations</button></a>
                                 {% else %}
-                                <a href="{{ path('trajet_reservation', {'id' : t.id}) }}"><button type="button" class="btn btn-secondary m-1">Réserver</button></a>
+                                    {% set membresTrajet = [] %}
+                                    {% for r in t.reservations %}
+                                        {% set membresTrajet = membresTrajet|merge([r.membre]) %}
+                                    {% endfor %}
+
+                                    {% if app.user in membresTrajet %}
+{#                                        {{ path('trajet_reservation', {'id' : t.id}) }}#}
+                                        <button type="button" id="btn-resa-{{ t.id }}" data-id="{{ t.id }}" class="btn btnAction btn-success m-1">Annuler la réservation</button>
+                                    {% else %}
+{#                                        {{ path('trajet_reservation', {'id' : t.id}) }}#}
+                                        <button type="button" id="btn-resa-{{ t.id }}" data-id="{{ t.id }}" class="btn btnAction btn-secondary m-1">Réserver</button>
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         </div>
@@ -261,7 +281,7 @@
 
 
 
-            {#Mention si utilisation de l'icone voiture#}
+            {#todo:Mention si utilisation de l'icone voiture#}
 {#        <div style="margin-top: 5rem;">Icônes conçues par#}
 {#            <a  href="https://www.freepik.com"#}
 {#                title="Freepik"#}
@@ -280,5 +300,50 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script>
+        {# todo: message flash : demande de réservation envoyée #}
+        {# todo: archivage des données trajets tous les ans #}
+        let btns = document.querySelectorAll(".btnAction");
+        btns.forEach(btn => {
+            btn.addEventListener("click", function (){
+
+                //déclaration des variables inscription et étape associée
+                let trajetId = this.dataset.id;
+                let url = '{{ path('trajet_reservation', {'id' : 'trajetId'}) }}';
+                url = url.replace("trajetId", trajetId);
+
+                fetch(url).then(function(response){
+                    if(!response.ok){
+                        if(response.status === 401){
+                            console.log("vous n'êtes pas autorisé à réserver !");
+                            console.log(response);
+                        }
+                        throw Error(response.statusText);
+                    }
+                    return response;
+                }).then(response => {
+                    let btnReservation = document.getElementById('btn-resa-'+trajetId);
+
+                    if(btnReservation.innerHTML === "Annuler la réservation"){
+                        //renomme le bouton et modifie la mise en forme
+                        btnReservation.innerHTML = "Réserver";
+                        btnReservation.classList.remove('btn-success');
+                        btnReservation.classList.add('btn-secondary');
+                    }else{
+                        //renomme le bouton et modifie la mise en forme
+                        btnReservation.innerHTML = "Annuler la réservation";
+                        btnReservation.classList.remove('btn-secondary');
+                        btnReservation.classList.add('btn-success');
+                    }
+                }).catch(function (error){
+                    console.log(response);
+                    console.log("la route est valide mais renvoie une erreur :");
+                    console.log(error);
+                })
+
+            })
+        })
+
+    </script>
     {{ parent() }}
 {% endblock %}

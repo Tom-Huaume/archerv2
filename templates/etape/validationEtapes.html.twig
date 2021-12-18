@@ -90,13 +90,17 @@
             <button class="btn btn-lg btn-primary mt-4">Retour</button>
         </a>
 
+        <a href="#">
+            <button class="btn btn-lg btn-warning mt-4">Envoyer les confirmations</button>
+        </a>
+
     </div>
 {% endblock %}
 
 {% block javascripts %}
     <script>
         //déclaration des boutons
-        let btns = document.querySelectorAll(".btnAction")
+        let btns = document.querySelectorAll(".btnAction");
         //let nbPlaces = parseInt(placeCounter.dataset.places);
 
         btns.forEach(btn => {

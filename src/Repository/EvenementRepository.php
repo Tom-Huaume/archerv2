@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Evenement;
+use App\Entity\Lieu;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -18,6 +20,43 @@ class EvenementRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Evenement::class);
     }
+
+    public function findFutureEvents($dateDuJour){
+        $queryBuilder = $this->createQueryBuilder('e')
+            ->andWhere('e.dateHeureDebut > :dateDuJour')
+            ->setParameter('dateDuJour', $dateDuJour);
+
+        $query = $queryBuilder->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function findEventsFromDate(){
+        $sql = "SELECT * FROM evenement;";
+
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addEntityResult(Evenement::class, "e");
+        //on mappe le nom de chaque colonne en BDD
+        foreach ($this->getClassMetadata()->fieldMappings as $obj){
+            $rsm->addFieldResult('e', 'id','id');
+            $rsm->addJoinedEntityResult(Lieu::class, 'l', 'e', 'lieuDestination');
+            $rsm->addFieldResult('l', 'lieu_destination_id','id');
+            $rsm->addFieldResult('e', 'nom','nom');
+            $rsm->addFieldResult('e', 'description','description');
+            $rsm->addFieldResult('e', 'date_heure_debut','dateHeureDebut');
+            $rsm->addFieldResult('e', 'date_heure_limite_inscription','dateHeureLimiteInscription');
+            $rsm->addFieldResult('e', 'nb_inscriptions_max','nbInscriptionsMax');
+            $rsm->addFieldResult('e', 'etat','etat');
+            $rsm->addFieldResult('e', 'tarif','tarif');
+            $rsm->addFieldResult('e', 'photo','photo');
+            $rsm->addFieldResult('e', 'date_heure_creation','dateHeureCreation');
+            $rsm->addFieldResult('e', 'date_heure_fin','dateHeureFin');
+        }
+
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+        return $query->getResult();
+    }
+
 
     // /**
     //  * @return Evenement[] Returns an array of Evenement objects

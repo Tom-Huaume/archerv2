@@ -15,7 +15,7 @@
 
     <div class="container">
         <h2>Evènements à venir</h2>
-
+        {# todo: mose en forme du hover sur les éléments du calendrier #}
         <div id="calendrier" class="my-5"></div>
 
         <div class="d-flex justify-content-center mt-5">
@@ -110,9 +110,8 @@
                 editable : false, //pouvoir bouger les évènements sur le planning
                 eventResizableFromStart: false, //pouvoir étendre les évènements sur le planning
             })
-            calendar.render()
+            calendar.render();
         }
-
     </script>
 
 {% endblock %}
