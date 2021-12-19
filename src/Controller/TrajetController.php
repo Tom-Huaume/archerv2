@@ -36,7 +36,7 @@ class TrajetController extends AbstractController
         //Récupérer trajet et évènement
         $trajet = $trajetRepository->findOneBy(array('id'=> $id));
 
-        //suppression si réservation existante dans la base (unique membre trajet)
+        //Suppression si réservation existante dans la base (unique membre trajet)
         $reservation = $reservationTrajetRepository->findOneBy(array(
             'membre' => $membre,
             'trajet' => $trajet
@@ -49,9 +49,7 @@ class TrajetController extends AbstractController
 
         }
 
-
-
-        //Comme il n'esiste pas de réservation : création d'un réservation
+        //Pas de réservation existante donc création d'un réservation
         $reservationTrajet = new ReservationTrajet();
         $reservationTrajet->setMembre($membre);
         $reservationTrajet->setTrajet($trajet);
