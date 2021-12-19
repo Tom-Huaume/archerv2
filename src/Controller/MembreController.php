@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Membre;
+use App\ExcelService\XlsManager;
 use App\Form\MembreType;
 use App\Repository\MembreRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,7 +21,8 @@ class MembreController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         MembreRepository $membreRepository,
-        UserPasswordHasherInterface $passwordHasher
+        UserPasswordHasherInterface $passwordHasher,
+        XlsManager $xlsManager,
     ): Response
     {
         //liste des lieux
@@ -30,6 +32,8 @@ class MembreController extends AbstractController
         $membre = new Membre();
         $membreForm = $this->createForm(MembreType::class, $membre);
         $membreForm->handleRequest($request);
+
+        $xlsManager->uploadExcelData();
 
         //traitement du formulaire
         if($membreForm->isSubmitted() && $membreForm->isValid()){
