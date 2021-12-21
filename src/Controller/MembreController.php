@@ -8,6 +8,7 @@ use App\Form\UpdateMembreType;
 use App\Repository\MembreRepository;
 use App\Service\UpdateManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use PhpOffice\PhpSpreadsheet\Reader\Xls;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
@@ -19,6 +20,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MembreController extends AbstractController
 {
+    /**
+     * @throws Exception
+     */
     #[Route('/gestion/membre', name: 'membre_list')]
     public function list(
         Request $request,
@@ -48,7 +52,7 @@ class MembreController extends AbstractController
             $file = $uploadForm['fichier']->getData();
 
             //définir le nom du fichier
-            $fileName='liste.'.$file->guessExtension();
+            $fileName='liste.csv';
 
             //suppression de l'ancien fichier si il a été conservé par erreur
             $filesystem = new Filesystem();
@@ -60,19 +64,24 @@ class MembreController extends AbstractController
                 $fileName
             );
 
+            //todo: faire un retour à la page si le fichier est vide
+            //todo: export excel
+            //todo: boutons actif et supprimer en AJAX
+            //todo: prévoire le cas où une colonne non nullable serait vide
             //Lancement de la mise à jour des données membes
-            $updateManager->updateMembresParTableur($fileName);
+            $updateManager->updateMembresParTableur($fileName, $uploads_directory);
+
+            $this->addFlash('success', 'Base de données mise à jour !');
+            return $this->redirectToRoute('membre_list');
 
         }
-
-        //$xlsManager->uploadExcelData();
 
         //traitement du formulaire
         if($membreForm->isSubmitted() && $membreForm->isValid())
         {
 
             //todo: mot de passe aléatoire pour les nouveaux
-            $membre->setPassword($passwordHasher->hashPassword($membre, 'aaaaaa'));
+            $membre->setPassword($passwordHasher->hashPassword($membre, random_bytes(200)));
             $membre->setStatutLicence(1);
             $membre->setRoles(array('ROLE_USER'));
             $entityManager->persist($membre);
