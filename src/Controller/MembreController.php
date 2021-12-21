@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Membre;
-use App\ExcelService\XlsManager;
 use App\Form\MembreType;
+use App\Form\UpdateMembreType;
 use App\Repository\MembreRepository;
+use App\Service\UpdateManager;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpOffice\PhpSpreadsheet\Reader\Xls;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -22,7 +25,7 @@ class MembreController extends AbstractController
         EntityManagerInterface $entityManager,
         MembreRepository $membreRepository,
         UserPasswordHasherInterface $passwordHasher,
-        XlsManager $xlsManager,
+        UpdateManager $updateManager
     ): Response
     {
         //liste des lieux
@@ -33,11 +36,42 @@ class MembreController extends AbstractController
         $membreForm = $this->createForm(MembreType::class, $membre);
         $membreForm->handleRequest($request);
 
-        $xlsManager->uploadExcelData();
+        //générer le formulaire d'upload excel
+        $uploadForm = $this->createForm(UpdateMembreType::class, null);
+        $uploadForm->handleRequest($request);
+
+        //traitement de l'upload par xls, xlsx ou csv
+        if($uploadForm->isSubmitted() && $uploadForm->isValid())
+        {
+            //récupérer fichier + répertoire de destionation
+            $uploads_directory = $this->getParameter('update_directory'); //dans config/services.yaml
+            $file = $uploadForm['fichier']->getData();
+
+            //définir le nom du fichier
+            $fileName='liste.'.$file->guessExtension();
+
+            //suppression de l'ancien fichier si il a été conservé par erreur
+            $filesystem = new Filesystem();
+            $filesystem->remove($uploads_directory.DIRECTORY_SEPARATOR.$fileName);
+
+            //enregistrer le fichier
+            $file->move(
+                $uploads_directory,
+                $fileName
+            );
+
+            //Lancement de la mise à jour des données membes
+            $updateManager->updateMembresParTableur($fileName);
+
+        }
+
+        //$xlsManager->uploadExcelData();
 
         //traitement du formulaire
-        if($membreForm->isSubmitted() && $membreForm->isValid()){
+        if($membreForm->isSubmitted() && $membreForm->isValid())
+        {
 
+            //todo: mot de passe aléatoire pour les nouveaux
             $membre->setPassword($passwordHasher->hashPassword($membre, 'aaaaaa'));
             $membre->setStatutLicence(1);
             $membre->setRoles(array('ROLE_USER'));
@@ -50,8 +84,16 @@ class MembreController extends AbstractController
 
         return $this->render('membre/list.html.twig', [
             'membreForm' => $membreForm->createView(),
+            'uploadForm' => $uploadForm->createView(),
             'membres' => $membres,
         ]);
+    }
+
+    #[Route('/gestion/membre/update', name: 'membre_update')]
+    public function update(){
+
+
+
     }
 
     #[Route('/gestion/membre/supprimer/{id}', name:'membre_delete')]

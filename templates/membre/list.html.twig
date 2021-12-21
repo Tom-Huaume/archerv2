@@ -107,6 +107,17 @@
         </table>
     </div>
         {{ form_end(membreForm) }}
+    <div class="row">
+        <div class="col-md-9"></div>
+        <div class="col-md-2">
+            {{ form_start(uploadForm) }}
+            {{ form_widget(uploadForm) }}
+            <button>Mettre à jour</button>
+            {{ form_end(uploadForm) }}
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+
 </div>
 
     <script>

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\ExcelService;
+namespace App\Service;
 
 use App\Entity\Membre;
 use App\Repository\MembreRepository;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
-class XlsManager
+class UpdateManager
 {
     protected $membreRepository;
 
@@ -17,10 +17,13 @@ class XlsManager
         $this->membreRepository = $membreRepository;
     }
 
-    public function uploadExcelData()
+    public function updateMembresParTableur(String $fileName)
     {
+        dd($fileName);
 
-        $fichier = 'import'. DIRECTORY_SEPARATOR .'test.xlsx';
+        $extension = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fichier = $uploads_directory.DIRECTORY_SEPARATOR.$fileName;
+        //$fichier = 'import'. DIRECTORY_SEPARATOR .'test.xlsx';
 
 
         $reader = new Xlsx();
@@ -65,5 +68,4 @@ class XlsManager
 
 
     }
-
 }
