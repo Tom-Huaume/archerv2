@@ -14,6 +14,7 @@ class ArmeType extends AbstractType
     {
         $builder
             ->add('sigle', TextType::class, [
+                'required' => false,
                 'attr'=>[
                     'class'=>'form-control input-nom-lieu',
                 ]

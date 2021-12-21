@@ -63,15 +63,12 @@ class EtapeType extends AbstractType
 
             ->add('arme', EntityType::class, [
                 'mapped' => false,
-                'required' => false,
                 'expanded' => true,
                 'multiple' => true,
                 'class' => Arme::class,
-                'label' => 'Type d\'arme',
+                'label' => 'Armes autorisées',
                 'choice_label' => 'designation',
-                'attr'=>[
-                    'class'=>'form-select',
-                ]
+                'empty_data' => 'Veuillez sélectionner au moins 1 type',
             ])
         ;
     }

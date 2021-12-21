@@ -65,6 +65,16 @@ class Etape
      */
     private $armes;
 
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $validateur;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateHeureValidation;
+
 
     public function __construct()
     {
@@ -211,6 +221,30 @@ class Etape
     public function removeArme(Arme $arme): self
     {
         $this->armes->removeElement($arme);
+
+        return $this;
+    }
+
+    public function getValidateur(): ?string
+    {
+        return $this->validateur;
+    }
+
+    public function setValidateur(?string $validateur): self
+    {
+        $this->validateur = $validateur;
+
+        return $this;
+    }
+
+    public function getDateHeureValidation(): ?\DateTimeInterface
+    {
+        return $this->dateHeureValidation;
+    }
+
+    public function setDateHeureValidation(?\DateTimeInterface $dateHeureValidation): self
+    {
+        $this->dateHeureValidation = $dateHeureValidation;
 
         return $this;
     }

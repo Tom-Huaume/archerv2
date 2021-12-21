@@ -15,7 +15,7 @@
                 <thead>
                     <tr class="delete-m-p">
                         <th class="delete-m-p" colspan="7">
-                            <h4>{{ e.nom }} le {{ e.dateHeureDebut | date('d/m/Y', 'Europe/Paris') }} à {{ e.dateHeureDebut | date('H:i', 'Europe/Paris') }} {{ e.arme ? "("~e.arme.designation~")" }}</h4>
+                            <h4>{{ e.nom }} le {{ e.dateHeureDebut | date('d/m/Y', 'Europe/Paris') }} à {{ e.dateHeureDebut | date('H:i', 'Europe/Paris') }}</h4>
                         </th>
                         <th>
                             <span id="msg-error-{{ e.id }}" style="color: #B0413E;"></span>
@@ -32,6 +32,7 @@
                     <th>Lat</th>
                     <th>Catégorie</th>
                     <th>Type licence</th>
+                    <th>Arme</th>
                     <th id="placeCounter-{{ e.id }}" data-places="{{ e.nbInscriptionsMax|number_format }}">
                         {% if e.nbInscriptionsMax is not null %}
                             <div  style="text-align: center;">
@@ -42,7 +43,7 @@
                     </th>
                 </tr>
                     {% for i in e.inscriptionEtapes %}
-                        <tr>
+                        <tr style=" font-size: 90%;">
                             <td class="delete-m-p" style="max-width: 30rem;">
                                 {% if i.commentaire %}
 
@@ -75,11 +76,14 @@
                             <td>{{ i.membre.lateralite }}</td>
                             <td>{{ i.membre.categorieAge }}</td>
                             <td>{{ i.membre.typeLicence }}</td>
+                            <td>{{ i.arme }}</td>
                             <td>
 
-                                <button id="btn-activate-{{ i.id }}" data-id="{{ i.id }}" data-etape="{{ i.etape.id }}" class="btn btnAction {{ i.validation ? "btn-success" : "btn-secondary"}}">{{ i.validation ? "Annuler" : "Valider" }}</button>
+                                <button id="btn-activate-{{ i.id }}" data-id="{{ i.id }}" data-etape="{{ i.etape.id }}" class="btn btnAction btn-sm {{ i.validation ? "btn-success" : "btn-secondary"}}">{{ i.validation ? "Annuler" : "Valider" }}</button>
 
                             </td>
+                            <td style="font-size: 70%; color: #eeb870; border: none; vertical-align: middle;" >{{ i.validateur }}</td>
+
                         </tr>
                     {% endfor %}
                 </tbody>

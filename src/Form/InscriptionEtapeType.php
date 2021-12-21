@@ -31,6 +31,10 @@ class InscriptionEtapeType extends AbstractType
             ->add('listeArmes', ChoiceType::class, [
                 'mapped' => false,
                 'choices' => $listeArmes,
+                'attr'=>[
+                    'class'=>'form-select'
+                ],
+                'empty_data' => ''
 
             ])
         ;

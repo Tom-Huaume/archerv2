@@ -59,6 +59,7 @@ class EtapeController extends AbstractController
             //Instancier l'entité InscriptionEtape
             $inscription = new InscriptionEtape();
             $inscription->setCommentaire($commentaire);
+            $inscription->setArme($armeChoisie);
             $inscription->setEtape($etape);
             $inscription->setMembre($membre);
             $inscription->setValidation(0);
@@ -121,6 +122,9 @@ class EtapeController extends AbstractController
             if(!is_null($nbPlaces)){
                 $nbPlaces--;
                 $etape->setNbInscriptionsMax($nbPlaces);
+                $userName = "--".$this->getUser()->getPrenom()." ".$this->getUser()->getNom();
+                $inscription->setValidateur($userName);
+                $inscription->setDateHeureValidation(new \DateTime());
             }
 
         } elseif ($inscription->getValidation() == 1)
@@ -130,6 +134,8 @@ class EtapeController extends AbstractController
             if(!is_null($nbPlaces)) {
                 $nbPlaces = $nbPlaces + 1;
                 $etape->setNbInscriptionsMax($nbPlaces);
+                $inscription->setValidateur(null);
+                $inscription->setDateHeureValidation(null);
             }
         }
 

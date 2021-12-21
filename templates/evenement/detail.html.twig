@@ -91,25 +91,33 @@
                 </h4>
                 <div class="card-body">
                     {{ form_start(etapeForm) }}
-
-                    {{ form_label(etapeForm.nom) }}
-                    {{ form_widget(etapeForm.nom) }}
-                    {{ form_label(etapeForm.description) }}
-                    {{ form_widget(etapeForm.description) }}
+                    <div class="mb-3">
+                        {{ form_label(etapeForm.nom) }}
+                        {{ form_widget(etapeForm.nom) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(etapeForm.description) }}
+                        {{ form_widget(etapeForm.description) }}
+                    </div>
                     <div class="row">
-                        <div class="col">
-                        {{ form_label(etapeForm.arme) }}
-                        {{ form_widget(etapeForm.arme) }}
+                        <div class="col-md-2">
+                            <label class="mb-1" for="">Armes autorisées</label>
+                            {% for a in  etapeForm.arme%}
+                                <div>
+                                    {{ form_widget(a) }}
+                                    {{ form_label(a) }}
+                                </div>
+                            {% endfor %}
                         </div>
-                        <div class="col">
+                        <div class="col-md-4">
                         {{ form_label(etapeForm.tarif) }}
                         {{ form_widget(etapeForm.tarif) }}
                         </div>
-                        <div class="col">
+                        <div class="col-md-2">
                         {{ form_label(etapeForm.nbInscriptionsMax) }}
                         {{ form_widget(etapeForm.nbInscriptionsMax) }}
                         </div>
-                        <div class="col">
+                        <div class="col-md-4">
                         {{ form_label(etapeForm.dateHeureDebut) }}
                         {{ form_widget(etapeForm.dateHeureDebut) }}
                         </div>

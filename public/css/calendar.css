@@ -27,6 +27,10 @@
     color: #FFFFFF;
 }
 
+.fc-daygrid-dot-event:hover{
+    background-color: #2C3E50;
+}
+
 .fc-event-title{
     color: #FFFFFF;
     font-size: 0.9em;

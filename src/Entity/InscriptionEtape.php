@@ -44,6 +44,21 @@ class InscriptionEtape
      */
     private $etape;
 
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $validateur;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $arme;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateHeureValidation;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -105,6 +120,42 @@ class InscriptionEtape
     public function setEtape(?Etape $etape): self
     {
         $this->etape = $etape;
+
+        return $this;
+    }
+
+    public function getValidateur(): ?string
+    {
+        return $this->validateur;
+    }
+
+    public function setValidateur(?string $validateur): self
+    {
+        $this->validateur = $validateur;
+
+        return $this;
+    }
+
+    public function getArme(): ?string
+    {
+        return $this->arme;
+    }
+
+    public function setArme(?string $arme): self
+    {
+        $this->arme = $arme;
+
+        return $this;
+    }
+
+    public function getDateHeureValidation(): ?\DateTimeInterface
+    {
+        return $this->dateHeureValidation;
+    }
+
+    public function setDateHeureValidation(?\DateTimeInterface $dateHeureValidation): self
+    {
+        $this->dateHeureValidation = $dateHeureValidation;
 
         return $this;
     }

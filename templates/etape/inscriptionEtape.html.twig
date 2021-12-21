@@ -13,7 +13,11 @@
             <div class="col-8">
                 {{ form_start(inscriptionEtapeForm) }}
                 <h4>Veuillez sélectionner votre arme</h4>
-                {{ form_widget(inscriptionEtapeForm.listeArmes) }}
+                <div class="row mb-4">
+                    <div class="col-md-4">{{ form_widget(inscriptionEtapeForm.listeArmes) }}</div>
+                    <div class="col-md-8"></div>
+                </div>
+
 
                 <h4>Souhaitez vous ajouter un commentaire ? (Facultatif)</h4>
                 {{ form_widget(inscriptionEtapeForm.commentaire) }}
