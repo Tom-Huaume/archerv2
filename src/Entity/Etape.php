@@ -61,13 +61,15 @@ class Etape
     private $evenement;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Arme::class, inversedBy="etapes")
+     * @ORM\ManyToMany(targetEntity=Arme::class, inversedBy="etapes")
      */
-    private $arme;
+    private $armes;
+
 
     public function __construct()
     {
         $this->inscriptionEtapes = new ArrayCollection();
+        $this->armes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -189,14 +191,26 @@ class Etape
         return $this;
     }
 
-    public function getArme(): ?Arme
+    /**
+     * @return Collection|Arme[]
+     */
+    public function getArmes(): Collection
     {
-        return $this->arme;
+        return $this->armes;
     }
 
-    public function setArme(?Arme $arme): self
+    public function addArme(Arme $arme): self
     {
-        $this->arme = $arme;
+        if (!$this->armes->contains($arme)) {
+            $this->armes[] = $arme;
+        }
+
+        return $this;
+    }
+
+    public function removeArme(Arme $arme): self
+    {
+        $this->armes->removeElement($arme);
 
         return $this;
     }

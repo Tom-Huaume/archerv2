@@ -32,11 +32,19 @@ class EtapeController extends AbstractController
         $etape = $etapeRepository->findOneBy(array('id' => $id));
         $evenementId = $etape->getEvenement()->getId();
 
-        //Générer le formulaire inscrptionEtape
-        $inscriptionEtapeForm = $this->createForm(InscriptionEtapeType::class, null);
-        $inscriptionEtapeForm->handleRequest($request);
+        //Récupérer la liste des désignations d'arme
+        $listeArmes = $etape->getArmes()->toArray();
+        $listeDesignationArmes = array();
+        foreach ($listeArmes as $a) {
+            $listeDesignationArmes[$a->getDesignation()] = $a->getDesignation();
+        }
+        //dd($listeDesignationArmes);
 
+        //Générer le formulaire inscrptionEtape
+        $inscriptionEtapeForm = $this->createForm(InscriptionEtapeType::class, $listeDesignationArmes);
+        $inscriptionEtapeForm->handleRequest($request);
         if($inscriptionEtapeForm->isSubmitted() && $inscriptionEtapeForm->isValid()){
+
 
             //interdiction de l'inscription si l'utilisateur est inactif
             if($membre->getStatutLicence() == 0){
@@ -46,6 +54,7 @@ class EtapeController extends AbstractController
 
             //Récupérer la valeur du commentaire
             $commentaire = $inscriptionEtapeForm["commentaire"]->getData();
+            $armeChoisie = $inscriptionEtapeForm["listeArmes"]->getData();
 
             //Instancier l'entité InscriptionEtape
             $inscription = new InscriptionEtape();

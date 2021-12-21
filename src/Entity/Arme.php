@@ -30,7 +30,7 @@ class Arme
     private $designation;
 
     /**
-     * @ORM\OneToMany(targetEntity=Etape::class, mappedBy="arme")
+     * @ORM\ManyToMany(targetEntity=Etape::class, mappedBy="armes")
      */
     private $etapes;
 
@@ -80,7 +80,7 @@ class Arme
     {
         if (!$this->etapes->contains($etape)) {
             $this->etapes[] = $etape;
-            $etape->setArme($this);
+            $etape->addArme($this);
         }
 
         return $this;
@@ -89,10 +89,7 @@ class Arme
     public function removeEtape(Etape $etape): self
     {
         if ($this->etapes->removeElement($etape)) {
-            // set the owning side to null (unless already changed)
-            if ($etape->getArme() === $this) {
-                $etape->setArme(null);
-            }
+            $etape->removeArme($this);
         }
 
         return $this;

@@ -167,9 +167,18 @@ class EvenementController extends AbstractController
             $etape->setDateHeureCreation(new \DateTime());
             $etape->setEvenement($evenement);
 
+            //récupétrer liste des armes
+            $listeArmes = $etapeForm["arme"]->getData();
+            foreach ($listeArmes as $a){
+                $etape->addArme($a);
+            }
+
             //MAJ BDD
             $entityManager->persist($etape);
             $entityManager->flush();
+
+
+
             $this->addFlash('success', 'Etape ajoutée ! Les membres peuvent s\'inscrire');
             return $this->redirectToRoute('evenement_detail', ['id' => $id]);
         }
