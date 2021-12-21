@@ -57,6 +57,13 @@ class UpdateManager
             "P" => "Poussin"
         );
 
+        $lisTypeLic = array(
+            "A" => "ADULTE Pratique en compétition",
+            "J" => "Jeune",
+            "L" => "ADULTE Pratique en club",
+            "P" => "Poussin"
+        );
+
 
         for($i=1; $i<count($sheetData); $i++) {
 
@@ -64,6 +71,14 @@ class UpdateManager
             $statutLicence = $sheetData[$i][1];
             ($statutLicence == "Actif") ? $statutLicence=True : $statutLicence=False;
             $numLicence = $sheetData[$i][3];
+            $typeLicence = $sheetData[$i][28];
+            if($typeLicence == false){
+                $typeLicence = $lisTypeLic[$sheetData[$i][27]];
+            }
+            $catAge = $sheetData[$i][45];
+            if($catAge == false){
+                $catAge = $lisCatAge[$sheetData[$i][44]];
+            }
 
             //Check si ce membre existe déjà dans la base
             $membreClub = $this->membreRepository->findOneBy(array('numLicence' => $numLicence));
@@ -71,6 +86,8 @@ class UpdateManager
             //Si déjà dans la base on MAJ le statut de licence
             if($membreClub != null){
                 $membreClub->setStatutLicence($statutLicence);
+                $membreClub->setTypeLicence($typeLicence);
+                $membreClub->setCategorieAge($catAge);
                 $this->entityManager->persist($membreClub);
                 $this->entityManager->flush();
             }
@@ -81,11 +98,6 @@ class UpdateManager
                 $prenom = $sheetData[$i][6];
                 $dateNaissance = $sheetData[$i][7];
                 $sexe = $sheetData[$i][9];
-                $typeLicence = $sheetData[$i][28];
-                $catAge = $sheetData[$i][45];
-                if($catAge == false){
-                    $catAge = $lisCatAge[$sheetData[$i][44]];
-                }
                 $email = $sheetData[$i][64];
                 $tel = $sheetData[$i][66];
 
