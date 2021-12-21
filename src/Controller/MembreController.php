@@ -71,6 +71,8 @@ class MembreController extends AbstractController
             //Lancement de la mise à jour des données membes
             $updateManager->updateMembresParTableur($fileName, $uploads_directory);
 
+            $filesystem->remove($uploads_directory.DIRECTORY_SEPARATOR.$fileName);
+
             $this->addFlash('success', 'Base de données mise à jour !');
             return $this->redirectToRoute('membre_list');
 
@@ -182,7 +184,7 @@ class MembreController extends AbstractController
         return $this->redirectToRoute('membre_list');
     }
 
-    #[Route('/gestion/membre/modifier/{id}', name:'membre_update')]
+    #[Route('/admin/membre/modifier/{id}', name:'membre_update')]
     public function modifier(
         int $id,
         MembreRepository $membreRepository,

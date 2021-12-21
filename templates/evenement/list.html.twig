@@ -25,11 +25,6 @@
                             <div class="card-body">
                                 <h4 class="card-title" style="color: white;">{{ e.nom }}</h4>
                                 <p class="card-text" style="color: white;">{{ e.description | nl2br }}</p>
-                                <div class="col d-md-flex justify-content-md-end">
-                                    {% if is_granted("ROLE_SECRETAIRE") %}
-                                        <a href="{{ path('etapes_liste_inscrits', {'id' : e.id}) }} "><button type="button" class="btn btn-dark m-1 btn-admin">Gérer les inscriptions</button></a>
-                                    {% endif %}
-                                </div>
                             </div>
                         </div>
                     </a>

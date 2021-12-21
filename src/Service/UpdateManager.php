@@ -111,7 +111,8 @@ class UpdateManager
                 }else{
                     $membre->setStatutLicence(0);
                 }
-                $dateFormat = \DateTime::createFromFormat('m/d/Y', $dateNaissance);
+                //modifier en m/d/Y ci-dessous pour un upload de dates au format US
+                $dateFormat = \DateTime::createFromFormat('d/m/Y', $dateNaissance);
                 $membre->setDateNaissance($dateFormat);
                 $membre->setTypeLicence($typeLicence);
                 $membre->setCategorieAge($catAge);

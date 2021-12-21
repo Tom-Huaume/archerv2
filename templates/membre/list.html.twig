@@ -30,7 +30,7 @@
                 <tbody>
                 {# todo: réduire la taille de la police pour pouvoir tout afficher #}
                 {% for m in membres %}
-                    <tr data-href="{{ path('membre_update', {'id' : m.id}) }}">
+                    <tr {% if is_granted("ROLE_ADMIN") %} data-href="{{ path('membre_update', {'id' : m.id}) }}{% endif %}">
                         <td>{{ m.nom }}</td>
                         <td>{{ m.prenom }}</td>
                         <td>{{ m.sexe }}</td>
