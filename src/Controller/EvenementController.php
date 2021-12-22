@@ -62,7 +62,6 @@ class EvenementController extends AbstractController
             $dateHeureLimiteInscription = $evenementForm["dateHeureLimiteInscription"]->getData();
             $nbInscriptionsMax = $evenementForm["nbInscriptionsMax"]->getData();
             $tarif = $evenementForm["tarif"]->getData();
-            $photo = $evenementForm["photo"]->getData();
 
             if(!$lieuDestination instanceof Lieu){
 
@@ -113,9 +112,26 @@ class EvenementController extends AbstractController
             $evenement->setDateHeureLimiteInscription($dateHeureLimiteInscription);
             $evenement->setNbInscriptionsMax($nbInscriptionsMax);
             $evenement->setTarif($tarif);
-            $evenement->setPhoto($photo);
             $evenement->setEtat("Ouvert");
             $evenement->setDateHeureCreation(new \DateTime('now'));
+
+            //Ajout de la photo si uploadé sinon image par défaut
+            if(!$evenementForm["photo"]->isempty())
+            {
+                //récupérer fichier + l'envoyer dans le répertoire de destionation
+                $photo = $evenementForm["photo"]->getData();
+                $uploads_directory = $this->getParameter('event_directory'); //dans config/services.yaml
+                //dd($uploads_directory);
+                $fileName=md5(uniqid()).'.'.$photo->guessExtension();
+                $photo->move(
+                    $uploads_directory,
+                    $fileName
+                );
+                $evenement->setPhoto($fileName);
+
+            }else{
+                $evenement->setPhoto("defaut.jpg");
+            }
 
             //Persister les données
             $entityManager->persist($evenement);
