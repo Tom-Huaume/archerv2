@@ -178,7 +178,9 @@
                             <p>Passagers</p>
                             {% if t.reservations is not null %}
                                 {% for r in t.reservations %}
-                            <p class="card-text">{{ r.membre.prenom ? r.membre.prenom~" " }}{{ r.membre.nom ? r.membre.nom }}</p>
+                                    {% if r.validation == 1 %}
+                                        <p class="card-text">{{ r.membre.prenom ? r.membre.prenom~" " }}{{ r.membre.nom ? r.membre.nom }}</p>
+                                    {% endif %}
                                 {% endfor %}
                            {% endif %}
                         </div>

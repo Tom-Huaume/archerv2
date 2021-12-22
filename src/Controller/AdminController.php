@@ -26,6 +26,8 @@ class AdminController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstrac
         $adresseClub = $lieuRepository->findHomeAddress();
         $armes = $armeRepository->findAll();
 
+        //todo: modif photo des évènements par défaut
+        //todo: edition profil de l'admin
         //Création armes
         $arme = new Arme();
         $armeForm = $this->createForm(ArmeType::class, $arme);

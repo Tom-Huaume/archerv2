@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Membre | {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    <h2>Profil membre</h2>
+    <div class="container">
+        <div class="">
+
+            {{ form_start(membreForm) }}
+            {{ form_widget(membreForm) }}
+            <br>
+            <a href="{{ path('main_home') }}">
+                <span class="btn btn-primary">Retour</span>
+            </a>
+            <button class="btn btn-success">Modifier</button>
+            {{ form_end(membreForm) }}
+
+
+        </div>
+    </div>
+{% endblock %}

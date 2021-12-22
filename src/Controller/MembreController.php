@@ -220,4 +220,33 @@ class MembreController extends AbstractController
             'membreForm' => $membreForm->createView()
         ]);
     }
+
+    #[Route('/membre/modifier', name:'profil_update')]
+    public function profil(
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): Response
+    {
+
+        //générer le formulaire de modif dans la vue
+        $membre = $this->getUser();
+        $membreForm = $this->createForm(MembreType::class, $membre);
+        $membreForm->handleRequest($request);
+
+        if($membreForm->isSubmitted() && $membreForm->isValid()){
+
+            //MAJ BDD
+            $entityManager->persist($membre);
+            $entityManager->flush();
+
+            $this->addFlash('info', 'Votre profil a bien été modifié');
+            return $this->redirectToRoute('main_home');
+        }
+
+
+        return $this->render('/membre/profil.html.twig', [
+            'membre' => $membre,
+            'membreForm' => $membreForm->createView()
+        ]);
+    }
 }

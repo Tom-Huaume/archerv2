@@ -4,20 +4,22 @@
 h1, h2 {
     margin: 1rem;
     text-align: center;
+    font-family: 'Karla', sans-serif;
 }
 
 h3, h4, h5, h6 {
-
+    font-family: 'Karla', sans-serif;
 }
 
 body{
-
+    font-family: 'Karla', sans-serif;
 }
 
 p {
     /*font-family: 'Karla', sans-serif;*/
     margin: 0px;
     padding: 0px;
+    font-family: 'Karla', sans-serif;
 }
 
 legend {
