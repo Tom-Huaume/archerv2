@@ -120,36 +120,45 @@
 /*____Formulaire Membre____*/
 .input-numlic-membre{
     max-width:6rem;
+    font-size: 90%;
 }
 
 .input-date-membre{
-    max-width:9rem;
+    max-width:10rem;
+    font-size: 90%;
 }
 
 .input-tel-membre{
-    max-width:8rem;
+    max-width:7rem;
+    font-size: 90%;
 }
 
 .input-mail-membre{
-    max-width:15rem;
+    max-width:18rem;
+    font-size: 90%;
 }
 
 .input-nom-membre{
     max-width:12rem;
+    font-size: 90%;
 }
 
 .input-cat-membre{
     max-width:7rem;
+    font-size: 90%;
 }
 
 .input-type-membre{
     max-width:16rem;
+    font-size: 90%;
 }
 
 .input-lat-membre{
     max-width:3rem;
+    font-size: 90%;
 }
 
 .input-sexe-membre{
     max-width:6rem;
+    font-size: 90%;
 }

@@ -73,7 +73,7 @@
 
                                 {# Vérifier que le user fait partie de la liste des inscrits #}
                                 {% if app.user in membresEtape %}
-                                    <a href="{{ path('etape_desistement', {'id' : e.id}) }}"><button type="button" class="btn m-1 btn-success">Se désister</button></a>
+                                    <a href="{{ path('etape_desistement', {'id' : e.id}) }}"><button type="button" class="btn m-1 btn-warning">Se désister</button></a>
                                 {% else %}
                                     <a href="{{ path('etape_inscription', {'id' : e.id}) }}"><button type="button" class="btn btn-dark m-1 btn-contrast-primary">S'inscrire</button></a>
                                 {% endif %}
@@ -196,10 +196,10 @@
 
                                     {% if app.user in membresTrajet %}
 {#                                        {{ path('trajet_reservation', {'id' : t.id}) }}#}
-                                        <button type="button" id="btn-resa-{{ t.id }}" data-id="{{ t.id }}" class="btn btnAction btn-success m-1">Annuler la réservation</button>
+                                        <button type="button" id="btn-resa-{{ t.id }}" data-id="{{ t.id }}" class="btn btnAction btn-warning m-1">Annuler la réservation</button>
                                     {% else %}
 {#                                        {{ path('trajet_reservation', {'id' : t.id}) }}#}
-                                        <button type="button" id="btn-resa-{{ t.id }}" data-id="{{ t.id }}" class="btn btnAction btn-secondary m-1">Réserver</button>
+                                        <button type="button" id="btn-resa-{{ t.id }}" data-id="{{ t.id }}" class="btn btnAction btn-success m-1">Réserver</button>
                                     {% endif %}
                                 {% endif %}
                             </div>

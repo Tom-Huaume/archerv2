@@ -18,6 +18,7 @@ class MainController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstract
 
         $concours = [];
 
+        //création d'un tableau d'évènements à injecter dans le calendrier
         foreach ($evenements as $e)
         {
             $concours[] = [

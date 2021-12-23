@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Membre;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -34,6 +35,28 @@ class MembreRepository extends ServiceEntityRepository implements PasswordUpgrad
         $user->setPassword($newHashedPassword);
         $this->_em->persist($user);
         $this->_em->flush();
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findReservationsOf($idMembre){
+        $sql = "SELECT id, prenom FROM Membre WHERE id = ?;";
+
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addEntityResult(Membre::class, 'm');
+
+        foreach ($this->getClassMetadata()->fieldMappings as $obj){
+            $rsm->addFieldResult('m', 'id', 'id');
+            //$rsm->addFieldResult('m', 'prenom', 'prenom');
+        }
+
+
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+        $query->setParameter(1, $idMembre);
+
+        return $query->getOneOrNullResult();
     }
 
     // /**

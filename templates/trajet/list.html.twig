@@ -1,0 +1,132 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Covoiturage | {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+
+    <h2 class="m-4">Inscriptions et réservations en cours</h2>
+        <br>
+        <div class="row">
+            <div class="col-3">
+
+                <div class="card m-3" style="border: none; box-shadow: 0.1rem 0.1rem 0.3rem #a8a7a7;">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <img src="{{ asset('img/icon/dart-board.png') }}"
+                                 alt="icone covoiturage"
+                                 class="icone-cible">
+                            <h5 class="card-title ms-3 mt-1">Vos évènements</h5>
+                        </div>
+                        <p class="card-text text-info">2 inscriptions en attente</p>
+                        <p class="card-text">3 inscriptions validées</p>
+                    </div>
+                </div>
+
+                <div class="card m-3" style="border: none; box-shadow: 0.1rem 0.1rem 0.3rem #a8a7a7;">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <img src="{{ asset('img/icon/side-car.png') }}"
+                                 alt="icone covoiturage"
+                                 class="icone-voiture">
+                            <h5 class="card-title ms-3 mt-1">Vos trajets</h5>
+                        </div>
+                        <p class="card-text text-warning">2 demandes en attente</p>
+                        <p class="card-text">3 attentes de confirmation</p>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-9">
+
+                {% for e in evenements %}
+
+                {# tableau des étapes #}
+                <table class="table">
+                    <thead>
+                    <tr class="delete-m-p">
+                        <th class="delete-m-p" colspan="5">
+                            <h4>{{ e.nom }}</h4>
+                        </th>
+                        <th>
+                            <span style="color: #B0413E;"></span>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for et in e.etapes %}
+
+                        <tr style=" font-size: 90%;">
+
+                            <th scope="row">{{et.nom}} id: {{ et.id}}  </th>
+                            <td>
+                                Début : {{ et.dateHeureDebut | date('d/m/Y', 'Europe/Paris')  }}
+                                à {{ et.dateHeureDebut | date('H:i', 'Europe/Paris') }}
+                            </td>
+                            <td>
+                                {% for i in et.inscriptionEtapes %}
+                                    {% if app.user == i.membre %}
+                                        {{ i.id }}
+                                        {% if i.validation == 0 %}
+                                            Inscription refusée
+                                        {% elseif i.validation == 1 %}
+                                            Inscription validée
+                                        {% else %}
+                                            En attent de validation
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                {# Liste des trajets associés #}
+                <div class="row ms-3 mb-5">
+                    <div class="col">
+                        <h5 class="m-2">Demandes reçues pour votre trajet</h5>
+                        <ul>
+                            {% for i in 1..3 %}
+                                <li class="d-flex">
+                                    <i class="bi bi-arrow-bar-right m-2" style="color: #18BC9C"></i>
+                                    <p class="m-2">Prénom</p>
+                                    <p class="m-2">Nom</p>
+                                    <button class="m-2">Accepter</button>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <h5 class="m-2">Vos demandes en tant que passager</h5>
+                        <ul>
+                            {% for i in 1..2 %}
+                                <li class="d-flex">
+                                    <i class="bi bi-arrow-bar-right m-2" style="color: #18BC9C"></i>
+                                    <p class="m-2">Nom du trajet</p>
+                                    <p class="m-2">par Prénom Nom</p>
+                                    <button class="m-2">Annuler</button>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                {% endfor %}
+
+            </div>
+        </div>
+
+
+
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

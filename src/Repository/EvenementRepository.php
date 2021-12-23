@@ -4,7 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Evenement;
 use App\Entity\Lieu;
+use App\Entity\Membre;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -23,39 +25,55 @@ class EvenementRepository extends ServiceEntityRepository
 
     public function findFutureEvents($dateDuJour){
         $queryBuilder = $this->createQueryBuilder('e')
-            ->andWhere('e.dateHeureDebut > :dateDuJour')
-            ->setParameter('dateDuJour', $dateDuJour);
+            ->where('e.dateHeureDebut > :dateDuJour')
+            ->setParameter('dateDuJour', $dateDuJour)
+            ->orderBy('e.dateHeureDebut', 'ASC');
 
         $query = $queryBuilder->getQuery();
 
         return $query->getResult();
     }
 
-    public function findEventsFromDate(){
-        $sql = "SELECT * FROM evenement;";
+    public function findEventsOfUser($userId){
+        $queryBuilder = $this->createQueryBuilder('e')
+            ->setParameter('userId', $userId)
+            ->innerJoin('e.etapes', 'et')
+            ->innerJoin('et.inscriptionEtapes', 'i')
+            ->innerJoin('i.membre', 'm')
+            ->where('m.id = :userId');
 
-        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
-        $rsm->addEntityResult(Evenement::class, "e");
-        //on mappe le nom de chaque colonne en BDD
-        foreach ($this->getClassMetadata()->fieldMappings as $obj){
-            $rsm->addFieldResult('e', 'id','id');
-            $rsm->addJoinedEntityResult(Lieu::class, 'l', 'e', 'lieuDestination');
-            $rsm->addFieldResult('l', 'lieu_destination_id','id');
-            $rsm->addFieldResult('e', 'nom','nom');
-            $rsm->addFieldResult('e', 'description','description');
-            $rsm->addFieldResult('e', 'date_heure_debut','dateHeureDebut');
-            $rsm->addFieldResult('e', 'date_heure_limite_inscription','dateHeureLimiteInscription');
-            $rsm->addFieldResult('e', 'nb_inscriptions_max','nbInscriptionsMax');
-            $rsm->addFieldResult('e', 'etat','etat');
-            $rsm->addFieldResult('e', 'tarif','tarif');
-            $rsm->addFieldResult('e', 'photo','photo');
-            $rsm->addFieldResult('e', 'date_heure_creation','dateHeureCreation');
-            $rsm->addFieldResult('e', 'date_heure_fin','dateHeureFin');
-        }
+        $query = $queryBuilder->getQuery();
 
-        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
         return $query->getResult();
     }
+
+
+
+//    public function findEventsFromDate(){
+//        $sql = "SELECT * FROM evenement;";
+//
+//        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+//        $rsm->addEntityResult(Evenement::class, "e");
+//        //on mappe le nom de chaque colonne en BDD
+//        foreach ($this->getClassMetadata()->fieldMappings as $obj){
+//            $rsm->addFieldResult('e', 'id','id');
+//            $rsm->addJoinedEntityResult(Lieu::class, 'l', 'e', 'lieuDestination');
+//            $rsm->addFieldResult('l', 'lieu_destination_id','id');
+//            $rsm->addFieldResult('e', 'nom','nom');
+//            $rsm->addFieldResult('e', 'description','description');
+//            $rsm->addFieldResult('e', 'date_heure_debut','dateHeureDebut');
+//            $rsm->addFieldResult('e', 'date_heure_limite_inscription','dateHeureLimiteInscription');
+//            $rsm->addFieldResult('e', 'nb_inscriptions_max','nbInscriptionsMax');
+//            $rsm->addFieldResult('e', 'etat','etat');
+//            $rsm->addFieldResult('e', 'tarif','tarif');
+//            $rsm->addFieldResult('e', 'photo','photo');
+//            $rsm->addFieldResult('e', 'date_heure_creation','dateHeureCreation');
+//            $rsm->addFieldResult('e', 'date_heure_fin','dateHeureFin');
+//        }
+//
+//        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+//        return $query->getResult();
+//    }
 
 
     // /**

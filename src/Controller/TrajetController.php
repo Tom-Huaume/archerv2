@@ -3,11 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\ReservationTrajet;
+use App\Repository\EvenementRepository;
+use App\Repository\InscriptionEtapeRepository;
 use App\Repository\MembreRepository;
 use App\Repository\ReservationTrajetRepository;
 use App\Repository\TrajetRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use function PHPUnit\Framework\isEmpty;
@@ -85,6 +89,38 @@ class TrajetController extends AbstractController
 
         return $this->render('etape/demandesTrajet.html.twig', [
             'id' => $trajet->getId(),
+        ]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    #[Route('/user/trajet/reservations', name: 'trajet_list')]
+    public function list(
+        EvenementRepository $evenementRepository,
+        InscriptionEtapeRepository $inscriptionEtapeRepository,
+        MembreRepository $membreRepository,
+        Request $request
+    ): Response
+    {
+        $membre = $this->getUser();
+
+        // Evenements liés au user
+        $evenements = $evenementRepository->findEventsOfUser($membre->getId());
+
+
+
+        //$res = $evenementRepository->findOneBy(array('id' => 1));
+        //$res = $membreRepository->findReservationsOf(8);
+        //dd($res);
+        //echo json_encode($res);
+        //générer le formulaire de modif dans la vue
+
+
+
+        return $this->render('trajet/list.html.twig', [
+            'membre' => $membre,
+            'evenements' => $evenements
         ]);
     }
 }

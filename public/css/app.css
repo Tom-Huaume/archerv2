@@ -1,4 +1,5 @@
 @import url("forms.css");
+@import url("images.css");
 
 /*_________BALISES_________*/
 h1, h2 {
@@ -13,6 +14,7 @@ h3, h4, h5, h6 {
 
 body{
     font-family: 'Karla', sans-serif;
+    background-color: #fcfafa;
 }
 
 p {
