@@ -19,6 +19,19 @@ class TrajetRepository extends ServiceEntityRepository
         parent::__construct($registry, Trajet::class);
     }
 
+    //Liste des trajets en tant que passager
+    public function findRidesOfUser($userId){
+        $queryBuilder = $this->createQueryBuilder('t')
+            ->setParameter('userId', $userId)
+            ->innerJoin('t.reservations', 'r')
+            ->innerJoin('r.membre', 'm')
+            ->where('m.id = :userId');
+
+        $query = $queryBuilder->getQuery();
+
+        return $query->getResult();
+    }
+
     // /**
     //  * @return Trajet[] Returns an array of Trajet objects
     //  */

@@ -92,35 +92,27 @@ class TrajetController extends AbstractController
         ]);
     }
 
-    /**
-     * @throws Exception
-     */
     #[Route('/user/trajet/reservations', name: 'trajet_list')]
     public function list(
         EvenementRepository $evenementRepository,
-        InscriptionEtapeRepository $inscriptionEtapeRepository,
-        MembreRepository $membreRepository,
+        TrajetRepository $trajetRepository,
         Request $request
     ): Response
     {
         $membre = $this->getUser();
 
         // Evenements liés au user
-        $evenements = $evenementRepository->findEventsOfUser($membre->getId());
-
-
-
-        //$res = $evenementRepository->findOneBy(array('id' => 1));
-        //$res = $membreRepository->findReservationsOf(8);
-        //dd($res);
-        //echo json_encode($res);
-        //générer le formulaire de modif dans la vue
-
+        $evenements__etapes__inscriptions__membres = $evenementRepository->findEventsOfUser($membre->getId());
+        $trajets__reservations__membres = $trajetRepository->findRidesOfUser($membre->getId());
+        $trajetsConducteur = $trajetRepository->findBy(array('organisateur' => $membre));
+        //dd($trajetsConducteur);
 
 
         return $this->render('trajet/list.html.twig', [
             'membre' => $membre,
-            'evenements' => $evenements
+            'evenements__etapes__inscriptions__membres' => $evenements__etapes__inscriptions__membres,
+            'trajets__reservations__membres' => $trajets__reservations__membres,
+            'trajetsConducteur' => $trajetsConducteur
         ]);
     }
 }
