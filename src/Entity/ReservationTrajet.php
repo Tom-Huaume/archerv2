@@ -18,7 +18,7 @@ class ReservationTrajet
     private $id;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $validation;
 
