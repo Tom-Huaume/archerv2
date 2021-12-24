@@ -37,6 +37,20 @@ class MembreRepository extends ServiceEntityRepository implements PasswordUpgrad
         $this->_em->flush();
     }
 
+    //Liste des trajets en tant que passager
+    public function findMembresOfEvent($eventId){
+        $queryBuilder = $this->createQueryBuilder('m')
+            ->setParameter('eventId', $eventId)
+            ->innerJoin('m.inscriptionEtapes', 'i')
+            ->innerJoin('i.etape', 'et')
+            ->innerJoin('et.evenement', 'ev')
+            ->where('ev.id = :eventId');
+
+        $query = $queryBuilder->getQuery();
+
+        return $query->getResult();
+    }
+
     /**
      * @throws \Doctrine\DBAL\Exception
      * @throws \Doctrine\ORM\NonUniqueResultException

@@ -56,6 +56,11 @@ a{
     color: #CF5B38;
 }
 
+/*____Cards____*/
+.card-clickable:hover{
+    background-color: #F3F4F5;
+}
+
 /*____Boutons____*/
 .btn-admin-wrapper{
     position: fixed;

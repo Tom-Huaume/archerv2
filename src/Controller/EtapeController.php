@@ -146,7 +146,7 @@ class EtapeController extends AbstractController
         return new Response("success", 200);
     }
 
-    #[Route('/gestion/inscription/desistement/{id}', name:'etape_desistement')]
+    #[Route('/user/inscription/desistement/{id}', name:'etape_desistement')]
     public function desistement(
         int $id,
         EtapeRepository $etapeRepository,

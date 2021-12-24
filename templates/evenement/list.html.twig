@@ -13,17 +13,20 @@
             <div class="col-md-2"></div>
             <div class="col-md-8">
                 {% if is_granted("ROLE_SECRETAIRE") %}
-                    <a href="{{ path('evenement_create') }}">
-                        <button type="button" class="btn btn-success btn-lg my-3 btn-event pastel">Créer un évènement</button>
-                    </a>
+                    <div class="d-flex justify-content-center">
+                        <a href="{{ path('evenement_create') }}">
+                            <button type="button" class="btn btn-primary btn-lg my-3 btn-event pastel">Créer un évènement</button>
+                        </a>
+                    </div>
+
                 {% endif %}
                 {% for e in evenements %}
                     <a href="{{ path('evenement_detail', {'id' : e.id}) }}">
-                        <div class="card text-white bg-primary mb-3">
-                            <div class="card-header" style="color: white;">{{ e.lieuDestination.nom }}</div>
+                        <div class="card border-primary mb-3 card-clickable">
+                            <div class="card-header text-primary">{{ e.lieuDestination.nom }}</div>
                             <div class="card-body">
-                                <h4 class="card-title" style="color: white;">{{ e.nom }}</h4>
-                                <p class="card-text" style="color: white;">{{ e.description | nl2br }}</p>
+                                <h4 class="card-title text-primary">{{ e.nom }}</h4>
+                                <p class="card-text text-primary">{{ e.description | nl2br }}</p>
                             </div>
                         </div>
                     </a>

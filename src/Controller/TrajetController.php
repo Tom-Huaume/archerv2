@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\ReservationTrajet;
+use App\Repository\EtapeRepository;
 use App\Repository\EvenementRepository;
 use App\Repository\InscriptionEtapeRepository;
 use App\Repository\MembreRepository;
@@ -24,6 +25,7 @@ class TrajetController extends AbstractController
         int $id,
         MembreRepository $membreRepository,
         TrajetRepository $trajetRepository,
+        EvenementRepository $evenementRepository,
         ReservationTrajetRepository $reservationTrajetRepository,
         EntityManagerInterface $entityManager,
     ): Response
@@ -50,6 +52,15 @@ class TrajetController extends AbstractController
             $entityManager->remove($reservation);
             $entityManager->flush();
             return new Response("Suppression du trajet", 200);
+
+        }
+
+        //Redirection si le membre n'est pas inscrit à un départ
+        $evenements__etapes__inscriptions__membres = $evenementRepository->findEventsOfUser($userId);
+        $evenemetDuTrajet = $trajet->getEvenement();
+        if(!in_array($evenemetDuTrajet, $evenements__etapes__inscriptions__membres)){
+
+            return new Response("Vous n'êtes pas inscrit !", 406);
 
         }
 

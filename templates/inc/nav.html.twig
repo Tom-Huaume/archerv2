@@ -20,6 +20,9 @@
             {% if is_granted("ROLE_SECRETAIRE") %}
                 <ul class="navbar-nav">
                     <li class="nav-item">
+                        <a class="nav-link" href="#">Bilan</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ path('membre_list') }}">Membres</a>
                     </li>
                     <li class="nav-item">

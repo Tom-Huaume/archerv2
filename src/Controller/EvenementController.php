@@ -161,6 +161,9 @@ class EvenementController extends AbstractController
         Request $request
     ): Response
     {
+        //Liste des membres de l'évènement
+        $membres = $membreRepository->findMembresOfEvent($id);
+
         //Générer le formulaire étape
         $etape = new Etape();
         $etapeForm = $this->createForm(EtapeType::class, $etape);
@@ -264,12 +267,14 @@ class EvenementController extends AbstractController
             return $this->redirectToRoute('evenement_detail', ['id' => $id]);
         }
 
+
         return $this->render('evenement/detail.html.twig', [
             'evenement'=>$evenement,
             'etapes'=>$etapes,
             'trajets'=>$trajets,
             'etapeForm'=>$etapeForm->createView(),
             'trajetForm'=>$trajetForm->createView(),
+            'membres'=>$membres
         ]);
     }
 
