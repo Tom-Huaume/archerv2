@@ -9,7 +9,7 @@
 
         <h2 class="event-title">{{ evenement.nom }}</h2>
 
-        <div class="card border-primary mb-3 event-card" style="max-width: 90rem;">
+        <div class="card border-secondary mb-3 event-card" style="max-width: 90rem;">
 
             <div class="card-header">Début le {{ evenement.dateHeureDebut | date('d/m/Y', 'Europe/Paris') }} à {{ evenement.dateHeureDebut | date('H:i', 'Europe/Paris') }}</div>
 
@@ -35,7 +35,7 @@
                 <div class="col-md-4 d-md-flex justify-content-md-end">
                     <div>
                         {% if is_granted("ROLE_SECRETAIRE") %}
-                        <a href="{{ path('etapes_liste_inscrits', {'id' : evenement.id}) }}"><button type="button" class="btn btn-dark m-1 btn-admin">Gérer les inscriptions</button></a>
+                        <a href="{{ path('etapes_liste_inscrits', {'id' : evenement.id}) }}"><button type="button" class="btn btn-primary m-1">Gérer les inscriptions</button></a>
                         {% endif %}
                     </div>
                 </div>
@@ -47,7 +47,7 @@
             </div>
 
             {% for e in etapes %}
-            <div class="card text-white bg-primary m-3" style="max-width: 70rem;">
+            <div class="card border-primary m-3" style="max-width: 70rem;">
                 <div class="card-header">{{ e.nom }}{{" - le "~ e.dateHeureDebut | date('d/m/Y', 'Europe/Paris') }}
                     à {{ e.dateHeureDebut | date('H:i', 'Europe/Paris') }}
                 </div>
@@ -55,7 +55,7 @@
 
                     <div class="row">
                         <div class="col">
-                            <h5 class="card-title">{{ e.tarif }}</h5>
+                            <h5  class="card-title">{{ e.tarif }}</h5>
                             <p class="card-text">{{ e.description }}</p>
                         </div>
 {#                        <div class="col">#}
@@ -73,9 +73,9 @@
 
                                 {# Vérifier que le user fait partie de la liste des inscrits #}
                                 {% if app.user in membresEtape %}
-                                    <a href="{{ path('etape_desistement', {'id' : e.id}) }}"><button type="button" class="btn m-1 btn-warning">Se désister</button></a>
+                                    <a href="{{ path('etape_desistement', {'id' : e.id}) }}"><button type="button" class="btn m-1 pastel2 btn-secondary">Se désister</button></a>
                                 {% else %}
-                                    <a href="{{ path('etape_inscription', {'id' : e.id}) }}"><button type="button" class="btn btn-dark m-1 btn-contrast-primary">S'inscrire</button></a>
+                                    <a href="{{ path('etape_inscription', {'id' : e.id}) }}"><button type="button" class="btn btn-primary m-1">S'inscrire</button></a>
                                 {% endif %}
                             </div>
                         </div>
@@ -134,7 +134,7 @@
 
 
             <div class="d-flex align-items-center justify-content-center">
-                <button id="btnEtapeToHide" type="button" value="" class="btn btn-primary m-3" onClick="showHideEtape();">Ajouter une étape</button>
+                <i id="btnEtapeToHide" type="button" value="" class="btn text-primary mb-3 bi bi-plus-circle-fill fs-3" onClick="showHideEtape();"></i>
             </div>
 
         </div>
@@ -196,10 +196,10 @@
 
                                     {% if app.user in membresTrajet %}
 {#                                        {{ path('trajet_reservation', {'id' : t.id}) }}#}
-                                        <button type="button" id="btn-resa-{{ t.id }}" data-id="{{ t.id }}" class="btn btnAction btn-warning m-1">Annuler la réservation</button>
+                                        <button type="button" id="btn-resa-{{ t.id }}" data-id="{{ t.id }}" class="btn btnAction pastel2 btn-secondary m-1">Annuler la réservation</button>
                                     {% else %}
 {#                                        {{ path('trajet_reservation', {'id' : t.id}) }}#}
-                                        <button type="button" id="btn-resa-{{ t.id }}" data-id="{{ t.id }}" class="btn btnAction btn-success m-1">Réserver</button>
+                                        <button type="button" id="btn-resa-{{ t.id }}" data-id="{{ t.id }}" class="btn btnAction pastel2 btn-success m-1">Réserver</button>
                                     {% endif %}
                                 {% endif %}
                             </div>
@@ -286,7 +286,7 @@
         </div>
         </div>
         <div class="d-flex align-items-center justify-content-center">
-            <button id="btnTrajetToHide" type="button" class="btn btn-success pastel" onClick="showHideTrajet();">Proposer un covoiturage</button>
+            <button id="btnTrajetToHide" type="button" class="btn btn-success pastel2" onClick="showHideTrajet();">Proposer un covoiturage</button>
         </div>
 
 
@@ -337,13 +337,13 @@
                     if(btnReservation.innerHTML === "Annuler la réservation"){
                         //renomme le bouton et modifie la mise en forme
                         btnReservation.innerHTML = "Réserver";
-                        btnReservation.classList.remove('btn-success');
-                        btnReservation.classList.add('btn-secondary');
+                        btnReservation.classList.remove('btn-secondary');
+                        btnReservation.classList.add('btn-success');
                     }else{
                         //renomme le bouton et modifie la mise en forme
                         btnReservation.innerHTML = "Annuler la réservation";
-                        btnReservation.classList.remove('btn-secondary');
-                        btnReservation.classList.add('btn-success');
+                        btnReservation.classList.remove('btn-success');
+                        btnReservation.classList.add('btn-secondary');
                     }
                 }).catch(function (error){
                     console.log(response);

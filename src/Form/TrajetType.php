@@ -32,7 +32,7 @@ class TrajetType extends AbstractType
                 'label' => 'Titre',
                 'attr'=>[
                     'class'=>'form-control input-nom-lieu',
-                    'placeholder'=>'Ex : Trajet Liffré - Vern',
+                    'placeholder'=>'Ex : Liffré - Vern',
                 ]
             ])
 

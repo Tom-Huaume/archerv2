@@ -12,7 +12,7 @@
         {# tableau des évenements #}
         {% for e in evenements__etapes__inscriptions__membres %}
             <div class="row">
-                <div class="col-6 card border-primary">
+                <div class="col-7 card border-secondary mb-5">
                     <table class="table">
                         <thead>
                         <tr class="delete-m-p">
@@ -35,23 +35,33 @@
                                     à {{ et.dateHeureDebut | date('H:i', 'Europe/Paris') }}
                                 </td>
                                 <td>
+                                    {# On affiche l'arme choisie si l'inscription appartient au user et et à l'étape (1 seule occurence) #}
+                                    {% for i in et.inscriptionEtapes %}
+                                        {% if i.membre == app.user %}
+                                            {{ i.arme }}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                </td>
+                                <td>
+                                    {# Listing des membres inscrits #}
                                     {% set membres = [] %}
                                     {% for i in et.inscriptionEtapes %}
                                         {% set membres = membres|merge([i.membre]) %}
                                     {% endfor %}
 
                                     {% if app.user not in membres %}
-                                        <p>Non inscrit</p>
+                                        <p class="text-secondary">Non inscrit</p>
                                     {% endif %}
 
                                     {% for i in et.inscriptionEtapes %}
                                         {% if app.user == i.membre %}
                                             {% if i.validation == 0 %}
-                                                Inscription refusée
+                                                <p class="text-danger">Inscription refusée</p>
                                             {% elseif i.validation == 1 %}
-                                                Inscription validée
+                                                <p class="text-success">Inscription validée</p>
                                             {% else %}
-                                                En attent de validation
+                                                <p>En attent de validation</p>
                                             {% endif %}
                                         {% endif %}
                                     {% endfor %}
@@ -60,56 +70,64 @@
                         {% endfor %}
                         </tbody>
                     </table>
-                </div>
 
-                <div class="col-6">
-                    {# Trajets proposés #}
-                    <div>
-                        {% for t in trajetsConducteur %}
-                            {% if e.id == t.evenement.id %}
-                            <h5 class="m-2">Demandes pour votre trajet</h5>
-                            <ul>
-                                <li class="d-flex">
-                                    {% for r in t.reservations %}
-                                            <i class="bi bi-arrow-bar-right m-2 text-success"></i>
-                                            <p class="m-2">{{ r.membre.prenom }}</p>
-                                            <p class="m-2">{{ r.membre.nom }}</p>
-                                            <button class=" btn btn-sm btn-success">Accepter</button>
-                                    {% endfor %}
-                                </li>
-                            </ul>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <div class="row mb-5">
-                    {# Liste des trajets associés #}
-
-                        <div class="col"> {# Trajets demandés #}
-                            <h5 class="m-2">Vos demandes en tant que passager</h5>
-                            <ul>
-                            {% for t in trajets__reservations__membres %}
-                                {% if t.evenement == e %}
-                                <li class="d-flex text-danger">
-                                    <i class="bi bi-arrow-bar-right m-2" style="color: #18BC9C"></i>
-                                    <p class="my-2 ms-2">{{ t.titre }} :</p>
-                                    <p class="my-2 ms-2"> {{ t.organisateur.prenom }} {{ t.organisateur.nom }}</p>
-                                    <p class="my-2 ms-2">(Refusé)</p>
-                                </li>
-                                {% endif %}
-                            {% endfor %}
-                            </ul>
-                        </div>
-
+                    <div class="row">
+                        {# Trajets demandés #}
                         <div class="col">
 
-                        </div>
+                                {# compter le nombre de trajets pour cet évènement#}
+                                {% set trajetsPourCetEvenement = 0 %}
 
+                                {% for t in trajets__reservations__membres %}
+                                    {% if t.evenement == e %}
+                                        {% set trajetsPourCetEvenement = trajetsPourCetEvenement + 1 %} {# incrémente le compteur de trajets#}
+
+                                        {# On n'affiche le titre qu'une seule fois#}
+                                        {% if trajetsPourCetEvenement == 1 %}<h5 class="m-2"> Vos demandes en tant que passager</h5> {% endif %}
+
+                                        <li class="d-flex">
+                                            <i class="bi bi-arrow-bar-right m-2" style="color: #18BC9C"></i>
+                                            <p class="my-2 ms-2">{{ t.titre }} :</p>
+                                            <p class="my-2 ms-2"> {{ t.organisateur.prenom }} {{ t.organisateur.nom }}</p>
+                                            <p class="my-2 ms-2 text-danger">(Refusé)</p>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+
+                        </div>
+                    </div>
 
                 </div>
+
+                <div class="col-5">
+                    {# Trajets proposés #}
+                    {% for t in trajetsConducteur %}
+                        {% if e.id == t.evenement.id %}
+                        <div class="card p-3" style="display:inline-block;">
+                        <h5 class="m-2">Demandes pour votre trajet {{ t.titre }}</h5>
+                        <ul>
+                            <li class="d-flex ps-0">
+                                {% if t.reservations|length == 0 %} <p class="text-secondary">Aucune réservation</p> {% endif %}
+                                {% for r in t.reservations %}
+                                        <i class="bi bi-arrow-bar-right m-2 ps-0 text-success"></i>
+                                        <p class="m-2">{{ r.membre.prenom }}</p>
+                                        <p class="m-2">{{ r.membre.nom }}</p>
+                                        <p class="m-2">{{ r.membre.telMobile }}</p>
+                                        <button class="m-1 btn btn-sm btn-success" style="border-radius: 25px; max-height: 2rem;">Accepter</button>
+                                        <button class="m-1 btn btn-sm btn-danger" style="border-radius: 25px; max-height: 2rem;">Refuser</button>
+                                {% endfor %}
+                            </li>
+                        </ul>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+
             </div>
         {% endfor %}
+
+
 
     </div>
 {% endblock %}
