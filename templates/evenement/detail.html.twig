@@ -134,7 +134,9 @@
 
 
             <div class="d-flex align-items-center justify-content-center">
+                {% if is_granted("ROLE_SECRETAIRE") %}
                 <i id="btnEtapeToHide" type="button" value="" class="btn text-primary mb-3 bi bi-plus-circle-fill fs-3" onClick="showHideEtape();"></i>
+                {% endif %}
             </div>
 
         </div>

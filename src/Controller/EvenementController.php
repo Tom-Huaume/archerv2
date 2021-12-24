@@ -196,8 +196,6 @@ class EvenementController extends AbstractController
             $entityManager->persist($etape);
             $entityManager->flush();
 
-
-
             $this->addFlash('success', 'Etape ajoutée ! Les membres peuvent s\'inscrire');
             return $this->redirectToRoute('evenement_detail', ['id' => $id]);
         }
