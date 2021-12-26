@@ -54,7 +54,7 @@ class ReservationTrajet
         return $this->validation;
     }
 
-    public function setValidation(bool $validation): self
+    public function setValidation(?bool $validation): self
     {
         $this->validation = $validation;
 

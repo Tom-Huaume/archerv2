@@ -49,10 +49,15 @@ class TrajetController extends AbstractController
         ));
         if($reservation != null){
 
-            $entityManager->remove($reservation);
-            $entityManager->flush();
-            return new Response("Suppression du trajet", 200);
-
+            if(is_null($reservation->getValidation())){
+                $entityManager->remove($reservation);
+                $entityManager->flush();
+                return new Response("Suppression du trajet", 200);
+            }elseif ($reservation->getValidation()==0){
+                return new Response("Impossible vous êtes déjà refusé", 405);
+            }elseif ($reservation->getValidation()==1){
+                return new Response("Impossible vous êtes déjà accepté", 405);
+            }
         }
 
         //Redirection si le membre n'est pas inscrit à un départ
@@ -68,7 +73,7 @@ class TrajetController extends AbstractController
         $reservationTrajet = new ReservationTrajet();
         $reservationTrajet->setMembre($membre);
         $reservationTrajet->setTrajet($trajet);
-        $reservationTrajet->setValidation(0);
+        $reservationTrajet->setValidation(null);
         $reservationTrajet->setDateHeureReservation(new \DateTime('now'));
 
         //Persister les données
@@ -111,9 +116,10 @@ class TrajetController extends AbstractController
     ): Response
     {
         $membre = $this->getUser();
+        $dateDuJour =new \DateTime();
 
         // Evenements liés au user
-        $evenements__etapes__inscriptions__membres = $evenementRepository->findEventsOfUser($membre->getId());
+        $evenements__etapes__inscriptions__membres = $evenementRepository->findFutureEventsOfUser($membre->getId(), $dateDuJour);
         $trajets__reservations__membres = $trajetRepository->findRidesOfUser($membre->getId());
         $trajetsConducteur = $trajetRepository->findBy(array('organisateur' => $membre));
         //dd($trajetsConducteur);
@@ -125,5 +131,86 @@ class TrajetController extends AbstractController
             'trajets__reservations__membres' => $trajets__reservations__membres,
             'trajetsConducteur' => $trajetsConducteur
         ]);
+    }
+
+    #[Route('/user/trajet/refuse/{id}', name:'trajet_refuser', methods: ["GET", "PUT", "POST"])]
+    public function refuse(
+        int $id,
+        ReservationTrajetRepository $reservationTrajetRepository,
+        EntityManagerInterface $entityManager
+    ) : Response
+    {
+        $reservation = $reservationTrajetRepository->findOneBy(array('id' => $id));
+        $trajet = $reservation->getTrajet();
+        $user = $this->getUser();
+
+        //retourne une erreur si le user n'est pas l'orgaisateur du trajet
+        if($trajet->getOrganisateur() !== $user){
+            return new Response("Implossible ! Vous n'êtes pas l'organisateur du trajet", 403);
+        }
+
+        if($reservation->getValidation() == null)
+        {
+            $reservation->setValidation(0);
+            $reservation->setDateHeureReservation(new \DateTime());
+
+            //Persister les données
+            $entityManager->persist($reservation);
+            $entityManager->flush();
+        }
+
+        return new Response("success", 200);
+    }
+
+    //todo: envoyer les confirmations par mail
+    #[Route('/user/trajet/accepte/{id}', name:'trajet_accepter', methods: ["GET", "PUT", "POST"])]
+    public function accepte(
+        int $id,
+        ReservationTrajetRepository $reservationTrajetRepository,
+        EntityManagerInterface $entityManager
+    ) : Response
+    {
+        //récupérer réservation, trajet et user
+        $reservation = $reservationTrajetRepository->findOneBy(array('id' => $id));
+        $trajet = $reservation->getTrajet();
+        $user = $this->getUser();
+        $nbPlaces = $trajet->getNbPlaces();
+
+        //retourne une erreur si le user n'est pas l'orgaisateur du trajet
+        if($trajet->getOrganisateur() !== $user){
+            return new Response("Implossible ! Vous n'êtes pas l'organisateur du trajet", 403);
+        }
+
+        //switch valeur validation (booléen)
+        if($reservation->getValidation() == 0 || $reservation->getValidation() == null)
+        {
+            //redirection si nbPlace = 0
+            if($nbPlaces <= 0 && !is_null($nbPlaces)){
+                return new Response("Not enough places", 304);
+            }
+            //inscrire et décrémenter nb places si non null
+            $reservation->setValidation(1);
+            if(!is_null($nbPlaces)){
+                $nbPlaces--;
+                $trajet->setNbPlaces($nbPlaces);
+                $reservation->setDateHeureReservation(new \DateTime());
+            }
+
+        } elseif ($reservation->getValidation() == 1)
+        {
+            //désinscrire et incrémenter nb places si non null
+            $reservation->setValidation(0);
+            if(!is_null($nbPlaces)) {
+                $nbPlaces = $nbPlaces + 1;
+                $trajet->setNbPlaces($nbPlaces);
+                $reservation->setDateHeureReservation(new \DateTime());
+            }
+        }
+
+        //Persister les données
+        $entityManager->persist($reservation);
+        $entityManager->flush();
+
+        return new Response("success", 200);
     }
 }

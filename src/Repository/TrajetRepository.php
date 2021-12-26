@@ -28,9 +28,9 @@ class TrajetRepository extends ServiceEntityRepository
             ->where('m.id = :userId');
 
         $query = $queryBuilder->getQuery();
-
         return $query->getResult();
     }
+
 
     // /**
     //  * @return Trajet[] Returns an array of Trajet objects

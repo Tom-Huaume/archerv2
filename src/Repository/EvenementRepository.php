@@ -33,6 +33,17 @@ class EvenementRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+    public function findPastEvents($dateDuJour){
+        $queryBuilder = $this->createQueryBuilder('e')
+            ->where('e.dateHeureDebut < :dateDuJour')
+            ->setParameter('dateDuJour', $dateDuJour)
+            ->orderBy('e.dateHeureDebut', 'ASC');
+
+        $query = $queryBuilder->getQuery();
+
+        return $query->getResult();
+    }
+
 
     public function findEventsOfUser($userId){
         $queryBuilder = $this->createQueryBuilder('e')
@@ -41,6 +52,21 @@ class EvenementRepository extends ServiceEntityRepository
             ->innerJoin('et.inscriptionEtapes', 'i')
             ->innerJoin('i.membre', 'm')
             ->where('m.id = :userId');
+
+        $query = $queryBuilder->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function findFutureEventsOfUser($userId, $dateDuJour){
+        $queryBuilder = $this->createQueryBuilder('e')
+            ->setParameter('userId', $userId)
+            ->setParameter('dateDuJour', $dateDuJour)
+            ->innerJoin('e.etapes', 'et')
+            ->innerJoin('et.inscriptionEtapes', 'i')
+            ->innerJoin('i.membre', 'm')
+            ->where('m.id = :userId')
+            ->andWhere('e.dateHeureDebut > :dateDuJour');
 
         $query = $queryBuilder->getQuery();
 

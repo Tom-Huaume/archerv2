@@ -161,8 +161,9 @@ class EvenementController extends AbstractController
         Request $request
     ): Response
     {
-        //Liste des membres de l'évènement
-        $membres = $membreRepository->findMembresOfEvent($id);
+
+        //Liste des membres inscrits à l'évènement
+        $membresInscrits = $membreRepository->findMembreAcceptesPourEvenement($id);
 
         //Générer le formulaire étape
         $etape = new Etape();
@@ -272,7 +273,7 @@ class EvenementController extends AbstractController
             'trajets'=>$trajets,
             'etapeForm'=>$etapeForm->createView(),
             'trajetForm'=>$trajetForm->createView(),
-            'membres'=>$membres
+            'membresInscrits'=>$membresInscrits
         ]);
     }
 

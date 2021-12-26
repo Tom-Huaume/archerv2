@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    Bilan | {{ parent() }}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+
+    <h2>Bilan des évènements</h2>
+
+
+
+
+    {% for e in evenements %}
+        <div class="table-responsive mb-5" style="font-size: 90%;">
+            <table class="table">
+                <thead>
+                    <tr style="font-size: 1.5rem;">
+                        <td colspan="7">
+                            <img src="{{ asset('img/icon/dart-board.png') }}" alt="icone covoiturage" class="icone-cible me-2">
+                            <b>{{ e.nom }}</b>
+                            le {{ e.dateHeureDebut | date('d/m/Y', 'Europe/Paris') }} à {{ e.dateHeureDebut | date('H:i', 'Europe/Paris') }}
+                             {{ "  ("~e.lieuDestination.ville~") " }}
+                        </td>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for et in e.etapes %}
+                        <tr style="font-size: 1.1rem;">
+                            <td colspan="7"><b>{{ et.nom~" " }}</b> le {{ et.dateHeureDebut | date('d/m/Y', 'Europe/Paris') }} à {{ et.dateHeureDebut | date('H:i', 'Europe/Paris') }}</td>
+                        </tr>
+
+                        {% for i in et.inscriptionEtapes %}
+                            <tr>
+                                <td></td>
+                                <td>{{ i.membre.prenom~" " }}{{ i.membre.nom }}</td>
+                                <td>{{ i.membre.numLicence }}</td>
+                                <td>{{ i.arme }}</td>
+                                <td>{{ i.membre.categorieAge }}</td>
+                                <td>{{ i.membre.typeLicence }}</td>
+                            </tr>
+
+                        {% endfor %}
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+            {% for t in e.trajets %}
+                {% if t.evenement == e %}
+                    <div class="d-flex ms-5">
+                        <img src="{{ asset('img/icon/side-car.png') }}" alt="icone covoiturage" class="icone-voiture">
+                        <p class="ms-3 mt-1">trajet {{ t.titre }} proposé par <b> {{ t.organisateur.prenom~" "~t.organisateur.nom }}</b></p>
+                    </div>
+                    {% for rt in t.reservations %}
+                        <div class="d-block" style="margin-left: 9rem;">
+                            <i class="bi bi-person-fill me-2"></i>{{ rt.membre.prenom~" "~rt.membre.nom }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+</div>
+
+
+{% endblock %}
+
+
+

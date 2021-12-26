@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 use App\Repository\EvenementRepository;
+use App\Repository\InscriptionEtapeRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractController
@@ -40,6 +43,20 @@ class MainController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstract
             "evenements" => $evenements,
             "concours" => $concours,
             "dataEvents" => $dataEvents,
+        ]);
+    }
+
+    #[Route('/gestion/bilan', name:'main_bilan', methods: ["GET", "PUT", "POST"])]
+    public function bilan(
+        EvenementRepository $evenementRepository,
+        EntityManagerInterface $entityManager
+    ) : Response
+    {
+        $dateDuJour = new \DateTime();
+        $evenements = $evenementRepository->findPastEvents($dateDuJour);
+
+        return $this->render('main/bilan.html.twig', [
+            'evenements' => $evenements
         ]);
     }
 

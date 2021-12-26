@@ -37,7 +37,7 @@ class MembreRepository extends ServiceEntityRepository implements PasswordUpgrad
         $this->_em->flush();
     }
 
-    //Liste des trajets en tant que passager
+    //Liste des membres qui ont fait une demande d'inscription à l'évènement
     public function findMembresOfEvent($eventId){
         $queryBuilder = $this->createQueryBuilder('m')
             ->setParameter('eventId', $eventId)
@@ -50,6 +50,53 @@ class MembreRepository extends ServiceEntityRepository implements PasswordUpgrad
 
         return $query->getResult();
     }
+
+    //Lignes si le membre a organisé un trajet pour l'évènement
+    public function findMembreTrajetsPourEvenement($membreId, $eventId){
+        $queryBuilder = $this->createQueryBuilder('m')
+            ->setParameter('eventId', $eventId)
+            ->setParameter('membreId', $membreId)
+            ->innerJoin('m.trajets', 't')
+            ->innerJoin('t.evenement', 'e')
+            ->where('e.id = :eventId')
+            ->andWhere('m.id = :membreId');
+
+        $query = $queryBuilder->getQuery();
+
+        return $query->getResult();
+    }
+
+    //Lignes si le membre a réservé un trajet pour l'évènement
+    public function findMembreReservationTrajetPourEvenement($membreId, $eventId){
+        $queryBuilder = $this->createQueryBuilder('m')
+            ->setParameter('eventId', $eventId)
+            ->setParameter('membreId', $membreId)
+            ->innerJoin('m.reservationTrajets', 'rt')
+            ->innerJoin('rt.trajet', 't')
+            ->innerJoin('t.evenement', 'e')
+            ->where('e.id = :eventId')
+            ->andWhere('m.id = :membreId');
+
+        $query = $queryBuilder->getQuery();
+
+        return $query->getResult();
+    }
+
+    //Liste des membres inscrits à l'évènement
+    public function findMembreAcceptesPourEvenement($eventId){
+        $queryBuilder = $this->createQueryBuilder('m')
+            ->setParameter('eventId', $eventId)
+            ->innerJoin('m.inscriptionEtapes', 'i')
+            ->innerJoin('i.etape', 'et')
+            ->innerJoin('et.evenement', 'ev')
+            ->where('ev.id = :eventId')
+            ->andWhere('i.validation = 1');
+
+        $query = $queryBuilder->getQuery();
+
+        return $query->getResult();
+    }
+
 
     /**
      * @throws \Doctrine\DBAL\Exception

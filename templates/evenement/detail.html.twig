@@ -21,7 +21,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="card-body">
-                        <p>{{ evenement.nbInscriptionsMax }} places disponibles</p>
+{#                        <p>{{ evenement.nbInscriptionsMax }} places disponibles</p>#}
                         <p class="text-danger">Date limite d'inscription le {{ evenement.dateHeureLimiteInscription | date('d/m/Y', 'Europe/Paris') }}
                             à {{ evenement.dateHeureLimiteInscription | date('H:i', 'Europe/Paris') }}</p>
                         <p>Tarif : {{ evenement.tarif }}</p>
@@ -144,12 +144,13 @@
         {% for t in trajets %}
 
             <div class="card border-success mb-3 bg-green-pastel" style="max-width: 90rem;">
-                <div class="card-header d-inline">
+                <div class="card-header d-flex">
                     {% if t.titre is null %}
                         <p>Trajet {{ t.lieuDepart.ville }} -> {{ t.evenement.lieuDestination.ville }} le {{ t.dateHeureDepart | date('d/m/Y', 'Europe/Paris') }}</p>
                     {% else %}
                         <p>{{ t.titre }} : départ le {{ t.dateHeureDepart | date('d/m/Y', 'Europe/Paris') }} à {{ t.dateHeureDepart | date('H:i', 'Europe/Paris') }}</p>
                     {% endif %}
+                        <p class="ms-5" id="msg-error-{{ t.id }}" style="color: #da2823;"></p>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -197,10 +198,10 @@
                                     {% endfor %}
 
                                     {% if app.user in membresTrajet %}
-                                        <button type="button" id="btn-resa-{{ t.id }}" data-id="{{ t.id }}" class="btn btnAction pastel2 btn-secondary m-1">Annuler la réservation</button>
+                                        <button type="button" id="btn-resa-{{ t.id }}" data-id="{{ t.id }}" class="btn btnAction pastel2 btn-secondary m-1">Annuler ma réservation</button>
                                     {% else %}
-                                        {# Check si le user est inscrit àune des étapes #}
-                                        {% if app.user in membres %}
+                                        {# Check si le user est inscrit à une des étapes #}
+                                        {% if app.user in membresInscrits %}
                                             <button type="button" id="btn-resa-{{ t.id }}" data-id="{{ t.id }}" class="btn btnAction pastel2 btn-success m-1">Réserver</button>
                                         {% endif %}
                                     {% endif %}
@@ -290,7 +291,7 @@
         </div>
         <div class="d-flex align-items-center justify-content-center">
             {#  check si le user est inscrit à une étape #}
-            {% if app.user in membres %}
+            {% if app.user in membresInscrits %}
             <button id="btnTrajetToHide" type="button" class="btn btn-success pastel2" onClick="showHideTrajet();">Proposer un covoiturage</button>
             {% endif %}
         </div>
@@ -325,13 +326,22 @@
 
                 //déclaration des variables inscription et étape associée
                 let trajetId = this.dataset.id;
+                let errorMsg = document.getElementById('msg-error-'+trajetId);
                 let url = '{{ path('trajet_reservation', {'id' : 'trajetId'}) }}';
                 url = url.replace("trajetId", trajetId);
+
+                //Reset du message d'erreur précédent si besoin
+                errorMsg.innerHTML = "";
 
                 fetch(url).then(function(response){
                     if(!response.ok){
                         if(response.status === 401){
                             console.log("vous n'êtes pas autorisé à réserver !");
+                            console.log(response);
+                        }
+                        if(response.status === 405){
+                            console.log("demandé déjà traitée");
+                            errorMsg.innerHTML = "Impossible ! Demande déjà traitée !";
                             console.log(response);
                         }
                         if(response.status === 406){
@@ -344,14 +354,14 @@
                 }).then(response => {
                     let btnReservation = document.getElementById('btn-resa-'+trajetId);
 
-                    if(btnReservation.innerHTML === "Annuler la réservation"){
+                    if(btnReservation.innerHTML === "Annuler ma réservation"){
                         //renomme le bouton et modifie la mise en forme
                         btnReservation.innerHTML = "Réserver";
                         btnReservation.classList.remove('btn-secondary');
                         btnReservation.classList.add('btn-success');
                     }else{
                         //renomme le bouton et modifie la mise en forme
-                        btnReservation.innerHTML = "Annuler la réservation";
+                        btnReservation.innerHTML = "Annuler ma réservation";
                         btnReservation.classList.remove('btn-success');
                         btnReservation.classList.add('btn-secondary');
                     }

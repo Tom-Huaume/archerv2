@@ -12,7 +12,7 @@
         {# tableau des évenements #}
         {% for e in evenements__etapes__inscriptions__membres %}
             <div class="row">
-                <div class="col-7 card border-secondary mb-5">
+                <div class="col-6 card border-secondary mb-5">
                     <table class="table">
                         <thead>
                         <tr class="delete-m-p">
@@ -56,11 +56,11 @@
 
                                     {% for i in et.inscriptionEtapes %}
                                         {% if app.user == i.membre %}
-                                            {% if i.validation == 0 %}
+                                            {% if i.validation == 0 and i.validation is not null %}
                                                 <p class="text-danger">Inscription refusée</p>
                                             {% elseif i.validation == 1 %}
                                                 <p class="text-success">Inscription validée</p>
-                                            {% else %}
+                                            {% elseif i.validation is null %}
                                                 <p>En attent de validation</p>
                                             {% endif %}
                                         {% endif %}
@@ -89,7 +89,13 @@
                                             <i class="bi bi-arrow-bar-right m-2" style="color: #18BC9C"></i>
                                             <p class="my-2 ms-2">{{ t.titre }} :</p>
                                             <p class="my-2 ms-2"> {{ t.organisateur.prenom }} {{ t.organisateur.nom }}</p>
-                                            <p class="my-2 ms-2 text-danger">(Refusé)</p>
+                                            {% for r in t.reservations %}
+                                                {% if r.membre == app.user %}
+                                                    <p class="my-2 ms-2 {{ r.validation == 1 ? "text-success"}} {{ (r.validation is not null) and r.validation == 0 ? "text-danger"}}">
+                                                        ({{ r.validation == 1 ? "Accepté" }}{{ r.validation is null ? "En attente de validation" }}{{ r.validation == 0 and r.validation is not null ? "Refusé" }})
+                                                    </p>
+                                                {% endif %}
+                                            {% endfor %}
                                         </li>
                                     {% endif %}
                                 {% endfor %}
@@ -99,24 +105,32 @@
 
                 </div>
 
-                <div class="col-5">
+                <div class="col-6">
                     {# Trajets proposés #}
                     {% for t in trajetsConducteur %}
                         {% if e.id == t.evenement.id %}
-                        <div class="card p-3" style="display:inline-block;">
-                        <h5 class="m-2">Demandes pour votre trajet {{ t.titre }}</h5>
-                        <ul>
-                            <li class="d-flex ps-0">
-                                {% if t.reservations|length == 0 %} <p class="text-secondary">Aucune réservation</p> {% endif %}
-                                {% for r in t.reservations %}
-                                        <i class="bi bi-arrow-bar-right m-2 ps-0 text-success"></i>
-                                        <p class="m-2">{{ r.membre.prenom }}</p>
-                                        <p class="m-2">{{ r.membre.nom }}</p>
-                                        <p class="m-2">{{ r.membre.telMobile }}</p>
-                                        <button class="m-1 btn btn-sm btn-success" style="border-radius: 25px; max-height: 2rem;">Accepter</button>
-                                        <button class="m-1 btn btn-sm btn-danger" style="border-radius: 25px; max-height: 2rem;">Refuser</button>
-                                {% endfor %}
-                            </li>
+                        <div class="card p-3" style="display:inline-block; font-size: 90%;">
+                            <div class="d-flex">
+                                <h6 class="m-2">Demandes pour votre trajet <b>{{ t.titre }}</b>  </h6><h6 class="m-2" style="color: #828D9D;">(<span id="counter-{{ t.id }}">{{ t.nbPlaces }}</span> places)</h6>
+                            </div>
+
+                            <span class="ms-5" id="msg-error-{{ t.id }}" style="color: #da2823;"></span>
+                        <ul class="d-block">
+                            {% if t.reservations|length == 0 %}
+                                <p class="text-secondary">Aucune réservation</p>
+                            {% endif %}
+                            {% for r in t.reservations %}
+                                <li class="d-flex ps-0 justify-content-start">
+                                    <i class="bi bi-arrow-bar-right m-2 ps-0 text-success"></i>
+                                    <p class="m-2">{{ r.membre.prenom }}</p>
+                                    <p class="m-2">{{ r.membre.nom }}</p>
+                                    <p class="m-2">{{ r.membre.telMobile }}</p>
+                                    <button id="btn-activate-{{ r.id }}" data-id="{{ r.id }}" data-trajet="{{ r.trajet.id }}" class="m-1 btn btn-sm btnAccepter {{ (r.validation is null) or r.validation == 1 ? "btn-success"}} {{ (r.validation is not null) and r.validation == 0 ? "btn-danger"}}" style="border-radius: 25px; max-height: 2rem;">{{ r.validation == 1 ? "Accepté" }}{{ r.validation is null ? "Accepter" }}{{ r.validation == 0 and r.validation is not null ? "Refusé" }}</button>
+                                    {% if r.validation is null %}
+                                        <button id="btn-deactivate-{{ r.id }}" data-id="{{ r.id }}" data-trajet="{{ r.trajet.id }}" class="m-1 btn btn-sm btnRefuser btn-danger" style="border-radius: 25px; max-height: 2rem;">Refuser</button>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
                         </ul>
                         </div>
                         {% endif %}
@@ -132,4 +146,137 @@
 
 {% block javascripts %}
     {{ parent() }}
+
+    <script>
+        //déclaration des boutons
+        let btns = document.querySelectorAll(".btnAccepter");
+        let btnsdeactivate = document.querySelectorAll(".btnRefuser");
+
+        btnsdeactivate.forEach(btn => {
+            btn.addEventListener("click", function(){
+
+                //déclaration des variables inscription et étape associée
+                let inscriptionId = this.dataset.id;
+                let trajetId = this.dataset.trajet;
+                let errorMsg = document.getElementById('msg-error-'+trajetId);
+                let url = '{{ path('trajet_refuser', {'id' : 'inscriptionId'}) }}';
+                url = url.replace("inscriptionId", inscriptionId);
+
+                //Reset du message d'erreur précédent si besoin
+                errorMsg.innerHTML = "";
+                errorMsg.style.display = "none";
+
+                fetch(url).then(function(response) {
+                    if(!response.ok){
+                        if(response.status === 304){
+                            errorMsg.style.display = "block";
+                            errorMsg.innerHTML = "Pas de place disponible !";
+                            console.log("Pas de place disponible")
+                        }
+                        if(response.status === 403){
+                            errorMsg.style.display = "block";
+                            errorMsg.innerHTML = "Vous n'êtes pas l'organisateur !";
+                            console.log("Pas de place disponible")
+                        }
+                        throw Error(response.statusText);
+                    }
+                    return response;
+                }).then(response => {
+                    let btnActivate = document.getElementById('btn-activate-'+inscriptionId);
+                    let btnDeactivate = document.getElementById('btn-deactivate-'+inscriptionId);
+
+                    if(btnActivate.innerHTML === "Accepter"){
+                        //renomme le bouton
+                        btnActivate.innerHTML = "Refusé";
+                        btnActivate.classList.remove('btn-success');
+                        btnActivate.classList.add('btn-danger');
+                        //masquer le 2ème bouton
+                        btnDeactivate.style.display = "none";
+                    }
+                    //console.log(response.statusText);
+                    console.log("Mise à jour statut effectuée");
+                }).catch(function (error){
+                    console.log(response);
+                    console.log("la route est valide mais renvoie une erreur :");
+                    console.log(error);
+                })
+            })
+        })
+
+        btns.forEach(btn => {
+            btn.addEventListener("click", function(){
+
+                //déclaration des variables inscription et étape associée
+                let inscriptionId = this.dataset.id;
+                let trajetId = this.dataset.trajet;
+                let errorMsg = document.getElementById('msg-error-'+trajetId);
+                let url = '{{ path('trajet_accepter', {'id' : 'inscriptionId'}) }}';
+                url = url.replace("inscriptionId", inscriptionId);
+
+                //Reset du message d'erreur précédent si besoin
+                errorMsg.innerHTML = "";
+
+                fetch(url).then(function(response) {
+                    if(!response.ok){
+                        if(response.status === 304){
+                            errorMsg.innerHTML = "Pas de place disponible !";
+                            console.log("Pas de place disponible")
+                        }
+                        if(response.status === 403){
+                            errorMsg.innerHTML = "Vous n'êtes pas l'organisateur !";
+                            errorMsg.style.display = "block";
+                            console.log("Pas de place disponible")
+                        }
+                        throw Error(response.statusText);
+                    }
+                    return response;
+                }).then(response => {
+                    let btnActivate = document.getElementById('btn-activate-'+inscriptionId);
+                    let btnDeactivate = document.getElementById('btn-deactivate-'+inscriptionId);
+
+                    if(btnActivate.innerHTML === "Accepter"){
+                        //renomme le bouton
+                        btnActivate.innerHTML = "Accepté";
+                        //masquer le 2ème bouton
+                        btnDeactivate.style.display = "none";
+                        //décrémente le nombre de places dans la div
+                        let nbPlaces = parseInt(document.getElementById("counter-"+trajetId).innerHTML);
+                        nbPlaces-=1;
+                        document.getElementById("counter-"+trajetId).innerHTML = nbPlaces.toString();
+                        console.log("Il reste "+nbPlaces+" places");
+
+                    }else if(btnActivate.innerHTML === "Refusé"){
+                        //renomme le bouton et modifie la mise en forme
+                        btnActivate.innerHTML = "Accepté";
+                        btnActivate.classList.remove('btn-danger');
+                        btnActivate.classList.add('btn-success');
+                        //décrémente le nombre de places dans la div
+                        let nbPlaces = parseInt(document.getElementById("counter-"+trajetId).innerHTML);
+                        nbPlaces-=1;
+                        document.getElementById("counter-"+trajetId).innerHTML = nbPlaces.toString();
+                        console.log("Il reste "+nbPlaces+" places");
+
+                    } else if(btnActivate.innerHTML === "Accepté"){
+                        //renomme le bouton et modifie la mise en forme
+                        btnActivate.innerHTML = "Refusé";
+                        btnActivate.classList.remove('btn-success');
+                        btnActivate.classList.add('btn-danger');
+                        //incrémente le nombre de places dans la div
+                        let nbPlaces = parseInt(document.getElementById("counter-"+trajetId).innerHTML);
+                        nbPlaces+=1;
+                        document.getElementById("counter-"+trajetId).innerHTML = nbPlaces.toString();
+                        console.log("Il reste "+nbPlaces+" places");
+                    }
+
+                    //console.log(response.statusText);
+                    console.log("Mise à jour statut et nombre de place effectuée");
+                }).catch(function (error){
+                    console.log(response);
+                    console.log("la route est valide mais renvoie une erreur :");
+                    console.log(error);
+                })
+            })
+        })
+
+    </script>
 {% endblock %}

@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container">
+    <div class="mx-5">
 
         <h2 class="event-title text-primary">{{ evenement.nom }}</h2>
         <h4 class="d-flex justify-content-center">Validation des demandes d'inscriptions</h4>
@@ -43,7 +43,7 @@
                     </th>
                 </tr>
                     {% for i in e.inscriptionEtapes %}
-                        <tr style=" font-size: 90%;">
+                        <tr style=" font-size: 85%;">
                             <td class="delete-m-p" style="max-width: 30rem;">
                                 {% if i.commentaire %}
 
@@ -79,10 +79,14 @@
                             <td>{{ i.arme }}</td>
                             <td>
 
-                                <button id="btn-activate-{{ i.id }}" data-id="{{ i.id }}" data-etape="{{ i.etape.id }}" class="btn btnAction btn-sm {{ i.validation ? "btn-success" : "btn-secondary"}}">{{ i.validation ? "Annuler" : "Valider" }}</button>
+                                <button style="font-size: 90%" id="btn-activate-{{ i.id }}" data-id="{{ i.id }}" data-etape="{{ i.etape.id }}" class="btn btnAccepter btn-sm {{ (i.validation is null) or i.validation == 1 ? "btn-success"}} {{ (i.validation is not null) and i.validation == 0 ? "btn-danger"}}">{{ i.validation == 1 ? "Validé" }}{{ i.validation is null ? "Valider" }}{{ i.validation == 0 and i.validation is not null ? "Refusé" }}</button>
+                                {% if i.validation is null %}
+                                    <button style="font-size: 90%" id="btn-deactivate-{{ i.id }}" data-id="{{ i.id }}" data-etape="{{ i.etape.id }}" class="btn btnRefuser btn-sm btn-warning">Refuser</button>
+                                {% endif %}
+
 
                             </td>
-                            <td style="font-size: 70%; color: #eeb870; border: none; vertical-align: middle;" >{{ i.validateur }}</td>
+                            <td style="font-size: 70%; color: #a4c0a2; border: none; vertical-align: middle;" >{{ i.validateur }}</td>
 
                         </tr>
                     {% endfor %}
@@ -91,11 +95,11 @@
         {% endfor %}
 
         <a href="{{ path('evenement_detail', {'id' : evenement.id}) }}">
-            <button class="btn btn-lg btn-primary mt-4">Retour</button>
+            <button class="btn btn-lg btn-secondary mt-4">Retour</button>
         </a>
 
         <a href="#">
-            <button class="btn btn-lg btn-warning mt-4">Envoyer les confirmations</button>
+            <button class="btn btn-lg btn-primary mt-4">Envoyer les confirmations</button>
         </a>
 
     </div>
@@ -104,17 +108,17 @@
 {% block javascripts %}
     <script>
         //déclaration des boutons
-        let btns = document.querySelectorAll(".btnAction");
-        //let nbPlaces = parseInt(placeCounter.dataset.places);
+        let btns = document.querySelectorAll(".btnAccepter");
+        let btnsdeactivate = document.querySelectorAll(".btnRefuser");
 
-        btns.forEach(btn => {
+        btnsdeactivate.forEach(btn => {
             btn.addEventListener("click", function(){
 
                 //déclaration des variables inscription et étape associée
                 let inscriptionId = this.dataset.id;
                 let etapeId = this.dataset.etape;
                 let errorMsg = document.getElementById('msg-error-'+etapeId);
-                let url = '{{ path('etapes_confirmation', {'id' : 'inscriptionId'}) }}';
+                let url = '{{ path('etape_refuser', {'id' : 'inscriptionId'}) }}';
                 url = url.replace("inscriptionId", inscriptionId);
 
                 //Reset du message d'erreur précédent si besoin
@@ -131,11 +135,66 @@
                     return response;
                 }).then(response => {
                     let btnActivate = document.getElementById('btn-activate-'+inscriptionId);
+                    let btnDeactivate = document.getElementById('btn-deactivate-'+inscriptionId);
 
                     if(btnActivate.innerHTML === "Valider"){
+                        //renomme le bouton
+                        btnActivate.innerHTML = "Refusé";
+                        btnActivate.classList.remove('btn-success');
+                        btnActivate.classList.add('btn-danger');
+                        //masquer le 2ème bouton
+                        btnDeactivate.style.display = "none";
+                    }
+                    //console.log(response.statusText);
+                    console.log("Mise à jour statut effectuée");
+                }).catch(function (error){
+                    console.log(response);
+                    console.log("la route est valide mais renvoie une erreur :");
+                    console.log(error);
+                })
+            })
+        })
+
+        btns.forEach(btn => {
+            btn.addEventListener("click", function(){
+
+                //déclaration des variables inscription et étape associée
+                let inscriptionId = this.dataset.id;
+                let etapeId = this.dataset.etape;
+                let errorMsg = document.getElementById('msg-error-'+etapeId);
+                let url = '{{ path('etape_accepter', {'id' : 'inscriptionId'}) }}';
+                url = url.replace("inscriptionId", inscriptionId);
+
+                //Reset du message d'erreur précédent si besoin
+                errorMsg.innerHTML = "";
+
+                fetch(url).then(function(response) {
+                    if(!response.ok){
+                        if(response.status === 304){
+                            errorMsg.innerHTML = "Pas de place disponible !";
+                            console.log("Pas de place disponible")
+                        }
+                        throw Error(response.statusText);
+                    }
+                    return response;
+                }).then(response => {
+                    let btnActivate = document.getElementById('btn-activate-'+inscriptionId);
+                    let btnDeactivate = document.getElementById('btn-deactivate-'+inscriptionId);
+
+                    if(btnActivate.innerHTML === "Valider"){
+                        //renomme le bouton
+                        btnActivate.innerHTML = "Validé";
+                        //masquer le 2ème bouton
+                        btnDeactivate.style.display = "none";                        //décrémente le nombre de places dans la div
+                        let nbPlaces = parseInt(document.getElementById("counter-"+etapeId).innerHTML);
+                        nbPlaces-=1;
+                        document.getElementById("counter-"+etapeId).innerHTML = nbPlaces.toString();
+                        console.log("Il reste "+nbPlaces+" places");
+
+                    }else if(btnActivate.innerHTML === "Refusé"){
                         //renomme le bouton et modifie la mise en forme
-                        btnActivate.innerHTML = "Annuler";
-                        btnActivate.classList.remove('btn-secondary');
+                        btnActivate.innerHTML = "Validé";
+                        btnActivate.classList.remove('btn-danger');
                         btnActivate.classList.add('btn-success');
                         //décrémente le nombre de places dans la div
                         let nbPlaces = parseInt(document.getElementById("counter-"+etapeId).innerHTML);
@@ -143,12 +202,11 @@
                         document.getElementById("counter-"+etapeId).innerHTML = nbPlaces.toString();
                         console.log("Il reste "+nbPlaces+" places");
 
-
-                    }else{
+                    } else{
                         //renomme le bouton et modifie la mise en forme
-                        btnActivate.innerHTML = "Valider";
+                        btnActivate.innerHTML = "Refusé";
                         btnActivate.classList.remove('btn-success');
-                        btnActivate.classList.add('btn-secondary');
+                        btnActivate.classList.add('btn-danger');
                         //incrémente le nombre de places dans la div
                         let nbPlaces = parseInt(document.getElementById("counter-"+etapeId).innerHTML);
                         nbPlaces+=1;

@@ -8,6 +8,7 @@ use App\Repository\EtapeRepository;
 use App\Repository\EvenementRepository;
 use App\Repository\InscriptionEtapeRepository;
 use App\Repository\MembreRepository;
+use App\Repository\TrajetRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\Types\Void_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -62,7 +63,7 @@ class EtapeController extends AbstractController
             $inscription->setArme($armeChoisie);
             $inscription->setEtape($etape);
             $inscription->setMembre($membre);
-            $inscription->setValidation(0);
+            $inscription->setValidation(null); //null correspond au staut non traité
             $inscription->setDateHeureInscription(new \DateTime('now'));
 
             //Persister les données
@@ -96,9 +97,33 @@ class EtapeController extends AbstractController
         ]);
     }
 
+    #[Route('/gestion/etapes/refuse/{id}', name:'etape_refuser', methods: ["GET", "PUT", "POST"])]
+    public function refuse(
+        int $id,
+        InscriptionEtapeRepository $inscriptionEtapeRepository,
+        EntityManagerInterface $entityManager
+    ) : Response
+    {
+        $inscription = $inscriptionEtapeRepository->findOneBy(array('id' => $id));
+
+        if($inscription->getValidation() == null)
+        {
+            $inscription->setValidation(0);
+            $userName = "--".$this->getUser()->getPrenom()." ".$this->getUser()->getNom();
+            $inscription->setValidateur($userName);
+            $inscription->setDateHeureValidation(new \DateTime());
+
+            //Persister les données
+            $entityManager->persist($inscription);
+            $entityManager->flush();
+        }
+
+        return new Response("success", 200);
+    }
+
     //todo: envoyer les confirmations par mail
-    #[Route('/gestion/etapes/confirmation/{id}', name:'etapes_confirmation', methods: ["GET", "PUT", "POST"])]
-    public function confirmation(
+    #[Route('/gestion/etapes/accepte/{id}', name:'etape_accepter', methods: ["GET", "PUT", "POST"])]
+    public function accepte(
         int $id,
         InscriptionEtapeRepository $inscriptionEtapeRepository,
         EntityManagerInterface $entityManager
@@ -111,7 +136,7 @@ class EtapeController extends AbstractController
         $nbPlaces = $etape->getNbInscriptionsMax();
 
         //switch valeur validation (booléen)
-        if($inscription->getValidation() == 0)
+        if($inscription->getValidation() == 0 || $inscription->getValidation() == null)
         {
             //redirection si nbPlace = 0
             if($nbPlaces <= 0 && !is_null($nbPlaces)){
@@ -134,8 +159,9 @@ class EtapeController extends AbstractController
             if(!is_null($nbPlaces)) {
                 $nbPlaces = $nbPlaces + 1;
                 $etape->setNbInscriptionsMax($nbPlaces);
-                $inscription->setValidateur(null);
-                $inscription->setDateHeureValidation(null);
+                $userName = "--".$this->getUser()->getPrenom()." ".$this->getUser()->getNom();
+                $inscription->setValidateur($userName);
+                $inscription->setDateHeureValidation(new \DateTime());
             }
         }
 
@@ -151,7 +177,8 @@ class EtapeController extends AbstractController
         int $id,
         EtapeRepository $etapeRepository,
         InscriptionEtapeRepository $inscriptionEtapeRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        MembreRepository $membreRepository
     ): Response
     {
         //récupérer inscription, étape et évènement associé
@@ -159,71 +186,31 @@ class EtapeController extends AbstractController
         $user = $this->getUser();
         $inscription = $inscriptionEtapeRepository->findOneBy(array('membre' => $user, 'etape' => $etape));
         $evenementId = $etape->getEvenement()->getId();
-        $nbPlaces = $etape->getNbInscriptionsMax();
 
-        //Si l'inscription a été validée et qu'un nombre de places max a été défini
-        if ($inscription->getValidation() == 1 && !is_null($nbPlaces)){
+        //Redirection si le user est dans la liste des membres qui ont organisé ou réservé un trajet pour cet évènement
+        $membresOrganisateurs = $membreRepository->findMembreTrajetsPourEvenement($user->getId(), $evenementId);
+        $membresPassagers = $membreRepository->findMembreReservationTrajetPourEvenement($user->getId(), $evenementId);
+        if(in_array($user, $membresPassagers) or in_array($user, $membresOrganisateurs)){
+            $this->addFlash('danger', 'Impossible de vous désister si vos participez ou avez proposé un trajet' );
+            return $this->redirectToRoute('evenement_detail', ['id' => $evenementId]);
+        }
 
-            //Incrémenter le nombre de places
-            $nbPlaces++;
-            $etape->setNbInscriptionsMax($nbPlaces);
-            $entityManager->persist($etape);
+        //Désistement accepté si la demande d'inscription n'est pas traitée
+        if(is_null($inscription->getValidation())){
+            $entityManager->remove($inscription);
+            $entityManager->flush();
+
+        }elseif($inscription->getValidation() == 0){    //redirection si traitée mais refusée
+            $this->addFlash('danger', 'Votre demande d\'inscription a déjà été refusée' );
+            return $this->redirectToRoute('evenement_detail', ['id' => $evenementId]);
+
+        }elseif ($inscription->getValidation() == 1){   //redirection si la demande a déjà été acceptée
+            $this->addFlash('danger', 'Votre demande d\'inscription a déjà été acceptée' );
+            return $this->redirectToRoute('evenement_detail', ['id' => $evenementId]);
 
         }
 
-        //Persister les données
-        $entityManager->remove($inscription);
-        $entityManager->flush();
-
-        //if($nbPlaces <= 0 && !is_null($nbPlaces)){
-
-
         return $this->redirectToRoute('evenement_detail', ['id' => $evenementId]);
     }
-
-//    #[Route('/gestion/etapes/validation/{id}', name:'etapes_validation')]
-//    public function validation(
-//        int $id,
-//        InscriptionEtapeRepository $inscriptionEtapeRepository,
-//        EntityManagerInterface $entityManager
-//    ): Response
-//    {
-//        //récupérer inscription, étape et évènement associé
-//        $inscription = $inscriptionEtapeRepository->findOneBy(array('id' => $id));
-//        $evenementId = $inscription->getEtape()->getEvenement()->getId();
-//        $etape = $inscription->getEtape();
-//        $nbPlaces = $etape->getNbInscriptionsMax();
-//
-//        //switch valeur validation (booléen)
-//        if($inscription->getValidation() == 0)
-//        {
-//            //redirection si nbPlace = 0
-//            if($nbPlaces <= 0 && !is_null($nbPlaces)){
-//                $this->addFlash('danger', 'Pas de place disponible !' );
-//                return $this->redirectToRoute('etapes_liste_inscrits', ['id' => $evenementId]);
-//            }
-//            //inscrire et décrémenter nb places si non null
-//            $inscription->setValidation(1);
-//            if(!is_null($nbPlaces)){
-//                $nbPlaces--;
-//                $etape->setNbInscriptionsMax($nbPlaces);
-//            }
-//
-//        } elseif ($inscription->getValidation() == 1)
-//        {
-//            //désinscrire et incrémenter nb places si non null
-//            $inscription->setValidation(0);
-//            if(!is_null($nbPlaces)) {
-//                $nbPlaces = $nbPlaces + 1;
-//                $etape->setNbInscriptionsMax($nbPlaces);
-//            }
-//        }
-//
-//        //Persister les données
-//        $entityManager->persist($inscription);
-//        $entityManager->flush();
-//
-//        return $this->redirectToRoute('etapes_liste_inscrits', ['id' => $evenementId]);
-//    }
 
 }
