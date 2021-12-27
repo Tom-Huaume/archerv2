@@ -20,7 +20,7 @@ class Article
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=100)
      */
     private $titre;
 
@@ -35,7 +35,7 @@ class Article
     private $dateHeureCreation;
 
     /**
-     * @ORM\OneToMany(targetEntity=PhotoArticle::class, mappedBy="article")
+     * @ORM\OneToMany(targetEntity=PhotoArticle::class, mappedBy="article", orphanRemoval=true, cascade={"persist"})
      */
     private $photos;
 

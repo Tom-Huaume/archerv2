@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ArticleRepository;
 use App\Repository\EvenementRepository;
 use App\Repository\InscriptionEtapeRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,8 +14,13 @@ class MainController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstract
     /**
      * @Route("/", name="main_home")
      */
-    public function home(EvenementRepository $evenementRepository): \Symfony\Component\HttpFoundation\Response
+    public function home(
+        EvenementRepository $evenementRepository,
+        ArticleRepository $articleRepository
+    ): Response
     {
+        $articles = $articleRepository->findAll();
+
         //$evenements = $evenementRepository->findAll();
         $dateDuJour = new \DateTime('now');
         $evenements = $evenementRepository->findFutureEvents($dateDuJour);
@@ -43,6 +49,7 @@ class MainController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstract
             "evenements" => $evenements,
             "concours" => $concours,
             "dataEvents" => $dataEvents,
+            "articles" => $articles
         ]);
     }
 

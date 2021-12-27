@@ -37,6 +37,13 @@
     height: 10rem;
 }
 
+.font-input-great{
+    font-size: 1rem;
+    color: rgb(38, 38, 39);
+    /*opacity: 0.25;*/
+    height: 25rem;
+}
+
 .font-input-little:valid{
     color: #262627;
     /*opacity: 1;*/

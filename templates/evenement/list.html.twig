@@ -23,7 +23,7 @@
                 {% for e in evenements %}
                     <a href="{{ path('evenement_detail', {'id' : e.id}) }}">
                         <div class="card border-primary mb-3 card-clickable">
-                            <div class="card-header text-primary">{{ e.lieuDestination.nom }}</div>
+                            <div class="card-header text-primary">{{ e.lieuDestination.nom }}{{" le "~e.dateHeureDebut|date('d/m/Y', 'Europe/Paris') }}</div>
                             <div class="card-body">
                                 <h4 class="card-title text-primary">{{ e.nom }}</h4>
                                 <p class="card-text text-primary">{{ e.description | nl2br }}</p>

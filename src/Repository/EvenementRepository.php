@@ -37,7 +37,7 @@ class EvenementRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('e')
             ->where('e.dateHeureDebut < :dateDuJour')
             ->setParameter('dateDuJour', $dateDuJour)
-            ->orderBy('e.dateHeureDebut', 'ASC');
+            ->orderBy('e.dateHeureDebut', 'DESC');
 
         $query = $queryBuilder->getQuery();
 

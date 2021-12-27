@@ -5,10 +5,9 @@
 {% endblock %}
 
 {% block body %}
-
     <div class="container">
 
-        <h2>Créer un article</h2>
+        <h2>Modifier l'article</h2>
 
         {{ form_start(articleForm) }}
         <div class="row">
@@ -27,18 +26,25 @@
 
         <div class="row">
             <div class="my-2 col-md-4">
-                {{ form_label(articleForm.photos) }}
+                <label for="">Ajouter une photo</label>
                 {{ form_widget(articleForm.photos) }}
             </div>
         </div>
 
+
+
+
         <div class="m-5">
-            <a class="btn btn-secondary" href="{{ path('main_home') }}">Annuler</a>
-            <button class="btn btn-primary">Créer</button>
+            <a class="btn btn-secondary" href="{{ path('main_home') }}">Retour</a>
+            <button class="btn btn-primary">Modifier</button>
         </div>
+
+
 
         {{ form_end(articleForm) }}
     </div>
 
 {% endblock %}
+
+
 

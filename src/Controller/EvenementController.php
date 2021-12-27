@@ -31,7 +31,8 @@ class EvenementController extends AbstractController
     {
 
         //générer le formulaire de création d'évènement
-        $evenements = $evenementRepository->findAll();
+        $dateDuJour = new \DateTime();
+        $evenements = $evenementRepository->findFutureEvents($dateDuJour);
 
         return $this->render('evenement/list.html.twig', [
             'evenements' => $evenements,
