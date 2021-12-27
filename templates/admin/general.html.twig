@@ -11,7 +11,6 @@
 <div class="container">
 
     <div class="row">
-
         <div class="col-md-2"></div>
 
         <div class="col">
@@ -27,7 +26,6 @@
         </div>
 
         <div class="col">
-
             <h4>Liste types d'arme </h4>
             <div  class="table-wrapper-scroll-y-arme my-custom-scrollbar-arme">
                 <table class="table table-bordered table-striped mb-0">
@@ -50,30 +48,33 @@
                             </tr>
                         {% endfor %}
                             <tr>
-                                {{ form_start(armeForm) }}
+            {{ form_start(armeForm) }}
                                     <td>
                                         {{ form_widget(armeForm.sigle) }}
+
                                     </td>
                                     <td>
                                         {{ form_widget(armeForm.designation) }}
+
                                     </td>
                                     <td>
                                         <button class="btn  btn-sm btn-secondary">Créer</button>
                                     </td>
-                                {{ form_end(armeForm) }}
                             </tr>
                         </tbody>
                     </div>
                 </table>
             </div>
-
-
+            <span class="erreur-assert">
+                {{ form_errors(armeForm.sigle) }}
+                {{ form_errors(armeForm.designation) }}
+            </span>
+            {{ form_end(armeForm) }}
         </div>
 
         <div class="col-md-2"></div>
-
-
     </div>
+
 </div>
 
 {% endblock %}

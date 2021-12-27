@@ -55,9 +55,11 @@
                         <p class="ms-3 mt-1">trajet {{ t.titre }} proposé par <b> {{ t.organisateur.prenom~" "~t.organisateur.nom }}</b></p>
                     </div>
                     {% for rt in t.reservations %}
-                        <div class="d-block" style="margin-left: 9rem;">
-                            <i class="bi bi-person-fill me-2"></i>{{ rt.membre.prenom~" "~rt.membre.nom }}
-                        </div>
+                        {% if rt.validation == 1 %}
+                            <div class="d-block" style="margin-left: 9rem;">
+                                <i class="bi bi-person-fill me-2"></i>{{ rt.membre.prenom~" "~rt.membre.nom }}
+                            </div>
+                        {% endif %}
                     {% endfor %}
                 {% endif %}
             {% endfor %}

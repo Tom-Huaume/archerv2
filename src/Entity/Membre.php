@@ -48,7 +48,7 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     private $prenom;
 
     /**
-     * @ORM\Column(type="string", length=10, nullable=true)
+     * @ORM\Column(type="string", length=10, nullable=true, unique=true)
      */
     private $numLicence;
 

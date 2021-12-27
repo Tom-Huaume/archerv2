@@ -34,16 +34,11 @@
                 </ul>
             {% endif %}
             {% if is_granted("ROLE_ADMIN") %}
-                <ul class="navbar-nav d-flex">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Espace admin</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{path('admin_general')}}">Général</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Affectation des droits</a>
-                        </div>
-                    </li>
-                </ul>
+            <ul class="navbar-nav me-2">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{path('admin_general')}}">Espace admin</a>
+                </li>
+            </ul>
             {% endif %}
             {% if app.user %}
                 <div class="dropdown">

@@ -170,6 +170,21 @@ a{
     text-align: center;
 }
 
+/* Mise en forme des messages d'erreur des assert */
+.erreur-assert ul li{
+    list-style-type: none;
+    color: #ce2a2a;
+    margin: 0;
+    padding: 0;
+}
+
+.erreur-assert ul{
+    list-style-type: none;
+    color: #ce2a2a;
+    margin: 0;
+    padding: 0;
+}
+
 /*____images____*/
 .logo-titre{
     height: 150px;

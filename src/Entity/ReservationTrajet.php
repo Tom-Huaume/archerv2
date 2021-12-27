@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use App\Repository\ReservationTrajetRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
+ * @UniqueEntity(fields={"membre", "trajet"}, message="Vous avez déjà fait une réservation !")
  * @ORM\Entity(repositoryClass=ReservationTrajetRepository::class)
  */
 class ReservationTrajet

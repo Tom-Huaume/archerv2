@@ -24,6 +24,7 @@ class EtapeController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         EtapeRepository $etapeRepository,
+        InscriptionEtapeRepository $inscriptionEtapeRepository,
         MembreRepository $membreRepository,
     ): Response
     {
@@ -32,6 +33,13 @@ class EtapeController extends AbstractController
         $membre = $membreRepository->findOneBy(array('id' => $userId));
         $etape = $etapeRepository->findOneBy(array('id' => $id));
         $evenementId = $etape->getEvenement()->getId();
+
+        //check si il y a déjà un enregistrement
+        $ancienEnregistrement = $inscriptionEtapeRepository->findOneBy(array('membre' => $membre, 'etape' => $etape));
+        if($ancienEnregistrement != null){
+            $this->addFlash('danger', 'Vous avez déjà fait une demande pour cette étape !' );
+            return $this->redirectToRoute('evenement_detail', ['id' => $evenementId]);
+        }
 
         //Récupérer la liste des désignations d'arme
         $listeArmes = $etape->getArmes()->toArray();
@@ -191,7 +199,7 @@ class EtapeController extends AbstractController
         $membresOrganisateurs = $membreRepository->findMembreTrajetsPourEvenement($user->getId(), $evenementId);
         $membresPassagers = $membreRepository->findMembreReservationTrajetPourEvenement($user->getId(), $evenementId);
         if(in_array($user, $membresPassagers) or in_array($user, $membresOrganisateurs)){
-            $this->addFlash('danger', 'Impossible de vous désister si vos participez ou avez proposé un trajet' );
+            $this->addFlash('danger', 'Désistement impossible si vous participez ou avez proposé un trajet' );
             return $this->redirectToRoute('evenement_detail', ['id' => $evenementId]);
         }
 

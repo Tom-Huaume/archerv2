@@ -6,8 +6,13 @@ use App\Repository\ArmeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @UniqueEntity(fields={"sigle", "designation"}, message="Ce couple sigle/désignation existe déjà !")
+ * @UniqueEntity(fields={"sigle"}, message="Ce sigle existe déjà !")
+ * @UniqueEntity(fields={"designation"}, message="Cette désignation existe déjà !")
  * @ORM\Entity(repositoryClass=ArmeRepository::class)
  */
 class Arme
@@ -20,12 +25,13 @@ class Arme
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=10, nullable=true)
+     * @ORM\Column(type="string", length=10, unique=true, nullable=true)
      */
     private $sigle;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank(message="Vous devez saisir une désignation")
+     * @ORM\Column(type="string", length=50, unique=true)
      */
     private $designation;
 
