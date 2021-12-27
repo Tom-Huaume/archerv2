@@ -31,7 +31,15 @@
             </div>
         </div>
 
-
+        <div class="row">
+            {% for p in article.photos %}
+                <div class="col-md-2">
+                    <img src="{{ asset('/img/photo/article/'~p.image) }}" alt="Image" width="250" height="150">
+                    <a href="{{ path('article_delete_image', {'id': p.id}) }}"
+                    data-delete data-token="{{ csrf_token('delete'~p.id) }}" class="text-danger">Supprimer</a>
+                </div>
+            {% endfor %}
+        </div>
 
 
         <div class="m-5">
@@ -46,5 +54,8 @@
 
 {% endblock %}
 
+{% block javascripts %}
+    <script src="{{ asset('js/images.js') }}"></script>
+{% endblock %}
 
 

@@ -9,6 +9,7 @@ use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DomCrawler\Image;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -105,7 +106,8 @@ class ArticleController extends AbstractController
         }
 
         return $this->render('article/update.html.twig', [
-            'articleForm' => $articleForm->createView()
+            'articleForm' => $articleForm->createView(),
+            'article' => $article
         ]);
     }
 
@@ -119,9 +121,44 @@ class ArticleController extends AbstractController
     {
         $article = $articleRepository->findOneBy(array('id' => $id));
 
+        foreach ($article->getPhotos() as $photo){
+            unlink($this->getParameter('article_directory').'/'.$photo->getImage());
+            $entityManager->remove($photo);
+            $entityManager->flush();
+        }
+
         $entityManager->remove($article);
         $entityManager->flush();
         $this->addFlash('danger', 'Article supprimé !');
         return $this->redirectToRoute('main_home');
+    }
+
+    #[Route('/gestion/article/delete/image/{id}', name: 'article_delete_image', methods: ["DELETE"])]
+    public function deleteImage(
+        PhotoArticle $photoArticle,
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): JsonResponse
+    {
+
+        $data = json_decode($request->getContent(), true);
+
+        //On vérifie si le token est valide
+        if($this->isCsrfTokenValid('delete'.$photoArticle->getId(), $data['_token'])){
+            //supprimer le fichier
+            $nom = $photoArticle->getImage();
+            unlink($this->getParameter('article_directory').'/'.$nom);
+
+            //supprimer l'entrée de la base
+            $entityManager->remove($photoArticle);
+            $entityManager->flush();
+
+            //réponse en json
+            return new JsonResponse(['success' => 1]);
+
+        }else{
+            return new JsonResponse(['error' => 'Token Invalide'], 400);
+        }
+
     }
 }
