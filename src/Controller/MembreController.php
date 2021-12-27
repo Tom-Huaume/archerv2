@@ -249,4 +249,38 @@ class MembreController extends AbstractController
             'membreForm' => $membreForm->createView()
         ]);
     }
+
+    #[Route('/admin/membre/affecter/{id}', name:'profil_grant')]
+    public function affecter(
+        int $id,
+        MembreRepository $membreRepository,
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): Response
+    {
+
+        $membre = $membreRepository->findOneBy(array('id' => $id));
+
+        //générer le formulaire de modif dans la vue
+        if($this->getUser()->getRoles() == array("ROLE_ADMIN")){
+
+            //switch role
+            if($membre->getRoles() == array("ROLE_SECRETAIRE")){
+                $membre->setRoles(array("ROLE_USER"));
+            }elseif ($membre->getRoles() == array("ROLE_USER")){
+                $membre->setRoles(array("ROLE_SECRETAIRE"));
+            }
+
+            //MAJ BDD
+            $entityManager->persist($membre);
+            $entityManager->flush();
+
+            $this->addFlash('warning', 'Statut modifié pour ce membre');
+        }else{
+
+            $this->addFlash('danger', 'Vous n\'avez pas les droits nécessaires');
+        }
+        return $this->redirectToRoute('membre_update', ['id' => $id]);
+
+    }
 }

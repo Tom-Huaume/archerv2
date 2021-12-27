@@ -31,12 +31,14 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="d-flex flex-row mt-4">
             {% for p in article.photos %}
-                <div class="col-md-2">
-                    <img src="{{ asset('/img/photo/article/'~p.image) }}" alt="Image" width="250" height="150">
-                    <a href="{{ path('article_delete_image', {'id': p.id}) }}"
-                    data-delete data-token="{{ csrf_token('delete'~p.id) }}" class="text-danger">Supprimer</a>
+                <div class="d-block">
+                    <img src="{{ asset('/img/photo/article/'~p.image) }}" alt="Image" class="image-edit">
+                    <div>
+                        <a href="{{ path('article_delete_image', {'id': p.id}) }}"
+                       data-delete data-token="{{ csrf_token('delete'~p.id) }}" class="text-danger">Supprimer</a>
+                    </div>
                 </div>
             {% endfor %}
         </div>

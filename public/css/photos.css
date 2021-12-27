@@ -1,0 +1,29 @@
+.slide{
+    height: 290px;
+}
+
+.carousel-inner{
+    height: 350px;
+}
+
+.carousel-item{
+    height: 350px;
+}
+
+.img-wrapper{
+
+}
+
+.image-min{
+    width: 50%;
+    height: 350px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.image-edit{
+    max-width: 50%;
+    max-height: 350px;
+    object-fit: cover;
+    object-position: center;
+}

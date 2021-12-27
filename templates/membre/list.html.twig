@@ -13,12 +13,12 @@
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
+                    <th scope="col">Licence</th>
                     <th scope="col">Nom</th>
                     <th scope="col">Prénom</th>
                     <th scope="col">sexe</th>
                     <th scope="col">Email</th>
                     <th scope="col">Lat.</th>
-                    <th scope="col">Licence</th>
                     <th scope="col">Date de naissance</th>
                     <th scope="col">Téléphone</th>
                     <th scope="col">Cat.</th>
@@ -31,12 +31,18 @@
                 {# todo: réduire la taille de la police pour pouvoir tout afficher #}
                 {% for m in membres %}
                     <tr {% if is_granted("ROLE_ADMIN") %} data-href="{{ path('membre_update', {'id' : m.id}) }}{% endif %}">
+                        <td>{{ m.numLicence }}
+                            {% if m.roles == ["ROLE_SECRETAIRE"] %}
+                                <i class="bi bi-award-fill ms-1"></i>
+                            {% elseif m.roles == ["ROLE_ADMIN"] %}
+                                <i class="bi bi-star-fill ms-1"></i>
+                            {% endif %}
+                        </td>
                         <td>{{ m.nom }}</td>
                         <td>{{ m.prenom }}</td>
                         <td>{{ m.sexe }}</td>
                         <td>{{ m.email }}</td>
                         <td>{{ m.lateralite }}</td>
-                        <td>{{ m.numLicence }}</td>
                         <td>{{ m.dateNaissance |date('d/m/Y') }} </td>
                         <td>{{ m.telMobile }} </td>
                         <td>{{ m.categorieAge }} </td>
@@ -58,6 +64,10 @@
                 {# formulire création #}
                 <tr>
                     <td>
+                        {{ form_widget(membreForm.numLicence) }}
+                        <small class="form-text text-muted">{{ form_errors(membreForm.numLicence) }}</small>
+                    </td>
+                    <td>
                         {{ form_widget(membreForm.nom) }}
                         <small class="form-text text-muted">{{ form_errors(membreForm.nom) }}</small>
                     </td>
@@ -76,10 +86,6 @@
                     <td>
                         {{ form_widget(membreForm.lateralite) }}
                         <small class="form-text text-muted">{{ form_errors(membreForm.lateralite) }}</small>
-                    </td>
-                    <td>
-                        {{ form_widget(membreForm.numLicence) }}
-                        <small class="form-text text-muted">{{ form_errors(membreForm.numLicence) }}</small>
                     </td>
                     <td>
                         {{ form_widget(membreForm.dateNaissance) }}
@@ -107,12 +113,12 @@
         </table>
     </div>
         {{ form_end(membreForm) }}
-    <div class="row">
+    <div class="row mt-4">
         <div class="col-md-9"></div>
         <div class="col-md-2">
             {{ form_start(uploadForm) }}
             {{ form_widget(uploadForm) }}
-            <button>Mettre à jour</button>
+            <button class="btn btn-primary my-4">Mettre à jour</button>
             {{ form_end(uploadForm) }}
         </div>
         <div class="col-md-1"></div>

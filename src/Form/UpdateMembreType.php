@@ -14,7 +14,7 @@ class UpdateMembreType extends AbstractType
         $builder
             ->add('fichier', FileType::class, [
                 'mapped'=>false,
-                'label' => 'Mise à jour par fichier (xls ou csv)',
+                'label' => 'Mise à jour par fichier CSV',
                 'required' => false,
                 'attr'=>[
                     'class'=>'form-control'

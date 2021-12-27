@@ -6,25 +6,52 @@
 
 {% block body %}
 
-    <h2>Profil membre</h2>
+    <h2 class="my-4">Profil membre</h2>
     <div class="container">
-        <div class="">
+        <div class="row">
+            <div class="col-md-3">
 
-            {{ form_start(membreForm) }}
-            {{ form_widget(membreForm) }}
-            <br>
-            {% if membre.roles != ["ROLE_USER"] %}
-                <a href="{{ path('membre_list') }}">
-                    <span class="btn btn-primary">Retour</span>
-                </a>
-            {% else %}
-            <a href="{{ path('membre_list') }}">
-                <span class="btn btn-primary">Annuler</span>
-            </a>
-            <button class="btn btn-success">Modifier</button>
-            {{ form_end(membreForm) }}
-            {% endif %}
+            </div>
 
+            <div class="col-md-5">
+                {{ form_start(membreForm) }}
+                {{ form_widget(membreForm) }}
+                <br>
+                {% if app.user.roles != ["ROLE_ADMIN"] %}
+                    <a href="{{ path('membre_list') }}">
+                        <span class="btn btn-primary">Retour</span>
+                    </a>
+                {% else %}
+                    <a href="{{ path('membre_list') }}">
+                        <span class="btn btn-primary">Retour</span>
+                    </a>
+                    <button class="btn btn-success">Modifier</button>
+                    {{ form_end(membreForm) }}
+                {% endif %}
+            </div>
+
+            <div class="col-md-4 d-flex justify-content-left">
+                <div style="text-align: center;">
+                    {% if membre.roles == ["ROLE_SECRETAIRE"] %}
+                        <a href="{{ path('profil_grant', {'id': membre.id}) }}"><i class="bi bi-award-fill" style="font-size: 5rem;"></i>
+                        <h4>Secrétaire</h4></a>
+                    {% elseif  membre.roles == ["ROLE_USER"] %}
+                    <a href="{{ path('profil_grant', {'id': membre.id}) }}"><i class="bi bi-person-fill" style="font-size: 5rem;"></i>
+                        <h4>Utilisateur</h4></a>
+                    {% elseif  membre.roles == ["ROLE_ADMIN"] %}
+                        <i class="bi bi-star-fill" style="font-size: 5rem;"></i>
+                            <h4>Admin</h4>
+                    {% endif %}
+                </div>
+            </div>
         </div>
+
+
+
+
     </div>
+{% endblock %}
+
+{% block javascripts %}
+
 {% endblock %}
