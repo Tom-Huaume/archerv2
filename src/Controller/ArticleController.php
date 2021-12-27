@@ -53,7 +53,7 @@ class ArticleController extends AbstractController
 
             $entityManager->persist($article);
             $entityManager->flush();
-            $this->addFlash('success', 'Article modifié !');
+            $this->addFlash('success', 'Article enregistré !');
             return $this->redirectToRoute('main_home');
         }
 
@@ -101,7 +101,7 @@ class ArticleController extends AbstractController
 
             $entityManager->persist($article);
             $entityManager->flush();
-            $this->addFlash('success', 'Article enregistré !');
+            $this->addFlash('success', 'Article modifié !');
             return $this->redirectToRoute('main_home');
         }
 
