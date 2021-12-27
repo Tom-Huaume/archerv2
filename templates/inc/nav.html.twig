@@ -13,7 +13,7 @@
                     <a class="nav-link" href="{{ path('evenement_list') }}">Evènements</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('trajet_list') }}">Récap de mes inscriptions</a>
+                    <a class="nav-link" href="{{ path('trajet_list') }}">Mes inscriptions</a>
                 </li>
                 {% endif %}
             </ul>
@@ -26,7 +26,7 @@
                         <a class="nav-link" href="{{ path('membre_list') }}">Membres</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Articles</a>
+                        <a class="nav-link" href="{{ path('article_create') }}">Articles</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{path('lieu_create')}}">Lieux</a>

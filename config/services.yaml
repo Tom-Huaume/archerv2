@@ -6,6 +6,7 @@
 parameters:
     update_directory: '%kernel.project_dir%/src/import'
     event_directory: '%kernel.project_dir%/public/img/photo/evenement'
+    article_directory: '%kernel.project_dir%/public/img/photo/article'
 services:
     # default configuration for services in *this* file
     _defaults:

@@ -39,6 +39,11 @@ class Article
      */
     private $photos;
 
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $auteur;
+
     public function __construct()
     {
         $this->photos = new ArrayCollection();
@@ -111,6 +116,18 @@ class Article
                 $photo->setArticle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAuteur(): ?string
+    {
+        return $this->auteur;
+    }
+
+    public function setAuteur(?string $auteur): self
+    {
+        $this->auteur = $auteur;
 
         return $this;
     }
