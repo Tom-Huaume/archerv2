@@ -57,6 +57,8 @@ class TrajetType extends AbstractType
                 'label' => 'Nombre de places',
                 'attr'=>[
                     'class'=>'form-control input-inscr-event',
+                    'min' => 1,
+                    'max' => 10
                 ]
             ])
 

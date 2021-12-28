@@ -32,7 +32,6 @@ class EvenementType extends AbstractType
             ])
 
             ->add('nom', TextType::class, [
-                'mapped' => false,
                 'label' => 'Quel titre voulez-vous donner à votre évènement ?',
                 'attr'=>[
                     'class'=>'form-control font-input',
@@ -40,7 +39,6 @@ class EvenementType extends AbstractType
             ])
 
             ->add('description', TextareaType::class, [
-                'mapped' => false,
                 'required' => false,
                 'label' => 'Décrivez votre évènement',
                 'attr'=>[
@@ -50,7 +48,6 @@ class EvenementType extends AbstractType
             ])
 
             ->add('dateHeureDebut', DateTimeType::class, [
-                'mapped' => false,
                 'label' => 'Date et heure de début de l\'évènement',
                 'html5' => true,
                 'widget' => 'single_text',
@@ -60,7 +57,6 @@ class EvenementType extends AbstractType
             ])
 
             ->add('dateHeureFin', DateTimeType::class, [
-                'mapped' => false,
                 'label' => 'Date et heure de fin de l\'évènement',
                 'html5' => true,
                 'widget' => 'single_text',
@@ -70,7 +66,7 @@ class EvenementType extends AbstractType
             ])
 
             ->add('dateHeureLimiteInscription', DateTimeType::class, [
-                'mapped' => false,
+                'label' => 'Date et heure limite pour s\'inscrire',
                 'html5' => true,
                 'widget' => 'single_text',
                 'attr'=>[
@@ -79,16 +75,15 @@ class EvenementType extends AbstractType
             ])
 
             ->add('nbInscriptionsMax', IntegerType::class, [
-                'mapped' => false,
                 'required' => false,
                 'label' => 'Places disponibles',
                 'attr'=>[
                     'class'=>'form-control input-inscr-event',
+                    'min' => 1
                 ]
             ])
 
             ->add('tarif', TextType::class, [
-                'mapped' => false,
                 'required' => false,
                 'label' => 'Voulez-vous indiquer un prix ?',
                 'attr'=>[

@@ -98,7 +98,7 @@ class EvenementController extends AbstractController
                 $lieu->setList(1);
 
                 $entityManager->persist($lieu);
-                //$entityManager->flush();
+                $entityManager->flush();
 
                 $lieuDestination = $lieu;
             }
@@ -181,8 +181,28 @@ class EvenementController extends AbstractController
         $etapes = $evenement->getEtapes();
         $trajets = $evenement->getTrajets();
 
+        //Vérifier qu'au moins une arme est sélectionnée'
+        if($etapeForm->isSubmitted()){
+            if($etapeForm["arme"]->getData() == null){
+                $this->addFlash('danger', 'L\'étape doit comporter au moins une arme');
+                return $this->redirectToRoute('evenement_detail', ['id' => $id]);
+            }
+        }
+
         //Traitement du formulaire étape
         if($etapeForm->isSubmitted() && $etapeForm->isValid()){
+
+            //Vérifier que l'étape débute après la date de début de lévènement
+            if(!($etapeForm["dateHeureDebut"]->getData() >= $evenement->getDateHeureDebut())){
+                $this->addFlash('danger', 'L\'étape doit commencer après la date de début de l\'évènement');
+                return $this->redirectToRoute('evenement_detail', ['id' => $id]);
+            }
+
+            //Vérifier que l'étape commence avant la date de fin de lévènement
+            if(!($etapeForm["dateHeureDebut"]->getData() <= $evenement->getDateHeureFin())){
+                $this->addFlash('danger', 'L\'étape doit commencer avant la date de fin de l\'évènement');
+                return $this->redirectToRoute('evenement_detail', ['id' => $id]);
+            }
 
             //Ajouter champs manquants
             $etape->setDateHeureCreation(new \DateTime());

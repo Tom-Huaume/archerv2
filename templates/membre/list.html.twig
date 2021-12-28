@@ -9,6 +9,23 @@
     {{ form_start(membreForm) }}
 
     <h2>Membres</h2>
+    <div class="d-flex justify-content-center mb-5">
+        <div class="d-block">
+            <span class="erreur-assert">{{ form_errors(membreForm.numLicence) }}</span>
+            <span class="erreur-assert">{{ form_errors(membreForm.nom) }}</span>
+            <span class="erreur-assert">{{ form_errors(membreForm.prenom) }}</span>
+            <span class="erreur-assert">{{ form_errors(membreForm.sexe) }}</span>
+            <span class="erreur-assert">{{ form_errors(membreForm.email) }}</span>
+            <span class="erreur-assert">{{ form_errors(membreForm.lateralite) }}</span>
+            <span class="erreur-assert">{{ form_errors(membreForm.dateNaissance) }}</span>
+            <span class="erreur-assert">{{ form_errors(membreForm.telMobile) }}</span>
+            <span class="erreur-assert">{{ form_errors(membreForm.categorieAge) }}</span>
+            <span class="erreur-assert">{{ form_errors(membreForm.typeLicence) }}</span>
+        </div>
+    </div>
+
+
+
     <div class="table-responsive" style="font-size: 90%;">
         <table class="table table-bordered table-hover">
             <thead>
@@ -35,7 +52,7 @@
                             {% if m.roles == ["ROLE_SECRETAIRE"] %}
                                 <i class="bi bi-award-fill ms-1"></i>
                             {% elseif m.roles == ["ROLE_ADMIN"] %}
-                                <i class="bi bi-star-fill ms-1"></i>
+                                <i class="bi bi-star-fill ms-1" style="color: darkgoldenrod"></i>
                             {% endif %}
                         </td>
                         <td>{{ m.nom }}</td>
@@ -65,43 +82,43 @@
                 <tr>
                     <td>
                         {{ form_widget(membreForm.numLicence) }}
-                        <small class="form-text text-muted">{{ form_errors(membreForm.numLicence) }}</small>
+                        <small class="erreur-assert form-text text-muted">{{ form_errors(membreForm.numLicence) }}</small>
                     </td>
                     <td>
                         {{ form_widget(membreForm.nom) }}
-                        <small class="form-text text-muted">{{ form_errors(membreForm.nom) }}</small>
+                        <small class="erreur-assert form-text text-muted">{{ form_errors(membreForm.nom) }}</small>
                     </td>
                     <td>
                         {{ form_widget(membreForm.prenom) }}
-                        <small class="form-text text-muted">{{ form_errors(membreForm.prenom) }}</small>
+                        <small class="erreur-assert form-text text-muted">{{ form_errors(membreForm.prenom) }}</small>
                     </td>
                     <td>
                         {{ form_widget(membreForm.sexe) }}
-                        <small class="form-text text-muted">{{ form_errors(membreForm.sexe) }}</small>
+                        <small class="erreur-assert form-text text-muted">{{ form_errors(membreForm.sexe) }}</small>
                     </td>
                     <td>
                         {{ form_widget(membreForm.email) }}
-                        <small class="form-text text-muted">{{ form_errors(membreForm.email) }}</small>
+                        <small class="erreur-assert form-text text-muted">{{ form_errors(membreForm.email) }}</small>
                     </td>
                     <td>
                         {{ form_widget(membreForm.lateralite) }}
-                        <small class="form-text text-muted">{{ form_errors(membreForm.lateralite) }}</small>
+                        <small class="erreur-assert form-text text-muted">{{ form_errors(membreForm.lateralite) }}</small>
                     </td>
                     <td>
                         {{ form_widget(membreForm.dateNaissance) }}
-                        <small class="form-text text-muted">{{ form_errors(membreForm.dateNaissance) }}</small>
+                        <small class="erreur-assert form-text text-muted">{{ form_errors(membreForm.dateNaissance) }}</small>
                     </td>
                     <td>
                         {{ form_widget(membreForm.telMobile) }}
-                        <small class="form-text text-muted">{{ form_errors(membreForm.telMobile) }}</small>
+                        <small class="erreur-assert form-text text-muted">{{ form_errors(membreForm.telMobile) }}</small>
                     </td>
                     <td>
                         {{ form_widget(membreForm.categorieAge) }}
-                        <small class="form-text text-muted">{{ form_errors(membreForm.categorieAge) }}</small>
+                        <small class="erreur-assert form-text text-muted">{{ form_errors(membreForm.categorieAge) }}</small>
                     </td>
                     <td>
                         {{ form_widget(membreForm.typeLicence) }}
-                        <small class="form-text text-muted">{{ form_errors(membreForm.typeLicence) }}</small>
+                        <small class="erreur-assert form-text text-muted">{{ form_errors(membreForm.typeLicence) }}</small>
                     </td>
                     <td>
                         <button class="btn btn-sm btn-secondary small-btn">Créer</button>

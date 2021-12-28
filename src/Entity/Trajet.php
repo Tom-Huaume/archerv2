@@ -40,7 +40,8 @@ class Trajet
     private $dateHeureDepart;
 
     /**
-     * @Assert\Length(min=1)
+     * @Assert\Length(min=1, max=10)
+     * @Assert\Positive(message="Merci de renseigner une nombre supérieur à zéro")
      * @Assert\NotBlank(message="Vous devez préciser le nombre de places")
      * @ORM\Column(type="integer")
      */

@@ -46,28 +46,28 @@
                     <div class="form-group">
                         <p class="mb-2 font-question"> {{ form_label(evenementForm.nom) }}</p>
                         <p>{{ form_widget(evenementForm.nom) }}</p>
-                        <small id="emailHelp" class="form-text text-muted">{{ form_errors(evenementForm.nom) }}</small>
+                        <span class="erreur-assert">{{ form_errors(evenementForm.nom) }}</span>
                     </div>
                 </div>
                 <div class="input-wrapper">
                     <div class="form-group">
                         <p class="mb-2 font-question">{{ form_label(evenementForm.description) }}</p>
                         <p>{{ form_widget(evenementForm.description) }}</p>
-                        <small id="emailHelp" class="form-text text-muted">{{ form_errors(evenementForm.description) }}</small>
+                        <span class="erreur-assert">{{ form_errors(evenementForm.description) }}</span>
                     </div>
                 </div>
                 <div class="input-wrapper">
                     <div class="form-group">
                         <p class="mb-2 font-question">{{ form_label(evenementForm.dateHeureDebut) }}</p>
                         <p>{{ form_widget(evenementForm.dateHeureDebut) }}</p>
-                        <small id="emailHelp" class="form-text text-muted">{{ form_errors(evenementForm.dateHeureDebut) }}</small>
+                        <span class="erreur-assert">{{ form_errors(evenementForm.dateHeureDebut) }}</span>
                     </div>
                 </div>
                 <div class="input-wrapper">
                     <div class="form-group">
                         <p class="mb-2 font-question">{{ form_label(evenementForm.dateHeureFin) }}</p>
                         <p>{{ form_widget(evenementForm.dateHeureFin) }}</p>
-                        <small id="emailHelp" class="form-text text-muted">{{ form_errors(evenementForm.dateHeureFin) }}</small>
+                        <span class="erreur-assert">{{ form_errors(evenementForm.dateHeureFin) }}</span>
                     </div>
                 </div>
                 <div class="row">
@@ -76,7 +76,7 @@
                             <div class="form-group">
                                 <p class="mb-2 font-question">{{ form_label(evenementForm.dateHeureLimiteInscription) }}</p>
                                 <p>{{ form_widget(evenementForm.dateHeureLimiteInscription) }}</p>
-                                <small id="emailHelp" class="form-text text-muted">{{ form_errors(evenementForm.dateHeureLimiteInscription) }}</small>
+                                <span class="erreur-assert">{{ form_errors(evenementForm.dateHeureLimiteInscription) }}</span>
                             </div>
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                             <div class="form-group">
                                 <p class="mb-2 font-question">{{ form_label(evenementForm.nbInscriptionsMax) }}</p>
                                 <p>{{ form_widget(evenementForm.nbInscriptionsMax) }}</p>
-                                <small id="emailHelp" class="form-text text-muted">{{ form_errors(evenementForm.nbInscriptionsMax) }}</small>
+                                <span class="erreur-assert">{{ form_errors(evenementForm.nbInscriptionsMax) }}</span>
                             </div>
                         </div>
                     </div>
@@ -94,14 +94,14 @@
                     <div class="form-group">
                         <p class="mb-2 font-question">{{ form_label(evenementForm.tarif) }}</p>
                         <p>{{ form_widget(evenementForm.tarif) }}</p>
-                        <small id="emailHelp" class="form-text text-muted">{{ form_errors(evenementForm.tarif) }}</small>
+                        <span class="erreur-assert">{{ form_errors(evenementForm.tarif) }}</span>
                     </div>
                 </div>
                 <div class="input-wrapper" style="width: 25rem;">
                         <div class="form-group">
                             <p class="mb-2 font-question">{{ form_label(evenementForm.photo) }}</p>
                             <p>{{ form_widget(evenementForm.photo) }}</p>
-                            <small id="emailHelp" class="form-text text-muted">{{ form_errors(evenementForm.photo) }}</small>
+                            <span class="erreur-assert">{{ form_errors(evenementForm.photo) }}</span>
                         </div>
                 </div>
 

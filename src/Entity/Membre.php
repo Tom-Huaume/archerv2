@@ -26,6 +26,8 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @Assert\Length(max=180)
+     * @Assert\Email(message="Ceci n'est pas un format d'email valide")
+     * @Assert\Length(max=180, min=6, maxMessage="Votre email doit contenir au maximum 180 caractères", minMessage="Votre email doit contenir au minimum 6 caractères")
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
@@ -42,7 +44,7 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     private $password;
 
     /**
-     * @Assert\Length(max=50)
+     * @Assert\Length(max=50, maxMessage="Votre nom doit contenir au maximum 50 caractères")
      * @ORM\Column(type="string", length=50)
      */
     private $nom;
@@ -60,6 +62,7 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     private $numLicence;
 
     /**
+     * @Assert\LessThan("today UTC", message="La date de naissance ne peut pas être dans le futur !")
      * @ORM\Column(type="date", nullable=true)
      */
     private $dateNaissance;
@@ -82,6 +85,7 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     private $statutLicence;
 
     /**
+     * @Assert\Choice(choices={"Homme", "Femme"}, message="Vous devez choisir Homme ou Femme")
      * @Assert\Length(max=5)
      * @ORM\Column(type="string", length=5, nullable=true)
      */

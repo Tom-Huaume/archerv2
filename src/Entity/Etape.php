@@ -50,6 +50,8 @@ class Etape
     private $tarif;
 
     /**
+     * @Assert\Length(min=1)
+     * @Assert\Positive(message="Merci de renseigner une nombre supérieur à zéro")
      * @ORM\Column(type="integer", nullable=true)
      */
     private $nbInscriptionsMax;
@@ -66,6 +68,7 @@ class Etape
     private $evenement;
 
     /**
+     * @Assert\NotNull(message="Vous devez sélectionner au moins une arme")
      * @ORM\ManyToMany(targetEntity=Arme::class, inversedBy="etapes")
      */
     private $armes;
@@ -253,4 +256,5 @@ class Etape
 
         return $this;
     }
+
 }

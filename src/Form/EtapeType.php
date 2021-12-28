@@ -58,17 +58,20 @@ class EtapeType extends AbstractType
                 'label' => 'Places disponibles',
                 'attr'=>[
                     'class'=>'form-control',
+                    'min' => 1
                 ]
             ])
 
             ->add('arme', EntityType::class, [
+                'required' => true,
                 'mapped' => false,
                 'expanded' => true,
                 'multiple' => true,
                 'class' => Arme::class,
                 'label' => 'Armes autorisées',
                 'choice_label' => 'designation',
-                'empty_data' => 'Veuillez sélectionner au moins 1 type',
+                'empty_data' => 'Veuillez sélectionner au moins une arme',
+                'placeholder' => 'Veuillez sélectionner au moins une arme'
             ])
         ;
     }

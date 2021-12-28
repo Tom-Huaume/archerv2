@@ -23,6 +23,7 @@ class LieuRepository extends ServiceEntityRepository
     public function findListLieux(){
         $queryBuilder = $this->createQueryBuilder('l')
             ->where('l.club = 0')
+            ->andWhere('l.list = 1')
             ->addOrderBy('l.ville', 'ASC')
             ->addOrderBy('l.nom', 'ASC')
             ->addOrderBy('l.codePostal', 'ASC');

@@ -8,6 +8,16 @@
     <div class="container">
 
         <h2 class="event-title">{{ evenement.nom }}</h2>
+        <div class="d-flex justify-content-center mb-5">
+            <div class="d-block">
+                <span class="erreur-assert">{{ form_errors(etapeForm.nom) }}</span>
+                <span class="erreur-assert">{{ form_errors(etapeForm.description) }}</span>
+                <span class="erreur-assert">{{ form_errors(etapeForm.nbInscriptionsMax) }}</span>
+                <span class="erreur-assert">{{ form_errors(etapeForm.arme) }}</span>
+                <span class="erreur-assert">{{ form_errors(etapeForm.dateHeureDebut) }}</span>
+                <span class="erreur-assert">{{ form_errors(etapeForm.tarif) }}</span>
+            </div>
+        </div>
 
         <div class="card border-secondary mb-3 event-card" style="max-width: 90rem;">
 
@@ -22,8 +32,8 @@
                 <div class="col-md-4">
                     <div class="card-body">
 {#                        <p>{{ evenement.nbInscriptionsMax }} places disponibles</p>#}
-                        <p class="text-danger">Date limite d'inscription le {{ evenement.dateHeureLimiteInscription | date('d/m/Y', 'Europe/Paris') }}
-                            à {{ evenement.dateHeureLimiteInscription | date('H:i', 'Europe/Paris') }}</p>
+                        <b><p>Date limite d'inscription le {{ evenement.dateHeureLimiteInscription | date('d/m/Y', 'Europe/Paris') }}
+                            à {{ evenement.dateHeureLimiteInscription | date('H:i', 'Europe/Paris') }}</p></b>
                         <p>Tarif : {{ evenement.tarif }}</p>
                         <br>
                         <h5>{{ evenement.lieuDestination.nom }}</h5>

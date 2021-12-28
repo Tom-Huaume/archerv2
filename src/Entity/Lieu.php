@@ -42,7 +42,15 @@ class Lieu
     private $rue2;
 
     /**
-     * @Assert\Length(max=5)
+     *  @Assert\Length(min=5, max=5,
+     *     minMessage="Le code postal de compose de 5 chiffres",
+     *     maxMessage="Le code postal de compose de 5 chiffres",
+     *     maxMessage="Le code postal de compose de 5 chiffres"
+     * )
+     * @Assert\Regex(
+     *     pattern="/^[0-9]+$/",
+     *     message="Vous ne pouvez mettre que des chiffres"
+     * )
      * @Assert\NotBlank(message="Vous devez saisir un code postal")
      * @ORM\Column(type="string", length=5)
      */

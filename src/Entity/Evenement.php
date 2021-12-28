@@ -33,18 +33,22 @@ class Evenement
     private $description;
 
     /**
+     * @Assert\GreaterThanOrEqual("today UTC", message="L'évènement doit se dérouler à une date future")
      * @Assert\NotBlank(message="Vous devez préciser la date/heure de début de l'évènement")
      * @ORM\Column(type="datetime")
      */
     private $dateHeureDebut;
 
     /**
+     * @Assert\LessThanOrEqual(propertyPath="dateHeureDebut", message="Doit être antérieure au début de l'évènement")
      * @Assert\NotBlank(message="Vous devez fixer la date/heure limite pour l'inscription")
      * @ORM\Column(type="datetime")
      */
     private $dateHeureLimiteInscription;
 
     /**
+     * @Assert\Length(min=1)
+     * @Assert\Positive(message="Merci de renseigner une nombre supérieur à zéro")
      * @ORM\Column(type="integer", nullable=true)
      */
     private $nbInscriptionsMax;
@@ -87,6 +91,7 @@ class Evenement
     private $etapes;
 
     /**
+     * @Assert\GreaterThan(propertyPath="dateHeureDebut", message="L'évènement doit se terminere après la date/heure de début")
      * @Assert\NotBlank(message="Vous devez préciser la date/heure de fin de l'évènement")
      * @ORM\Column(type="datetime")
      */
