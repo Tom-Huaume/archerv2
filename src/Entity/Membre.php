@@ -6,10 +6,12 @@ use App\Repository\MembreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * @UniqueEntity(fields={"numLicence"}, message="Ce numéro de licence existe déjà !")
  * @ORM\Entity(repositoryClass=MembreRepository::class)
  */
 class Membre implements UserInterface, PasswordAuthenticatedUserInterface

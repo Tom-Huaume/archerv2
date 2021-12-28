@@ -6,6 +6,7 @@ use App\Repository\TrajetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TrajetRepository::class)
@@ -20,6 +21,7 @@ class Trajet
     private $id;
 
     /**
+     * @Assert\NotBlank(message="Vous devez donner un titre à votre trajet pour pouvoir l'identifier")
      * @ORM\Column(type="string", length=50)
      */
     private $titre;
@@ -30,11 +32,13 @@ class Trajet
     private $description;
 
     /**
+     * @Assert\NotBlank(message="Vous devez indiquer la date/heure de départ")
      * @ORM\Column(type="datetime")
      */
     private $dateHeureDepart;
 
     /**
+     * @Assert\NotBlank(message="Vous devez préciser le nombre de places")
      * @ORM\Column(type="integer")
      */
     private $nbPlaces;
@@ -55,6 +59,7 @@ class Trajet
     private $dateHeureCreation;
 
     /**
+     * @Assert\NotBlank(message="Vous devez indiquer le lieu de départ")
      * @ORM\ManyToOne(targetEntity=Lieu::class, inversedBy="trajets")
      * @ORM\JoinColumn(nullable=false)
      */

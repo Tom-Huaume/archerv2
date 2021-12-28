@@ -6,8 +6,11 @@ use App\Repository\LieuRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @UniqueEntity(fields={"rue", "codePostal", "ville"}, message="Un lieu avec la même adresse/ville existe déjà !")
  * @ORM\Entity(repositoryClass=LieuRepository::class)
  */
 class Lieu
@@ -25,6 +28,7 @@ class Lieu
     private $nom;
 
     /**
+     * @Assert\NotBlank(message="Vous devez saisir un nom de rue")
      * @ORM\Column(type="string", length=50)
      */
     private $rue;
@@ -35,11 +39,13 @@ class Lieu
     private $rue2;
 
     /**
+     * @Assert\NotBlank(message="Vous devez saisir un code postal")
      * @ORM\Column(type="string", length=5)
      */
     private $codePostal;
 
     /**
+     * @Assert\NotBlank(message="Vous devez saisir une ville")
      * @ORM\Column(type="string", length=50)
      */
     private $ville;

@@ -6,6 +6,7 @@ use App\Repository\EtapeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=EtapeRepository::class)
@@ -20,6 +21,7 @@ class Etape
     private $id;
 
     /**
+     * @Assert\NotBlank(message="Vous devez donner un nom à l'étape")
      * @ORM\Column(type="string", length=50)
      */
     private $nom;
@@ -30,6 +32,7 @@ class Etape
     private $description;
 
     /**
+     * @Assert\NotBlank(message="Vous devez préciser la date/heure de début de l'étape")
      * @ORM\Column(type="datetime")
      */
     private $dateHeureDebut;

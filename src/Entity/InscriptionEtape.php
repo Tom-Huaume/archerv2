@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @UniqueEntity(fields={"membre", "etape"}, message="Vous avez déjà fait une demande d'inscription !")
  * @ORM\Entity(repositoryClass=InscriptionEtapeRepository::class)
  */
 class InscriptionEtape

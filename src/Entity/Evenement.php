@@ -6,6 +6,7 @@ use App\Repository\EvenementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=EvenementRepository::class)
@@ -20,6 +21,7 @@ class Evenement
     private $id;
 
     /**
+     * @Assert\NotBlank(message="Vous devez donner un nom à l'évènement")
      * @ORM\Column(type="string", length=50)
      */
     private $nom;
@@ -30,11 +32,13 @@ class Evenement
     private $description;
 
     /**
+     * @Assert\NotBlank(message="Vous devez préciser la date/heure de début de l'évènement")
      * @ORM\Column(type="datetime")
      */
     private $dateHeureDebut;
 
     /**
+     * @Assert\NotBlank(message="Vous devez fixer la date/heure limite pour l'inscription")
      * @ORM\Column(type="datetime")
      */
     private $dateHeureLimiteInscription;
@@ -81,6 +85,7 @@ class Evenement
     private $etapes;
 
     /**
+     * @Assert\NotBlank(message="Vous devez préciser la date/heure de fin de l'évènement")
      * @ORM\Column(type="datetime")
      */
     private $dateHeureFin;
