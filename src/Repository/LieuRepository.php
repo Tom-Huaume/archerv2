@@ -20,6 +20,18 @@ class LieuRepository extends ServiceEntityRepository
         parent::__construct($registry, Lieu::class);
     }
 
+    public function findListLieux(){
+        $queryBuilder = $this->createQueryBuilder('l')
+            ->where('l.club = 0')
+            ->addOrderBy('l.ville', 'ASC')
+            ->addOrderBy('l.nom', 'ASC')
+            ->addOrderBy('l.codePostal', 'ASC');
+
+        $query = $queryBuilder->getQuery();
+
+        return $query->getResult();
+    }
+
     /**
      * @throws NonUniqueResultException
      */

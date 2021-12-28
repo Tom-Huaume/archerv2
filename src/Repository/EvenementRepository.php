@@ -33,6 +33,7 @@ class EvenementRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
     public function findPastEvents($dateDuJour){
         $queryBuilder = $this->createQueryBuilder('e')
             ->where('e.dateHeureDebut < :dateDuJour')

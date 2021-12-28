@@ -21,7 +21,7 @@ class LieuController extends AbstractController
     ): Response
     {
         //afficher la liste des lieux
-        $lieux = $lieuRepository->findAll();
+        $lieux = $lieuRepository->findListLieux();
 
         //générer le formulaire de création dans la vue
         $lieu = new Lieu();
@@ -53,11 +53,16 @@ class LieuController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
-        //Supprime l'arme
-        $entityManager->remove($lieu);
-        $entityManager->flush();
+        if($lieu->getClub() == 0){
 
-        $this->addFlash('danger', 'Lieu supprimé');
+            //Supprime le lieu
+            $entityManager->remove($lieu);
+            $entityManager->flush();
+            $this->addFlash('warning', 'Lieu supprimé');
+            return $this->redirectToRoute('lieu_create');
+        }
+
+        $this->addFlash('danger', 'Impossible de supprimer l\'adresse du club');
         return $this->redirectToRoute('lieu_create');
     }
 }

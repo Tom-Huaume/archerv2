@@ -9,7 +9,8 @@
     {{ form_start(lieuForm) }}
 
     <h3 class="m-3">Lieux sauvegardés</h3>
-    <div  class="table-wrapper-scroll-y-lieu my-custom-scrollbar-lieu">
+    <p class="m-3 text-secondary">À la création d'un nouvel évènement, ces lieux s'afficheront dans la liste déroulante</p>
+
         <table class="table table-bordered table-striped mb-0">
             <thead>
             <tr>
@@ -17,7 +18,7 @@
                 <th scope="col">Rue</th>
                 <th scope="col">Complément d'adresse</th>
                 <th scope="col">CP</th>
-                <th scope="col">Ville</th>
+                <th scope="col">Ville<i class="bi bi-arrow-down ms-2"></i></th>
                 <th scope="col"></th>
             </tr>
             </thead>
@@ -73,7 +74,7 @@
                 </tbody>
             </div>
         </table>
-    </div>
+
 
     {{ form_end(lieuForm) }}
 
