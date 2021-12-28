@@ -6,23 +6,18 @@
 
 {% block body %}
 
-<h2 class="my-5">Général</h2>
+<h2 class="my-5">Espace admin</h2>
 
 <div class="container">
 
     <div class="row">
-        <div class="col-md-2"></div>
 
         <div class="col">
-
-            <h4>Adresse du club</h4>
-            <p>{{ adresseClub.nom }}</p>
-            <p>{{ adresseClub.rue }}</p>
-            <p>{{ adresseClub.rue2 }}</p>
-            <p>{{ adresseClub.codePostal }} {{ adresseClub.ville | upper }}</p>
-            <br>
-
-            <button class="btn btn-primary mt-4">Retour</button>
+            <h4>Profil de l'admin</h4>
+            {{ form_start(adminForm) }}
+            {{ form_widget(adminForm) }}
+            <button class="btn btn-primary mt-4">Modifier</button>
+            {{ form_end(adminForm) }}
         </div>
 
         <div class="col">
@@ -70,9 +65,26 @@
                 {{ form_errors(armeForm.designation) }}
             </span>
             {{ form_end(armeForm) }}
+
+            <h4 class="mt-4">Photo du club</h4>
+            <p>Cette image s'affiche par défaut à la création d'un évènement</p>
+            <img class="my-2" style="max-width: 450px;" src="{{ asset('img/photo/evenement/defaut.jpg') }}" alt="">
+
+
+            {{ form_start(photoForm) }}
+            {{ form_widget(photoForm) }}
+            <button class="btn btn-primary mt-4">Changer la photo</button>
+            {{ form_end(photoForm) }}
         </div>
 
-        <div class="col-md-2"></div>
+        <div class="col ms-5">
+            <h4>Adresse du club</h4>
+            {{ form_start(adresseForm) }}
+            {{ form_widget(adresseForm) }}
+            <button class="btn btn-primary mt-4">Modifier</button>
+            {{ form_end(adresseForm) }}
+        </div>
+
     </div>
 
 </div>

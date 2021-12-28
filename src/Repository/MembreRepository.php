@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Membre;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -99,8 +100,7 @@ class MembreRepository extends ServiceEntityRepository implements PasswordUpgrad
 
 
     /**
-     * @throws \Doctrine\DBAL\Exception
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function findReservationsOf($idMembre){
         $sql = "SELECT id, prenom FROM Membre WHERE id = ?;";
@@ -118,6 +118,17 @@ class MembreRepository extends ServiceEntityRepository implements PasswordUpgrad
         $query->setParameter(1, $idMembre);
 
         return $query->getOneOrNullResult();
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function findAdmin($role){
+        $queryBuilder = $this->createQueryBuilder('m')
+            ->where('m.roles LIKE :roles')
+            ->setParameter('roles', '%"'.$role.'"%');
+
+        return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 
     // /**
