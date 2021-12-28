@@ -21,6 +21,7 @@ class Article
     private $id;
 
     /**
+     * @Assert\Length(max=100)
      * @Assert\NotBlank(message="Vous devez donner un titre")
      * @ORM\Column(type="string", length=100)
      */
@@ -42,6 +43,7 @@ class Article
     private $photos;
 
     /**
+     * @Assert\Length(max=100)
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $auteur;

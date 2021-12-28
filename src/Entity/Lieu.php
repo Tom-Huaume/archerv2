@@ -23,28 +23,33 @@ class Lieu
     private $id;
 
     /**
+     * @Assert\Length(max=50)
      * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $nom;
 
     /**
+     * @Assert\Length(max=50)
      * @Assert\NotBlank(message="Vous devez saisir un nom de rue")
      * @ORM\Column(type="string", length=50)
      */
     private $rue;
 
     /**
+     * @Assert\Length(max=50)
      * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $rue2;
 
     /**
+     * @Assert\Length(max=5)
      * @Assert\NotBlank(message="Vous devez saisir un code postal")
      * @ORM\Column(type="string", length=5)
      */
     private $codePostal;
 
     /**
+     * @Assert\Length(max=50)
      * @Assert\NotBlank(message="Vous devez saisir une ville")
      * @ORM\Column(type="string", length=50)
      */

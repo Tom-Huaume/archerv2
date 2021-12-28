@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ReservationTrajetRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @UniqueEntity(fields={"membre", "trajet"}, message="Vous avez déjà fait une réservation !")
@@ -30,6 +31,7 @@ class ReservationTrajet
     private $dateHeureReservation;
 
     /**
+     * @Assert\Length(max=255)
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $commentaire;

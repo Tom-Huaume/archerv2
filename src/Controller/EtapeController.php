@@ -35,11 +35,11 @@ class EtapeController extends AbstractController
         $evenementId = $etape->getEvenement()->getId();
 
         //check si il y a déjà un enregistrement
-//        $ancienEnregistrement = $inscriptionEtapeRepository->findOneBy(array('membre' => $membre, 'etape' => $etape));
-//        if($ancienEnregistrement != null){
-//            $this->addFlash('danger', 'Vous avez déjà fait une demande pour cette étape !' );
-//            return $this->redirectToRoute('evenement_detail', ['id' => $evenementId]);
-//        }
+        $ancienEnregistrement = $inscriptionEtapeRepository->findOneBy(array('membre' => $membre, 'etape' => $etape));
+        if($ancienEnregistrement != null){
+            $this->addFlash('danger', 'Vous avez déjà fait une demande pour cette étape !' );
+            return $this->redirectToRoute('evenement_detail', ['id' => $evenementId]);
+        }
 
         //Récupérer la liste des désignations d'arme
         $listeArmes = $etape->getArmes()->toArray();

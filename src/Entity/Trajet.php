@@ -21,12 +21,14 @@ class Trajet
     private $id;
 
     /**
+     * @Assert\Length(max=50)
      * @Assert\NotBlank(message="Vous devez donner un titre à votre trajet pour pouvoir l'identifier")
      * @ORM\Column(type="string", length=50)
      */
     private $titre;
 
     /**
+     * @Assert\Length(max=255)
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
@@ -38,17 +40,20 @@ class Trajet
     private $dateHeureDepart;
 
     /**
+     * @Assert\Length(min=1)
      * @Assert\NotBlank(message="Vous devez préciser le nombre de places")
      * @ORM\Column(type="integer")
      */
     private $nbPlaces;
 
     /**
+     * @Assert\Length(max=30)
      * @ORM\Column(type="string", length=30, nullable=true)
      */
     private $typeVoiture;
 
     /**
+     * @Assert\Length(max=30)
      * @ORM\Column(type="string", length=30, nullable=true)
      */
     private $couleurVoiture;

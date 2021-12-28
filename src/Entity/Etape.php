@@ -21,6 +21,7 @@ class Etape
     private $id;
 
     /**
+     * @Assert\Length(max=50)
      * @Assert\NotBlank(message="Vous devez donner un nom à l'étape")
      * @ORM\Column(type="string", length=50)
      */
@@ -43,6 +44,7 @@ class Etape
     private $dateHeureCreation;
 
     /**
+     * @Assert\Length(max=100)
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $tarif;

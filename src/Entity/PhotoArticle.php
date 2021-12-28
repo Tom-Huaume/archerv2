@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PhotoArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PhotoArticleRepository::class)
@@ -18,6 +19,7 @@ class PhotoArticle
     private $id;
 
     /**
+     * @Assert\Length(max=50)
      * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $titre;

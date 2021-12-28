@@ -25,12 +25,14 @@ class Arme
     private $id;
 
     /**
+     * @Assert\Length(max=10)
      * @ORM\Column(type="string", length=10, unique=true, nullable=true)
      */
     private $sigle;
 
     /**
      * @Assert\NotBlank(message="Vous devez saisir une désignation")
+     * @Assert\Length(max=50)
      * @ORM\Column(type="string", length=50, unique=true)
      */
     private $designation;

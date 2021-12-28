@@ -21,6 +21,7 @@ class Evenement
     private $id;
 
     /**
+     * @Assert\Length(max=50)
      * @Assert\NotBlank(message="Vous devez donner un nom à l'évènement")
      * @ORM\Column(type="string", length=50)
      */
@@ -54,6 +55,7 @@ class Evenement
     private $etat;
 
     /**
+     * @Assert\Length(max=100)
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $tarif;

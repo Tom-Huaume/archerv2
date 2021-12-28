@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @UniqueEntity(fields={"numLicence"}, message="Ce numéro de licence existe déjà !")
@@ -24,6 +25,7 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
+     * @Assert\Length(max=180)
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
@@ -40,16 +42,19 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     private $password;
 
     /**
+     * @Assert\Length(max=50)
      * @ORM\Column(type="string", length=50)
      */
     private $nom;
 
     /**
+     * @Assert\Length(max=50)
      * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $prenom;
 
     /**
+     * @Assert\Length(max=10)
      * @ORM\Column(type="string", length=10, nullable=true, unique=true)
      */
     private $numLicence;
@@ -60,11 +65,13 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     private $dateNaissance;
 
     /**
+     * @Assert\Length(max=15)
      * @ORM\Column(type="string", length=15, nullable=true)
      */
     private $telMobile;
 
     /**
+     * @Assert\Length(max=10)
      * @ORM\Column(type="string", length=10, nullable=true)
      */
     private $lateralite;
@@ -75,16 +82,19 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     private $statutLicence;
 
     /**
+     * @Assert\Length(max=5)
      * @ORM\Column(type="string", length=5, nullable=true)
      */
     private $sexe;
 
     /**
+     * @Assert\Length(max=50)
      * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $categorieAge;
 
     /**
+     * @Assert\Length(max=50)
      * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $typeLicence;

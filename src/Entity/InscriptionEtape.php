@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\InscriptionEtapeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=InscriptionEtapeRepository::class)
@@ -29,6 +30,7 @@ class InscriptionEtape
     private $dateHeureInscription;
 
     /**
+     * @Assert\Length(max=255)
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $commentaire;
