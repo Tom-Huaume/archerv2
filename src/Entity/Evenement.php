@@ -65,6 +65,7 @@ class Evenement
     private $tarif;
 
     /**
+     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $photo;
@@ -91,7 +92,7 @@ class Evenement
     private $etapes;
 
     /**
-     * @Assert\GreaterThan(propertyPath="dateHeureDebut", message="L'évènement doit se terminere après la date/heure de début")
+     * @Assert\GreaterThan(propertyPath="dateHeureDebut", message="L'évènement doit se terminer après la date/heure de début")
      * @Assert\NotBlank(message="Vous devez préciser la date/heure de fin de l'évènement")
      * @ORM\Column(type="datetime")
      */

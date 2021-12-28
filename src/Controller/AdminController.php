@@ -80,6 +80,8 @@ class AdminController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstrac
         if($photoForm->isSubmitted() && $photoForm->isValid() && !$photoForm['photo']->isEmpty()) {
             //récupérer fichier + l'envoyer dans le répertoire de destionation
             $photo = $photoForm["photo"]->getData();
+            $ext = $photo->getExtension();
+            //dd($photo);
             $uploads_directory = $this->getParameter('event_directory'); //dans config/services.yaml
             $fileName = "defaut.jpg";
             $fs = new Filesystem();

@@ -9,12 +9,20 @@
     <div class="container">
 
         <h2>Créer un article</h2>
+        <div class="d-flex justify-content-center mb-5">
+            <div class="d-block">
+                <span class="erreur-assert">{{ form_errors(articleForm.titre) }}</span>
+                <span class="erreur-assert">{{ form_errors(articleForm.description) }}</span>
+                <span class="erreur-assert">{{ form_errors(articleForm.photos) }}</span>
+            </div>
+        </div>
 
         {{ form_start(articleForm) }}
         <div class="row">
             <div class="my-2 col-md-8">
                 {{ form_label(articleForm.titre) }}
                 {{ form_widget(articleForm.titre) }}
+
             </div>
         </div>
 

@@ -10,6 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\File;
 
 class ArticleType extends AbstractType
 {
@@ -37,6 +39,20 @@ class ArticleType extends AbstractType
                 'required' => false,
                 'attr'=>[
                     'class'=>'form-control font-input',
+                ],
+                "constraints" => [
+                    new All([
+                        new File([
+                            "maxSize" => "10M",
+                            "mimeTypes" => [
+                                "image/png",
+                                "image/jpg",
+                                "image/jpeg",
+                                "image/gif"
+                            ],
+                            "mimeTypesMessage" => "Veuillez envoyer une image au format png, jpg, jpeg ou gif, de 10 mégas octets maximum"
+                        ])
+                    ])
                 ]
 
             ])
