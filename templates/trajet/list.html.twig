@@ -7,7 +7,10 @@
 {% block body %}
     <div class="container mt-4">
 
-    <h2 class="m-5">Inscriptions et réservations en cours</h2>
+    <h2 class="mt-5">Inscriptions et réservations en cours</h2>
+        <div class="d-flex justify-content-center mb-5 text-info">
+            <p><i class="bi bi-info-circle me-2 "></i>Lorsque vous acceptez/refusez une demande un mail de confirmation est envoyée au covoitureur</p>
+        </div>
 
         {# tableau des évenements #}
         {% for e in evenements__etapes__inscriptions__membres %}
@@ -160,7 +163,9 @@
                 let trajetId = this.dataset.trajet;
                 let errorMsg = document.getElementById('msg-error-'+trajetId);
                 let url = '{{ path('trajet_refuser', {'id' : 'inscriptionId'}) }}';
+                let urlNotifRefus = '{{ path('trajet_notif_refuser', {'id' : 'inscriptionId'}) }}';
                 url = url.replace("inscriptionId", inscriptionId);
+                urlNotifRefus = urlNotifRefus.replace("inscriptionId", inscriptionId);
 
                 //Reset du message d'erreur précédent si besoin
                 errorMsg.innerHTML = "";
@@ -192,9 +197,10 @@
                         btnActivate.classList.add('btn-danger');
                         //masquer le 2ème bouton
                         btnDeactivate.style.display = "none";
+                        return fetch(urlNotifRefus);
                     }
                     //console.log(response.statusText);
-                    console.log("Mise à jour statut effectuée");
+                    //console.log("Mise à jour statut effectuée");
                 }).catch(function (error){
                     console.log(response);
                     console.log("la route est valide mais renvoie une erreur :");
@@ -212,6 +218,10 @@
                 let errorMsg = document.getElementById('msg-error-'+trajetId);
                 let url = '{{ path('trajet_accepter', {'id' : 'inscriptionId'}) }}';
                 url = url.replace("inscriptionId", inscriptionId);
+                let urlNotifRefus = '{{ path('trajet_notif_refuser', {'id' : 'inscriptionId'}) }}';
+                let urlNotifAccept = '{{ path('trajet_notif_accepter', {'id' : 'inscriptionId'}) }}';
+                urlNotifRefus = urlNotifRefus.replace("inscriptionId", inscriptionId);
+                urlNotifAccept = urlNotifAccept.replace("inscriptionId", inscriptionId);
 
                 //Reset du message d'erreur précédent si besoin
                 errorMsg.innerHTML = "";
@@ -243,7 +253,8 @@
                         let nbPlaces = parseInt(document.getElementById("counter-"+trajetId).innerHTML);
                         nbPlaces-=1;
                         document.getElementById("counter-"+trajetId).innerHTML = nbPlaces.toString();
-                        console.log("Il reste "+nbPlaces+" places");
+                        return fetch(urlNotifAccept);
+                        //console.log("Il reste "+nbPlaces+" places");
 
                     }else if(btnActivate.innerHTML === "Refusé"){
                         //renomme le bouton et modifie la mise en forme
@@ -254,7 +265,8 @@
                         let nbPlaces = parseInt(document.getElementById("counter-"+trajetId).innerHTML);
                         nbPlaces-=1;
                         document.getElementById("counter-"+trajetId).innerHTML = nbPlaces.toString();
-                        console.log("Il reste "+nbPlaces+" places");
+                        return fetch(urlNotifAccept);
+                        //console.log("Il reste "+nbPlaces+" places");
 
                     } else if(btnActivate.innerHTML === "Accepté"){
                         //renomme le bouton et modifie la mise en forme
@@ -265,7 +277,8 @@
                         let nbPlaces = parseInt(document.getElementById("counter-"+trajetId).innerHTML);
                         nbPlaces+=1;
                         document.getElementById("counter-"+trajetId).innerHTML = nbPlaces.toString();
-                        console.log("Il reste "+nbPlaces+" places");
+                        return fetch(urlNotifRefus);
+                        //console.log("Il reste "+nbPlaces+" places");
                     }
 
                     //console.log(response.statusText);

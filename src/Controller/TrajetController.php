@@ -9,6 +9,7 @@ use App\Repository\InscriptionEtapeRepository;
 use App\Repository\MembreRepository;
 use App\Repository\ReservationTrajetRepository;
 use App\Repository\TrajetRepository;
+use App\Service\Notification;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -134,9 +135,11 @@ class TrajetController extends AbstractController
     }
 
     #[Route('/user/trajet/refuse/{id}', name:'trajet_refuser', methods: ["GET", "PUT", "POST"])]
-    public function refuse(
+    public function
+    refuse(
         int $id,
         ReservationTrajetRepository $reservationTrajetRepository,
+        Notification $notification,
         EntityManagerInterface $entityManager
     ) : Response
     {
@@ -146,11 +149,12 @@ class TrajetController extends AbstractController
 
         //retourne une erreur si le user n'est pas l'orgaisateur du trajet
         if($trajet->getOrganisateur() !== $user){
-            return new Response("Implossible ! Vous n'êtes pas l'organisateur du trajet", 403);
+            return new Response("Impossible ! Vous n'êtes pas l'organisateur du trajet", 403);
         }
 
         if($reservation->getValidation() == null)
         {
+            //$notification->sendRefuseToCarpooler($reservation->getMembre(), $reservation->getTrajet());
             $reservation->setValidation(0);
             $reservation->setDateHeureReservation(new \DateTime());
 
@@ -162,11 +166,25 @@ class TrajetController extends AbstractController
         return new Response("success", 200);
     }
 
+    #[Route('/user/trajet/refuse/notification/{id}', name:'trajet_notif_refuser', methods: ["GET", "PUT", "POST"])]
+    public function
+    notifRefuse(
+        int $id,
+        ReservationTrajetRepository $reservationTrajetRepository,
+        Notification $notification
+    ) : Response
+    {
+        $reservation = $reservationTrajetRepository->findOneBy(array('id' => $id));
+        $notification->sendRefuseToCarpooler($reservation->getMembre(), $reservation->getTrajet());
+        return new Response("success", 200);
+    }
+
     //todo: envoyer les confirmations par mail
     #[Route('/user/trajet/accepte/{id}', name:'trajet_accepter', methods: ["GET", "PUT", "POST"])]
     public function accepte(
         int $id,
         ReservationTrajetRepository $reservationTrajetRepository,
+        Notification $notification,
         EntityManagerInterface $entityManager
     ) : Response
     {
@@ -178,7 +196,7 @@ class TrajetController extends AbstractController
 
         //retourne une erreur si le user n'est pas l'orgaisateur du trajet
         if($trajet->getOrganisateur() !== $user){
-            return new Response("Implossible ! Vous n'êtes pas l'organisateur du trajet", 403);
+            return new Response("Impossible ! Vous n'êtes pas l'organisateur du trajet", 403);
         }
 
         //switch valeur validation (booléen)
@@ -190,6 +208,7 @@ class TrajetController extends AbstractController
             }
             //inscrire et décrémenter nb places si non null
             $reservation->setValidation(1);
+            //$notification->sendAcceptToCarpooler($reservation->getMembre(), $reservation->getTrajet());
             if(!is_null($nbPlaces)){
                 $nbPlaces--;
                 $trajet->setNbPlaces($nbPlaces);
@@ -200,6 +219,7 @@ class TrajetController extends AbstractController
         {
             //désinscrire et incrémenter nb places si non null
             $reservation->setValidation(0);
+            //$notification->sendRefuseToCarpooler($reservation->getMembre(), $reservation->getTrajet());
             if(!is_null($nbPlaces)) {
                 $nbPlaces = $nbPlaces + 1;
                 $trajet->setNbPlaces($nbPlaces);
@@ -211,6 +231,19 @@ class TrajetController extends AbstractController
         $entityManager->persist($reservation);
         $entityManager->flush();
 
+        return new Response("success", 200);
+    }
+
+    #[Route('/user/trajet/accept/notification/{id}', name:'trajet_notif_accepter', methods: ["GET", "PUT", "POST"])]
+    public function
+    notifAccept(
+        int $id,
+        ReservationTrajetRepository $reservationTrajetRepository,
+        Notification $notification
+    ) : Response
+    {
+        $reservation = $reservationTrajetRepository->findOneBy(array('id' => $id));
+        $notification->sendAcceptToCarpooler($reservation->getMembre(), $reservation->getTrajet());
         return new Response("success", 200);
     }
 }

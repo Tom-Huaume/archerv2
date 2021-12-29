@@ -3,7 +3,7 @@
 
 <p >Bonjour {{ membre.prenom }},</p>
 
-<p style="color: #5a9a29">Votre demande d'inscription au trajet {{ trajet.titre }} a été acceptée !</p>
+<p style="color: #5a9a29">Votre demande d'inscription au trajet {{ trajet.titre }} a été acceptée par {{ trajet.organisateur.prenom~" "~trajet.organisateur.nom }} !</p>
 <p>Départ du trajet le {{ trajet.dateHeureDepart | date('d/m/Y', 'Europe/Paris') }} à {{ trajet.dateHeureDepart | date('H:i', 'Europe/Paris') }}</p>
 <br>
 <br>
