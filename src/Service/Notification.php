@@ -61,7 +61,7 @@ class Notification
         $email = (new TemplatedEmail())
             ->from('thomas.huaume@hotmail.fr')
             ->to($membre->getEmail())
-            ->subject($trajet->getTitre()." : confirmation de votre demande d'inscription")
+            ->subject($trajet->getTitre()." : confirmation de votre demande de covoiturage")
             ->htmlTemplate('emails/acceptationTrajet.html.twig')
             ->context([
                 'trajet' => $trajet,
