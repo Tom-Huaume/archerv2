@@ -1,0 +1,23 @@
+<h2>Les archers de Liffré</h2>
+<h3>{{ etape.evenement.nom }}</h3>
+
+<p >Bonjour {{ membre.prenom }},</p>
+
+<p style="color: #5a9a29;">
+    Votre demande d'inscription à l'étape {{ etape.nom }} a été acceptée par {{ etape.validateur }}!
+</p>
+<p>Début de l'étape : le {{ etape.dateHeureDebut | date('d/m/Y', 'Europe/Paris') }} à {{ etape.dateHeureDebut | date('H:i', 'Europe/Paris') }}</p>
+<br>
+<hr>
+
+<P>Vous pouvez maintenant réserver ou proposer un covoiturage sur <a href="{{ url('main_home') }}"> votre espace membre</a>.</P>
+
+<p>Pour consulter les trajets liés à cet évènement : rendez-vous dans l'onglet <b>Evènements</b> puis sélectionnez l'évènement concerné. </p>
+
+<p>Le récap et le statut de tous vos trajets sont disponibles dans l'onglet <b>Mes inscriptions</b>.</p>
+
+<p>En vous remerciant pour votre participation,</p>
+
+<p>Cordialement,</p>
+
+<p>Les archers de Liffré</p>

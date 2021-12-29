@@ -12,10 +12,54 @@
 {% endblock %}
 
 {% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+
+{#                <div class="card m-3" style="border: none; box-shadow: 0.1rem 0.1rem 0.3rem #a8a7a7;">#}
+{#                    <div class="card-body">#}
+{#                        <div class="d-flex">#}
+{#                            <img src="{{ asset('img/icon/dart-board.png') }}"#}
+{#                                 alt="icone covoiturage"#}
+{#                                 class="icone-cible">#}
+{#                            <h5 class="card-title ms-3 mt-1">Vos évènements</h5>#}
+{#                        </div>#}
+{#                        <p class="card-text text-info">2 inscriptions en attente</p>#}
+{#                        <p class="card-text">3 inscriptions validées</p>#}
+{#                    </div>#}
+{#                </div>#}
+
+{#                <a href="{{ path('main_home') }}">#}
+{#                    <img src="{{ asset('img/logo/logo.png') }}"#}
+{#                         alt="logo du club" class="logo-titre">#}
+{#                </a>#}
+            </div>
+
+            <div class="col-md-6">
+                <h1>Les archers de Liffré</h1>
+{#                <a href="#"><h2 class="text-success letter-space letter-glowy letter-reflect">Espace membre</h2></a>#}
+            </div>
+
+            <div class="col-md-3">
+{#                <div class="card m-3" style="border: none; box-shadow: 0.1rem 0.1rem 0.3rem #a8a7a7;">#}
+{#                    <div class="card-body">#}
+{#                        <div class="d-flex">#}
+{#                            <img src="{{ asset('img/icon/side-car.png') }}"#}
+{#                                 alt="icone covoiturage"#}
+{#                                 class="icone-voiture">#}
+{#                            <h5 class="card-title ms-3 mt-1">Vos trajets</h5>#}
+{#                        </div>#}
+{#                        <p class="card-text text-warning">2 demandes en attente</p>#}
+{#                        <p class="card-text">3 attentes de confirmation</p>#}
+
+{#                    </div>#}
+{#                </div>#}
+            </div>
+        </div>
+    </div>
+    <br>
 
     <div class="container">
-
-
 
         <h2 class="mt-4">Evènements à venir</h2>
         {# todo: mose en forme du hover sur les éléments du calendrier #}
@@ -24,18 +68,7 @@
         <div class=" mt-5">
             <div class="row">
                 <div class="col-md-3">
-{#                    <div class="card m-3" style="border: none; box-shadow: 0.1rem 0.1rem 0.3rem #a8a7a7;">#}
-{#                        <div class="card-body">#}
-{#                            <div class="d-flex">#}
-{#                                <img src="{{ asset('img/icon/dart-board.png') }}"#}
-{#                                     alt="icone covoiturage"#}
-{#                                     class="icone-cible">#}
-{#                                <h5 class="card-title ms-3 mt-1">Vos évènements</h5>#}
-{#                            </div>#}
-{#                            <p class="card-text text-info">2 inscriptions en attente</p>#}
-{#                            <p class="card-text">3 inscriptions validées</p>#}
-{#                        </div>#}
-{#                    </div>#}
+
                 </div>
 
                 <div class="col-md-6">
@@ -43,19 +76,7 @@
                 </div>
 
                 <div class="col-md-3">
-{#                    <div class="card m-3" style="border: none; box-shadow: 0.1rem 0.1rem 0.3rem #a8a7a7;">#}
-{#                        <div class="card-body">#}
-{#                            <div class="d-flex">#}
-{#                                <img src="{{ asset('img/icon/side-car.png') }}"#}
-{#                                     alt="icone covoiturage"#}
-{#                                     class="icone-voiture">#}
-{#                                <h5 class="card-title ms-3 mt-1">Vos trajets</h5>#}
-{#                            </div>#}
-{#                            <p class="card-text text-warning">2 demandes en attente</p>#}
-{#                            <p class="card-text">3 attentes de confirmation</p>#}
 
-{#                        </div>#}
-{#                    </div>#}
                 </div>
             </div>
 

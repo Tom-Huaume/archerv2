@@ -3,6 +3,10 @@
 @import url("photos.css");
 
 /*_________BALISES_________*/
+h1{
+    font-size: 4em;
+}
+
 h1, h2 {
     margin: 1rem;
     text-align: center;
@@ -119,17 +123,21 @@ a{
 }
 
 .letter-glowy{
-    line-height: 0.70em;
     outline: none;
     text-transform: uppercase;
+}
+
+.letter-reflect{
+    line-height: 0.70em;
     -webkit-box-reflect: below 1px linear-gradient(transparent, #0004);
 }
 
 .letter-glowy:hover{
-    line-height: 0.70em;
-    outline: none;
     text-shadow: 0 0 10px springgreen;
-    text-transform: uppercase;
+
+}
+
+.letter-reflect:hover{
     -webkit-box-reflect: below 1px linear-gradient(transparent, #0004);
 }
 
@@ -187,7 +195,7 @@ a{
 
 /*____images____*/
 .logo-titre{
-    height: 150px;
+    max-height: 150px;
 }
 
 .logo-small{

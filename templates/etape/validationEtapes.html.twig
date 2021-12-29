@@ -15,7 +15,13 @@
                 <thead>
                     <tr class="delete-m-p">
                         <th class="delete-m-p" colspan="7">
-                            <h4>{{ e.nom }} le {{ e.dateHeureDebut | date('d/m/Y', 'Europe/Paris') }} à {{ e.dateHeureDebut | date('H:i', 'Europe/Paris') }}</h4>
+                            <h4>{{ e.nom }} le {{ e.dateHeureDebut | date('d/m/Y', 'Europe/Paris') }} à {{ e.dateHeureDebut | date('H:i', 'Europe/Paris') }}
+                                <span class="text-success" style="font-size: 60%;">
+                                    {% if e.validateur is not null %}<i class="bi bi-check"></i>{% endif %}
+                                    {{ e.validateur ? "confirmé par "~e.validateur~" le" }}
+                                    {{ e.dateHeureValidation ? e.dateHeureValidation | date('d/m/Y', 'Europe/Paris') }}
+                                </span>
+                            </h4>
                         </th>
                         <th>
                             <span id="msg-error-{{ e.id }}" style="color: #B0413E;"></span>
@@ -98,9 +104,12 @@
             <button class="btn btn-lg btn-secondary mt-4">Retour</button>
         </a>
 
-        <a href="#">
-            <button class="btn btn-lg btn-primary mt-4">Envoyer les confirmations</button>
+        <a href="{{ path('etapes_liste_notification', {'id' : evenement.id}) }}">
+            <button class="btn btn-lg btn-primary mt-4"><i class="bi bi-send me-2"></i>Envoyer les confirmations</button>
         </a>
+
+
+
 
     </div>
 {% endblock %}

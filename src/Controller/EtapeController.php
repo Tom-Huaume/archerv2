@@ -9,6 +9,7 @@ use App\Repository\EvenementRepository;
 use App\Repository\InscriptionEtapeRepository;
 use App\Repository\MembreRepository;
 use App\Repository\TrajetRepository;
+use App\Service\Notification;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\Types\Void_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,6 +34,14 @@ class EtapeController extends AbstractController
         $membre = $membreRepository->findOneBy(array('id' => $userId));
         $etape = $etapeRepository->findOneBy(array('id' => $id));
         $evenementId = $etape->getEvenement()->getId();
+        $deadline = $etape->getEvenement()->getDateHeureLimiteInscription();
+        $dateDuJour = new \DateTime();
+
+        //check si la date limite d'inscription est dépassée
+        if($dateDuJour > $deadline){
+            $this->addFlash('danger', 'La date limite d\'inscription est dépassée !' );
+            return $this->redirectToRoute('evenement_detail', ['id' => $evenementId]);
+        }
 
         //check si il y a déjà un enregistrement
         $ancienEnregistrement = $inscriptionEtapeRepository->findOneBy(array('membre' => $membre, 'etape' => $etape));
@@ -100,7 +109,59 @@ class EtapeController extends AbstractController
 
         return $this->render('etape/validationEtapes.html.twig', [
             'evenement' => $evenement,
-            'etapes' => $etapes,
+            'etapes' => $etapes
+
+        ]);
+    }
+
+    #[Route('/gestion/etapes/notification/{id}', name:'etapes_liste_notification')]
+    public function notification(
+        int $id,
+        MembreRepository $membreRepository,
+        EvenementRepository $evenementRepository,
+        Notification $notification,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        $evenement = $evenementRepository->findOneBy(array('id' => $id));
+        $etapes = $evenement->getEtapes();
+        $user = $membreRepository->findOneBy(array('id' => $this->getUser()->getId()));
+
+        foreach ($etapes as $e){
+
+            //Si l'étap n'a pas été validée
+            if(is_null($e->getDateHeureValidation()) === true){
+                //inscrire la date et le nom du validateur
+                $e->setValidateur($user->getPrenom()." ".$user->getNom());
+                $e->setDateHeureValidation(new \DateTime());
+                $entityManager->persist($e);
+                $entityManager->flush();
+            }
+
+            //pour chaque inscription
+            foreach ($e->getInscriptionEtapes() as $i){
+                //envoi des mails de confirmation si ça n'a pas été fait
+                if ($i->getDateHeureValidation() == '') {
+                    if($i->getValidation() === true){
+                        $i->setDateHeureValidation(new \DateTime());
+                        $notification->sendAcceptToSubscriber($i->getMembre(), $e);
+                        $entityManager->persist($i);
+                        $entityManager->flush();
+                    }elseif($i->getValidation() === false){
+                        $i->setDateHeureValidation(new \DateTime());
+                        $notification->sendRefuseToSubscriber($i->getMembre(), $e);
+                        $entityManager->persist($i);
+                        $entityManager->flush();
+                    }
+                }
+            }
+        }
+
+        $this->addFlash('success', 'Les confirmations ont été envoyées par mail !' );
+
+        return $this->render('etape/validationEtapes.html.twig', [
+            'evenement' => $evenement,
+            'etapes' => $etapes
 
         ]);
     }
@@ -119,7 +180,7 @@ class EtapeController extends AbstractController
             $inscription->setValidation(0);
             $userName = "--".$this->getUser()->getPrenom()." ".$this->getUser()->getNom();
             $inscription->setValidateur($userName);
-            $inscription->setDateHeureValidation(new \DateTime());
+            //$inscription->setDateHeureValidation(new \DateTime());
 
             //Persister les données
             $entityManager->persist($inscription);
@@ -139,7 +200,6 @@ class EtapeController extends AbstractController
     {
         //récupérer inscription, étape et évènement associé
         $inscription = $inscriptionEtapeRepository->findOneBy(array('id' => $id));
-        $evenementId = $inscription->getEtape()->getEvenement()->getId();
         $etape = $inscription->getEtape();
         $nbPlaces = $etape->getNbInscriptionsMax();
 
@@ -157,7 +217,7 @@ class EtapeController extends AbstractController
                 $etape->setNbInscriptionsMax($nbPlaces);
                 $userName = "--".$this->getUser()->getPrenom()." ".$this->getUser()->getNom();
                 $inscription->setValidateur($userName);
-                $inscription->setDateHeureValidation(new \DateTime());
+                //$inscription->setDateHeureValidation(new \DateTime());
             }
 
         } elseif ($inscription->getValidation() == 1)
@@ -169,7 +229,7 @@ class EtapeController extends AbstractController
                 $etape->setNbInscriptionsMax($nbPlaces);
                 $userName = "--".$this->getUser()->getPrenom()." ".$this->getUser()->getNom();
                 $inscription->setValidateur($userName);
-                $inscription->setDateHeureValidation(new \DateTime());
+                //$inscription->setDateHeureValidation(new \DateTime());
             }
         }
 
