@@ -225,9 +225,55 @@ class EvenementController extends AbstractController
         //Traitement du formulaire trajet
         if($trajetForm->isSubmitted() && $trajetForm->isValid()){
 
-            //Ajouter champs manquants
+            //Hydrater l'instance de trajet avec les données du formulaire
             $trajet->setDateHeureCreation(new \DateTime());
             $trajet->setEvenement($evenement);
+
+            //Contrôle des données titre
+            if ($trajetForm["titre"]->getData() == null || $trajetForm["titre"]->getData() == ''){
+                $this->addFlash('danger', 'Vous devez donner un titre à votre trajet pour pouvoir l\'identifier');
+                return $this->redirectToRoute('evenement_detail', ['id' => $id]);
+            }
+            $trajet->setTitre($trajetForm["titre"]->getData());
+
+            //Contrôle des données date/heure départ
+            if ($trajetForm["dateHeureDepart"]->getData() == null || $trajetForm["dateHeureDepart"]->getData() == ''){
+                $this->addFlash('danger', 'Vous devez indiquer la date/heure de départ');
+                return $this->redirectToRoute('evenement_detail', ['id' => $id]);
+            }
+            $trajet->setDateHeureDepart($trajetForm["dateHeureDepart"]->getData());
+
+            //Contrôle des données nombre de places
+            if ($trajetForm["nbPlaces"]->getData() == null || $trajetForm["nbPlaces"]->getData() == ''){
+                $this->addFlash('danger', 'Vous devez préciser le nombre de places');
+                return $this->redirectToRoute('evenement_detail', ['id' => $id]);
+            }elseif ($trajetForm["nbPlaces"]->getData() <1){
+                $this->addFlash('danger', 'Merci de renseigner une nombre de places supérieur à zéro');
+                return $this->redirectToRoute('evenement_detail', ['id' => $id]);
+            }elseif ($trajetForm["nbPlaces"]->getData() >50){
+                $this->addFlash('danger', 'Merci de renseigner une nombre de places inférieur à 51');
+                return $this->redirectToRoute('evenement_detail', ['id' => $id]);
+            }
+            $trajet->setNbPlaces($trajetForm["nbPlaces"]->getData());
+
+            if (strlen($trajetForm["description"]->getData()) >= 255){
+                $this->addFlash('danger', 'Votre description doit faire 255 caractères maximum');
+                return $this->redirectToRoute('evenement_detail', ['id' => $id]);
+            }
+            $trajet->setDescription($trajetForm["description"]->getData());
+
+            if (strlen($trajetForm["typeVoiture"]->getData()) >= 30){
+                $this->addFlash('danger', 'Le type de voiture doit faire 30 caractères maximum');
+                return $this->redirectToRoute('evenement_detail', ['id' => $id]);
+            }
+            $trajet->setTypeVoiture($trajetForm["typeVoiture"]->getData());
+
+            if (strlen($trajetForm["couleurVoiture"]->getData()) >= 30){
+                $this->addFlash('danger', 'La couleur de la voiture doit faire 30 caractères maximum');
+                return $this->redirectToRoute('evenement_detail', ['id' => $id]);
+            }
+            $trajet->setCouleurVoiture($trajetForm["couleurVoiture"]->getData());
+
             $userId = $this->getUser()->getId();
             $membre = $membreRepository->findOneBy(array('id' => $userId));
             $trajet->setOrganisateur($membre);
@@ -235,8 +281,9 @@ class EvenementController extends AbstractController
             //Récupérer adresse du club
             $adresseClub = $lieuRepository->findOneBy(array('club' => 1));
 
-            //Récupérer le choix de la liste déroulante (Adresse départ)
+            //Check si l'option adresse du club (choix par défaut) a été choisie
             $clubDefaut = $trajetForm["clubDefaut"]->getData();
+
             $trajet->setLieuDepart($adresseClub);
 
             //Si l'adresse du club par défaut n'est pas choisie on prends les champs saisis par l'utilisateur
@@ -274,7 +321,7 @@ class EvenementController extends AbstractController
                 $lieuDepartCustom->setList(0);
 
                 $entityManager->persist($lieuDepartCustom);
-                //$entityManager->flush();
+                $entityManager->flush();
 
                 $trajet->setLieuDepart($lieuDepartCustom);
 

@@ -21,40 +21,31 @@ class Trajet
     private $id;
 
     /**
-     * @Assert\Length(max=50)
-     * @Assert\NotBlank(message="Vous devez donner un titre à votre trajet pour pouvoir l'identifier")
      * @ORM\Column(type="string", length=50)
      */
     private $titre;
 
     /**
-     * @Assert\Length(max=255)
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
 
     /**
-     * @Assert\NotBlank(message="Vous devez indiquer la date/heure de départ")
      * @ORM\Column(type="datetime")
      */
     private $dateHeureDepart;
 
     /**
-     * @Assert\Length(min=1, max=10)
-     * @Assert\Positive(message="Merci de renseigner une nombre supérieur à zéro")
-     * @Assert\NotBlank(message="Vous devez préciser le nombre de places")
      * @ORM\Column(type="integer")
      */
     private $nbPlaces;
 
     /**
-     * @Assert\Length(max=30)
      * @ORM\Column(type="string", length=30, nullable=true)
      */
     private $typeVoiture;
 
     /**
-     * @Assert\Length(max=30)
      * @ORM\Column(type="string", length=30, nullable=true)
      */
     private $couleurVoiture;
@@ -65,7 +56,6 @@ class Trajet
     private $dateHeureCreation;
 
     /**
-     * @Assert\NotBlank(message="Vous devez indiquer le lieu de départ")
      * @ORM\ManyToOne(targetEntity=Lieu::class, inversedBy="trajets")
      * @ORM\JoinColumn(nullable=false)
      */

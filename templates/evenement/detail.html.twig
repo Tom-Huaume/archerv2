@@ -8,6 +8,11 @@
     <div class="container">
 
         <h2 class="event-title">{{ evenement.nom }}</h2>
+
+
+
+
+
         <div class="d-flex justify-content-center mb-5">
             <div class="d-block">
                 <span class="erreur-assert">{{ form_errors(etapeForm.nom) }}</span>
@@ -16,6 +21,19 @@
                 <span class="erreur-assert">{{ form_errors(etapeForm.arme) }}</span>
                 <span class="erreur-assert">{{ form_errors(etapeForm.dateHeureDebut) }}</span>
                 <span class="erreur-assert">{{ form_errors(etapeForm.tarif) }}</span>
+
+                <span class="erreur-assert">{{ form_errors(trajetForm.nomLieuDepart) }}</span>
+                <span class="erreur-assert">{{ form_errors(trajetForm.rueLieuDepart) }}</span>
+                <span class="erreur-assert">{{ form_errors(trajetForm.rue2LieuDepart) }}</span>
+                <span class="erreur-assert">{{ form_errors(trajetForm.villeLieuDepart) }}</span>
+                <span class="erreur-assert">{{ form_errors(trajetForm.codePostalLieuDepart) }}</span>
+
+                <span class="erreur-assert">{{ form_errors(trajetForm.description) }}</span>
+                <span class="erreur-assert">{{ form_errors(trajetForm.nbPlaces) }}</span>
+                <span class="erreur-assert">{{ form_errors(trajetForm.titre) }}</span>
+                <span class="erreur-assert">{{ form_errors(trajetForm.typeVoiture) }}</span>
+                <span class="erreur-assert">{{ form_errors(trajetForm.couleurVoiture) }}</span>
+                <span class="erreur-assert">{{ form_errors(trajetForm.dateHeureDepart) }}</span>
             </div>
         </div>
 

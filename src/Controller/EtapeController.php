@@ -135,7 +135,7 @@ class EtapeController extends AbstractController
                 $e->setValidateur($user->getPrenom()." ".$user->getNom());
                 $e->setDateHeureValidation(new \DateTime());
                 $entityManager->persist($e);
-                $entityManager->flush();
+                //$entityManager->flush();
             }
 
             //pour chaque inscription
@@ -146,17 +146,17 @@ class EtapeController extends AbstractController
                         $i->setDateHeureValidation(new \DateTime());
                         $notification->sendAcceptToSubscriber($i->getMembre(), $e);
                         $entityManager->persist($i);
-                        $entityManager->flush();
+                        //$entityManager->flush();
                     }elseif($i->getValidation() === false){
                         $i->setDateHeureValidation(new \DateTime());
                         $notification->sendRefuseToSubscriber($i->getMembre(), $e);
                         $entityManager->persist($i);
-                        $entityManager->flush();
+                        //$entityManager->flush();
                     }
                 }
             }
         }
-
+        $entityManager->flush();
         $this->addFlash('success', 'Les confirmations ont été envoyées par mail !' );
 
         return $this->render('etape/validationEtapes.html.twig', [

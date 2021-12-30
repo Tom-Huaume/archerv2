@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Evenement;
 use App\Entity\Lieu;
+use App\Repository\LieuRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -25,6 +26,11 @@ class EvenementType extends AbstractType
                 'required' => false,
                 'class' => Lieu::class,
                 'label' => 'Lieu de l\'évènement',
+                'query_builder' => function (LieuRepository $l) {
+                    return $l->createQueryBuilder('l')
+                        ->where('l.list = 1')
+                        ->orderBy('l.nom', 'ASC');
+                },
                 'choice_label' => 'nom',
                 'placeholder' => '',
                 'attr'=>[

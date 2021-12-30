@@ -24,59 +24,68 @@ class TrajetType extends AbstractType
                     'Autre adresse' => false,
                 ],
                 'attr'=>[
-                    'class'=>'form-select input-choice-address',
+                    'class'=>'form-select input-choice-address'
                 ],
             ])
 
             ->add('titre', TextType::class, [
+                'mapped' => false,
                 'label' => 'Titre',
                 'attr'=>[
                     'class'=>'form-control input-nom-lieu',
-                    'placeholder'=>'Ex : Allé-retour Liffré-Vern ',
+                    'placeholder'=>'Ex : Allé-retour Liffré-Vern '
                 ]
             ])
 
             ->add('description', TextareaType::class, [
+                'mapped' => false,
                 'required' => false,
                 'label' => 'Commentaire',
                 'attr'=>[
+                    'maxlength' => "254",
                     'class'=>'form-control font-input-little',
-                    'placeholder'=>'(Facultatif)',
+                    'placeholder'=>'(Facultatif)'
                 ]
             ])
 
             ->add('dateHeureDepart', DateTimeType::class, [
+                'mapped' => false,
                 'html5' => true,
                 'widget' => 'single_text',
                 'attr'=>[
-                    'class'=>'font-input',
+                    'class'=>'font-input'
                 ]
             ])
 
             ->add('nbPlaces', IntegerType::class, [
+                'mapped' => false,
                 'label' => 'Nombre de places',
                 'attr'=>[
                     'class'=>'form-control input-inscr-event',
                     'min' => 1,
-                    'max' => 10
+                    'max' => 50
                 ]
             ])
 
             ->add('typeVoiture', TextType::class, [
+                'mapped' => false,
                 'required' => false,
                 'label' => 'Type de voiture',
                 'attr'=>[
+                    'maxlength' => "30",
                     'class'=>'form-control',
-                    'placeholder'=>'(Facultatif)',
+                    'placeholder'=>'(Facultatif)'
                 ]
             ])
 
             ->add('couleurVoiture', TextType::class, [
+                'mapped' => false,
                 'required' => false,
                 'label' => 'Couleur de la voiture',
                 'attr'=>[
+                    'maxlength' => "30",
                     'class'=>'form-control',
-                    'placeholder'=>'(Facultatif)',
+                    'placeholder'=>'(Facultatif)'
                 ]
             ])
 
@@ -97,7 +106,7 @@ class TrajetType extends AbstractType
                 'required' => false,
                 'label' => 'Rue',
                 'attr'=>[
-                    'class'=>'form-control input-rue-lieu',
+                    'class'=>'form-control input-rue-lieu'
                 ]
             ])
 
@@ -116,7 +125,7 @@ class TrajetType extends AbstractType
                 'required' => false,
                 'label' => 'Code postal',
                 'attr'=>[
-                    'class'=>'form-control input-cp-lieu',
+                    'class'=>'form-control input-cp-lieu'
                 ]
             ])
 
@@ -125,7 +134,7 @@ class TrajetType extends AbstractType
                 'required' => false,
                 'label' => 'Ville',
                 'attr'=>[
-                    'class'=>'form-control input-ville-lieu',
+                    'class'=>'form-control input-ville-lieu'
                 ]
             ])
         ;

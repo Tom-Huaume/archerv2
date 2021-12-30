@@ -89,7 +89,7 @@ class UpdateManager
                 $membreClub->setTypeLicence($typeLicence);
                 $membreClub->setCategorieAge($catAge);
                 $this->entityManager->persist($membreClub);
-                $this->entityManager->flush();
+                //$this->entityManager->flush();
             }
 
             if($membreClub == null){
@@ -122,10 +122,11 @@ class UpdateManager
                 $membre->setRoles(array('ROLE_USER'));
                 $membre->setPassword($this->passwordHasher->hashPassword($membre, random_bytes(200)));
                 $this->entityManager->persist($membre);
-                $this->entityManager->flush();
+                //$this->entityManager->flush();
             }
 
         }
+        $this->entityManager->flush();
 
 
     }
