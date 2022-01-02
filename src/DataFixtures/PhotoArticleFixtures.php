@@ -12,10 +12,13 @@ class PhotoArticleFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        for($i = 0; $i < 6; $i++){
+        $faker = \Faker\Factory::create('fr_FR');
+
+
+        for($i = 1; $i <= 6; $i++){
             $photoArticle = new PhotoArticle();
-            $photoArticle->setImage("https://source.unsplash.com/random/".$i);
-            $photoArticle->setArticle($this->getReference(Article::class.'_'.mt_rand(1,3)));
+            $photoArticle->setImage('defaut'.$i.'.jpg');
+            $photoArticle->setArticle($this->getReference(Article::class.'_'.mt_rand(1,15)));
             $manager->persist($photoArticle);
         }
 

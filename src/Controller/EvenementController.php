@@ -131,7 +131,7 @@ class EvenementController extends AbstractController
                 $evenement->setPhoto($fileName);
 
             }else{
-                $evenement->setPhoto("defaut.jpg");
+                $evenement->setPhoto("defaut1.jpg");
             }
 
             //Persister les données

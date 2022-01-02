@@ -83,9 +83,9 @@ class AdminController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstrac
             $ext = $photo->getExtension();
             //dd($photo);
             $uploads_directory = $this->getParameter('event_directory'); //dans config/services.yaml
-            $fileName = "defaut.jpg";
+            $fileName = "defaut1.jpg";
             $fs = new Filesystem();
-            $fs->remove("public/img/photo/evenement/defaut.jpg");
+            $fs->remove("public/img/photo/evenement/defaut1.jpg");
             $photo->move(
                 $uploads_directory,
                 $fileName

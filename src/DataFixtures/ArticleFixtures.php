@@ -8,23 +8,19 @@ use Doctrine\Persistence\ObjectManager;
 
 class ArticleFixtures extends Fixture
 {
+    public int $nbArticles = 15;
+
     public function load(ObjectManager $manager): void
     {
-        for($i = 1; $i <= 3; $i++){
+        $faker = \Faker\Factory::create('fr_FR');
+
+        //Modifier également le mt_rand dans PhotoArticle
+        for($i = 1; $i <= $this->nbArticles; $i++){
 
             $article = new Article();
-            $article->setTitre("Lorem titre ".$i);
-            $article->setDateHeureCreation(new \DateTime());
-            $article->setDescription("
-                Auctor officia aliquip, quidem litora, deleniti sit! Possimus, 
-                nostra. Auctor, eleifend! Adipiscing nisl curabitur, ipsa do! 
-                Eveniet, illum do torquent, ipsam condimentum porro vero. Sem a 
-                varius congue libero veritatis fermentum sociosqu commodi animi 
-                consectetuer eleifend posuere varius iste, iusto sodales class, 
-                anim ullam? Per rhoncus blanditiis parturient tempore in wisi 
-                fermentum? Provident atque, dis. Wisi earum accumsan elit ab, 
-                cubilia lacus modi natus mollis.
-            ");
+            $article->setTitre($faker->text(99));
+            $article->setDateHeureCreation($faker->dateTimeBetween('-2 years', 'now'));
+            $article->setDescription($faker->text(500));
             $manager->persist($article);
             $this->addReference(Article::class.'_'.$i, $article);
 

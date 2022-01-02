@@ -84,49 +84,60 @@
 
         {% for a in articles %}
 
-        <div  class="mt-3 mb-5">
+        <div  class="mt-3 mb-5 row">
 
-            <div class="title-past d-flex">
-                <h4 class="m-0 p-0">{{ a.titre }}</h4>
-                {% if is_granted("ROLE_SECRETAIRE") %}
-                <a href="{{ path('article_update', {'id': a.id}) }}" class="ms-3"><i class="bi bi-pencil"></i></a>
-                <a href="{{ path('article_delete', {'id': a.id}) }}" class="ms-3"><i class="bi bi-trash"></i></a>
-                {% endif %}
-            </div>
-            <div style="color: #424246">
-                <div class="row">
-                    <div class="leftdiv col-md-8">
-                        <p>{{ a.description|nl2br }}</p>
-                    </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
 
-                    {% if a.photos is not empty %}
-                        <div id="carousel{{ a.id }}" class="col-md-4 carousel slide m-0 p-0" data-bs-ride="carousel">
-                            <div class="carousel-inner">
-                                {% set nbImage = 0 %}
+                <div class="title-past d-flex">
+                    <h4 class="m-0 p-0">{{ a.titre }}</h4>
+                    {% if is_granted("ROLE_SECRETAIRE") %}
+                        <a href="{{ path('article_update', {'id': a.id}) }}" class="ms-3"><i class="bi bi-pencil"></i></a>
+                        <a href="{{ path('article_delete', {'id': a.id}) }}" class="ms-3"><i class="bi bi-trash"></i></a>
+                    {% endif %}
+                </div>
+                <div style="color: #424246">
+                    <div class="row">
 
-                                {% for p in a.photos %}
-                                    {% set nbImage = nbImage + 1 %}
+
+                        <div class="leftdiv {{ (a.photos is empty) ? 'col-md-12' : 'col-md-8' }}">
+                            <p>{{ a.description|nl2br }}</p>
+                        </div>
+
+
+
+                        {% if a.photos is not empty %}
+                            <div id="carousel{{ a.id }}" class="col-md-4 carousel slide m-0 p-0" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    {% set nbImage = 0 %}
+
+                                    {% for p in a.photos %}
+                                        {% set nbImage = nbImage + 1 %}
 
                                         <div class="carousel-item {{ nbImage == 1 ? 'active' }}">
                                             <img class="d-block w-100 image-min" src="{{ asset('img/photo/article/'~p.image) }}" alt="...">
                                         </div>
 
-                                {% endfor %}
+                                    {% endfor %}
 
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ a.id }}" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ a.id }}" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
                             </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ a.id }}" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ a.id }}" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </div>
-                    {% endif %}
+                        {% endif %}
+                    </div>
+
                 </div>
 
             </div>
+            <div class="col-md-1"></div>
+
         </div>
         {% endfor %}
 

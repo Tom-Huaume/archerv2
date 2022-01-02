@@ -52,7 +52,7 @@
 {#                        <p>{{ evenement.nbInscriptionsMax }} places disponibles</p>#}
                         <b><p>Date limite d'inscription le {{ evenement.dateHeureLimiteInscription | date('d/m/Y', 'Europe/Paris') }}
                             à {{ evenement.dateHeureLimiteInscription | date('H:i', 'Europe/Paris') }}</p></b>
-                        <p>Tarif : {{ evenement.tarif }}</p>
+                        <p>{{ evenement.tarif ? "Tarif : "~evenement.tarif }}</p>
                         <br>
                         <h5>{{ evenement.lieuDestination.nom }}</h5>
                         <p>{{ evenement.lieuDestination.rue }}</p>
